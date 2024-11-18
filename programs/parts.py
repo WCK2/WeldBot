@@ -1,0 +1,555 @@
+from helper import *
+from collections import defaultdict
+import inspect
+
+
+
+#^=======================================================================================================================
+#^ Generic Laser Class
+#^=======================================================================================================================
+class GENERIC_LASER():
+    def __init__(self, **kwargs):
+        self.kw = kwargs
+        self.auto_calls=[]
+
+        def get(n,d):
+            out = kwargs.get(n,None)
+            if out != None: return out
+            elif hasattr(self, n): return getattr(self,n)
+            else: return d
+
+        self.fn                 = get('fn', self.__class__.__name__)
+        self.tool_holder_name   = get('tool', 'MIG 00 Holder')
+        self.workpiece          = get('workpiece', 'EliteDoor')
+        self.workpiece_name     = 'Workpiece '+self.workpiece
+        self.retracted          = get('retracted', True)
+        self.extended           = get('extended', False)
+        self.add_auto           = get('add_auto', False)
+
+        if bool(get("auto", True)): self.main()
+
+    def init(self):
+        robot.AddCode("# INITIALIZATION")
+        self.Robot_Frame        = rdk.Item(ROBOT)
+        self.TCP_Holder         = self.Robot_Frame.findChild(self.tool_holder_name)
+
+        self.Workpiece_Frame    = self.Robot_Frame.findChild(self.workpiece_name)
+        self.Retracted_Frame    = self.Workpiece_Frame.findChild('Retracted Holder').findChild('Retracted Frame')
+        if self.extended: self.Extended_Frame = self.Workpiece_Frame.findChild('Extended Holder').findChild('Extended Frame')
+
+        self.Joint_Folder       = self.Workpiece_Frame.findChild('Joint Targets')
+        self.Tar000             = self.Joint_Folder.findChild('000')
+        self.Tar001             = self.Joint_Folder.findChild('001')
+
+        self.Target_Frames      = self.__get_target_frames()
+
+    def __get_target_frames(self):
+        new_children,frames=[],[]
+        if self.retracted: frames.append(self.Retracted_Frame)
+        if self.extended: frames.append(self.Extended_Frame)
+        for f in frames:
+            children=f.Childs()
+            for i in children:
+                if i.Type()!=3: continue
+                elif i.Name().startswith('_'): continue
+                i.Wname=i.Name().split(' - ')[0]
+                new_children.append(i)
+        return new_children
+
+    def generate_auto(self):
+        robot.AddCode('if part=="auto":')
+        robot.AddTab(1)
+
+        # req_list=[[self.workpiece]+sublist for sublist in self.auto_calls if sublist[1] is not None]
+        req_list=[]
+        for sublist in self.auto_calls:
+            if sublist[2]: req_list.append([self.workpiece]+sublist[:2])
+        # robot.AddCode(f'SendPartRequest({req_list})')
+
+        for s in self.auto_calls:
+            p1=s[0]
+            p2=s[1] if len(s)>1 else None
+            robot.AddCode(f'{self.fn}("{p1}", {p2}, False)')
+            # print(f'{self.fn}("{p1}", {p2})')
+        robot.AddTab(0)
+
+    def run(self):
+        pass
+
+    def main(self):
+        print(self.fn)
+        robot.AddHeader(self.fn)
+        robot.AddCode(f'def {self.fn}():')
+        robot.AddTab(True)
+        robot.AddCode(f'print("running {self.fn}")')
+        rdk.setCollisionActive(0)
+
+        self.init()
+        self.run()
+        if self.add_auto: self.generate_auto()
+
+        robot.AddCode("# DONE")
+        robot.AddTab(False)
+
+
+
+#^=========================
+#^ Laser CALE
+#^=========================
+class Laser_CALE(GENERIC_LASER):
+    #~ Spot Welds
+    def SideBracketTop(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[1], [10], [FAST])
+        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[3], [10], [FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
+        RelativeEaseOff([70], [FAST])
+
+        EaseOn(tars[4], [70, 10], [FAST, FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[5], [10], [FAST])
+        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), myblend=rr/4)
+        RelativeEaseOff([50, 100], [FAST, FAST])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def SideBracketMiddle(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[1], [10], [FAST])
+        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), myblend=rr/4)
+        RelativeEaseOff([30], [FAST])
+
+        EaseOn(tars[3], [30], [FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
+        RelativeEaseOff([70], [FAST])
+
+        EaseOn(tars[4], [70, 10], [FAST, FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[5], [10], [FAST])
+        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), myblend=rr/4)
+        RelativeEaseOff([50, 100], [FAST, FAST])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def SideBracketBottom(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+        
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[1], [10], [FAST])
+        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
+        RelativeEaseOff([80], [FAST])
+
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=80)))
+        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
+        RelativeEaseOff([75], [FAST])
+
+        EaseOn(tars[3], [75, 10], [FAST, FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+
+        robot.nos_MoveJ(FAST, GetIK(tars[4].Offset(z=50)))
+        EaseOn(tars[4], [10], [FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def StiffenerTop(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[0], RelFrame(tars[0], y=rr, z=rr), RelFrame(tars[0], x=rr), myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[0], z=100), blend=1)
+
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], z=100)))
+        EaseOn(tars[1], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[1], RelFrame(tars[1], x=rr, z=rr), RelFrame(tars[1], y=-rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[2], [10], [FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
+        RelativeEaseOff([70], [FAST])
+
+        EaseOn(tars[3], [70, 10], [FAST, FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], x=rr, z=rr), RelFrame(tars[3], y=-rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[4], [10], [FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], x=rr, z=rr), RelFrame(tars[4], y=-rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[5], [10], [FAST])
+        run_circular_weld(tars[5], RelFrame(tars[5], x=rr, z=rr), RelFrame(tars[5], y=-rr), myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def StiffenerBot(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[0], RelFrame(tars[0], y=rr, z=rr), RelFrame(tars[0], x=rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[1], [10], [FAST])
+        run_circular_weld(tars[1], RelFrame(tars[1], y=rr, z=rr), RelFrame(tars[1], x=rr), myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[1], z=150), blend=1)
+
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=150)))
+        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+
+        EaseOn(tars[3], [80, 10], [FAST, FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], x=rr, z=rr), RelFrame(tars[3], y=-rr), myblend=rr/4)
+        RelativeEaseOff([20], [FAST])
+        
+        EaseOn(tars[4], [10], [FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], x=rr, z=rr), RelFrame(tars[4], y=-rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[5], [10], [FAST])
+        run_circular_weld(tars[5], RelFrame(tars[5], x=rr, z=rr), RelFrame(tars[5], y=-rr), myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+        
+        EaseOn(tars[6], [80, 10], [FAST, FAST])
+        run_circular_weld(tars[6], RelFrame(tars[6], x=rr, z=rr), RelFrame(tars[6], y=-rr), myblend=rr/4)
+        RelativeEaseOff([10], [FAST])
+
+        EaseOn(tars[7], [10], [FAST])
+        run_circular_weld(tars[7], RelFrame(tars[7], x=rr, z=rr), RelFrame(tars[7], y=-rr), myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def TicketSpout(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+        
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        #? first set of tars
+        SetTool(self.TCP_Holder.findChild('right'))
+        EaseOn(tars[0], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[0], RelFrame(tars[0], x=-rr, z=rr), RelFrame(tars[0], y=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[1], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[1], RelFrame(tars[1], x=-rr, z=rr), RelFrame(tars[1], y=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[2], RelFrame(tars[2], x=-rr, z=rr), RelFrame(tars[2], y=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[3], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[3], RelFrame(tars[3], x=-rr, z=rr), RelFrame(tars[3], y=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[3], z=100))
+
+        #? second set of tars
+        SetTool(self.TCP_Holder.findChild('mid'))
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[4], z=100)))
+        EaseOn(tars[4], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([50], [FAST])
+
+        robot.nos_MoveJ(FAST, GetIK(tars[5].Offset(z=75)))
+        EaseOn(tars[5], [50, 10], [FAST, FAST])
+        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([25], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[5], z=100))
+
+        SetTool(self.TCP_Holder.findChild('right'))
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[6], z=100)))
+        EaseOn(tars[6], [25, 10], [FAST, FAST])
+        run_circular_weld(tars[6], RelFrame(tars[6], y=-rr, z=rr), RelFrame(tars[6], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([25], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[6], z=50))
+
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[7], z=50)))
+        EaseOn(tars[7], [25, 10], [FAST, FAST])
+        run_circular_weld(tars[7], RelFrame(tars[7], y=-rr, z=rr), RelFrame(tars[7], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([25], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(tars[7], z=50), blend=1)
+
+        SetTool(self.TCP_Holder.findChild('mid'))
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+
+
+    #~ testing
+    def test_ScrapSurface_(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        robot.setSlowSpeeds(15, 15, 200, 5)
+        r = 1.0 # 1.5
+        _x = 40*0
+        _y = -10
+
+        robot.AddCode('#* t relative 0')
+        t = RelFrame(tars[5], x=0+_x, y=_y)
+        EaseOn(t, [100, 10], [FAST, FAST])
+        run_circular_weld(t, RelFrame(t, y=r, z=r), RelFrame(t, x=r), myblend=r/4)
+        RelativeEaseOff([10], [FAST])
+        robot.AddCode('robot.waitmove()')
+        robot.AddCode('time.sleep(1)')
+
+        robot.AddCode('#* t relative 1')
+        t = RelFrame(tars[5], x=10+_x, y=_y)
+        EaseOn(t, [10], [FAST])
+        run_circular_weld(t, RelFrame(t, y=r, z=r), RelFrame(t, x=r), myblend=r/4)
+        RelativeEaseOff([10], [FAST])
+        robot.AddCode('robot.waitmove()')
+        robot.AddCode('time.sleep(1)')
+
+        # robot.AddCode('#* t relative 2')
+        # t = RelFrame(tars[5], x=20+_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # run_circular_weld(t, RelFrame(t, y=r, z=r), RelFrame(t, x=r), myblend=r/4)
+        # RelativeEaseOff([10], [FAST])
+        # robot.AddCode('robot.waitmove()')
+        # robot.AddCode('time.sleep(1)')
+
+        # robot.AddCode('#* t relative 3')
+        # t = RelFrame(tars[5], x=30+_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # run_circular_weld(t, RelFrame(t, y=r, z=r), RelFrame(t, x=r), myblend=r/4)
+        # RelativeEaseOff([10], [FAST])
+
+        
+        #* end
+        RelativeEaseOff([50], [FAST])
+        robot.nos_MoveL(FAST, RelFrame(t, z=100))
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+    def test_SideBracketGap_(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+        
+        # robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        #? test 1
+        # EaseOn(tars[0], [50], [FAST])
+
+        # _x = 30
+        # t = RelFrame(tars[0], x=_x, y=-3)
+        # EaseOn(t, [10], [FAST])
+        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
+        # RelativeEaseOff([10], [FAST])
+
+        # t = RelFrame(tars[0], x=15+_x, y=-3)
+        # EaseOn(t, [10], [FAST])
+        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=2, speed=SLOWAF, myblend=0.5)
+        # RelativeEaseOff([10], [FAST])
+
+
+        #? test 2
+        # EaseOn(tars[1], [50], [FAST])
+        
+        # _x = 60
+        # t = RelFrame(tars[1], x=_x, y=-4)
+        # EaseOn(t, [10], [FAST])
+        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
+        # RelativeEaseOff([10], [FAST])
+
+        # t = RelFrame(tars[1], x=15+_x, y=-4)
+        # EaseOn(t, [10], [FAST])
+        # run_zigzag_weld(t, RelFrame(t, x=10), 2, y_amp=2, speed=SLOWAF, myblend=0.5)
+        # RelativeEaseOff([10], [FAST])
+
+        # t = RelFrame(tars[1], x=30+_x, y=-4)
+        # EaseOn(t, [10], [FAST])
+        # run_zigzag_weld(t, RelFrame(t, x=10), 2, y_amp=2, speed=SLOW, myblend=0.5)
+        # RelativeEaseOff([10], [FAST])
+
+        #? test 3
+        # EaseOn(tars[1], [50], [FAST])
+        
+        # _x = 40
+        # _y = -15
+        # rr = 1.5
+        # t = RelFrame(tars[1], x=_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
+        # run_circular_weld(t, RelFrame(t, x=rr), RelFrame(t, y=-rr), speed=SLOWAF, myblend=rr/4)
+        # RelativeEaseOff([10], [FAST])
+
+        # t = RelFrame(tars[1], x=7.5+_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # run_circular_weld(t, RelFrame(t, x=rr), RelFrame(t, y=-rr), speed=SLOW, myblend=rr/4)
+        # RelativeEaseOff([10], [FAST])
+
+        #? test 4
+        # EaseOn(tars[2], [50], [FAST])
+        
+        # _x = 55
+        # _y = -15
+        # rr = 1.5
+
+        # t = RelFrame(tars[2], x=_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # robot.nos_MoveL(SLOW, t)
+        # Laser(1)
+        # AddSleep(0.25)
+        # robot.nos_MoveL(SLOWAF, RelFrame(t, y=3))
+        # Laser(0)
+        # RelativeEaseOff([10], [FAST])
+
+        # t = RelFrame(tars[2], x=7.5+_x, y=_y)
+        # EaseOn(t, [10], [FAST])
+        # robot.nos_MoveL(SLOW, t)
+        # Laser(1)
+        # AddSleep(0.5)
+        # robot.nos_MoveL(SLOWAF, RelFrame(t, y=3))
+        # Laser(0)
+        # RelativeEaseOff([10], [FAST])
+
+        #? test 5
+        # _x = 0 # -5, SLOWAF, sleep 0.25
+        # _x = 10 # -5, SLOWAF, sleep 0.25
+        # _x = 27 # -7.5, SLOWAF, sleep 0.25
+        # _x = 33 # -7.5, SLOWAF, sleep 0.5
+        # _x = 88 # -7.5, SLOWAF, sleep 0.25
+        # _x = 96 # -7.5, SLOWAF, sleep 0.5
+        # t1 = RelFrame(tars[3], x=_x, y=-2.5)
+        # t2 = RelFrame(tars[3], x=_x, y=1)
+
+        # EaseOn(t1, [50, 10], [FAST, FAST])
+        # robot.nos_MoveL(SLOW, t1)
+        # Laser(1)
+        # AddSleep(0.5)
+        # robot.nos_MoveL(SLOWAF, t2)
+        # Laser(0)
+        # RelativeEaseOff([10], [FAST])
+
+        #? test 5
+        t1 = RelFrame(tars[8], y=-2)
+        t2 = RelFrame(tars[8], y=1)
+
+        EaseOn(t1, [80, 10], [FAST, FAST])
+        robot.nos_MoveL(SLOW, t1)
+        Laser(1)
+        AddSleep(0.33)
+        robot.nos_MoveL(SLOWAF, t2)
+        Laser(0)
+        RelativeEaseOff([10], [FAST])
+
+        # t1 = RelFrame(tars[7], y=-2)
+        # t2 = RelFrame(tars[7], y=1)
+
+        # EaseOn(t1, [80, 10], [FAST, FAST])
+        # robot.nos_MoveL(SLOW, t1)
+        # Laser(1)
+        # AddSleep(0.33)
+        # robot.nos_MoveL(SLOWAF, t2)
+        # Laser(0)
+        # RelativeEaseOff([10], [FAST])
+
+        #? end
+        RelativeEaseOff([50], [FAST])
+        # robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+
+
+
+    #~ Run
+    def run(self):
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        #? Loop through target frames
+        for c, tar_frame in enumerate(self.Target_Frames):
+
+            if False: pass            
+            # elif tar_frame.Wname=='test_ScrapSurface_': self.test_ScrapSurface_(tar_frame)
+            # elif tar_frame.Wname=='test_SideBracketGap_': self.test_SideBracketGap_(tar_frame)
+
+            elif tar_frame.Wname=='SideBracketTop': self.SideBracketTop(tar_frame)
+            elif tar_frame.Wname=='SideBracketMiddle': self.SideBracketMiddle(tar_frame)
+            elif tar_frame.Wname=='SideBracketBottom': self.SideBracketBottom(tar_frame)
+            elif tar_frame.Wname=='StiffenerTop': self.StiffenerTop(tar_frame)
+            elif tar_frame.Wname=='StiffenerBot': self.StiffenerBot(tar_frame)
+            elif tar_frame.Wname=='TicketSpout': self.TicketSpout(tar_frame)
+
+
+            else:
+                # robot.AddCode('pass')
+                print(f'no function call for "{tar_frame.Name()}" (aka: {tar_frame.Wname})')
+            
+
+
+

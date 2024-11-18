@@ -1,0 +1,123 @@
+PLC 06
+
+// Rung 1
+// Address 0
+ECOM100 K1 K1 V400 V401 V402
+
+// Rung 2
+// Address 37
+STR SP0
+GTS K1
+
+// Rung 3
+// Address 40
+STR SP1
+GTS K2
+GTS K3
+
+// Rung 4
+// Address 45
+NOP
+
+// Rung 5
+// Address 46
+END
+
+// Rung 6
+// Address 47
+SBR K1
+
+// Rung 7
+// Address 49
+STR SP1
+SET Y0
+
+// Rung 8
+// Address 51
+NOP
+
+// Rung 9
+// Address 52
+NOP
+
+// Rung 10
+// Address 53
+NOP
+
+// Rung 11
+// Address 54
+RT
+
+// Rung 12
+// Address 55
+SBR K2
+
+// Rung 13
+// Address 57
+STR X0
+SET GY0
+
+// Rung 14
+// Address 59
+STRND X0
+RST GY0
+
+// Rung 15
+// Address 61
+STR X10
+OR X11
+SET GY13
+
+// Rung 16
+// Address 64
+STRN X10
+ANDN X11
+RST GY13
+
+// Rung 17
+// Address 67
+NOP
+
+// Rung 18
+// Address 68
+NOP
+
+// Rung 19
+// Address 69
+RT
+
+// Rung 20
+// Address 70
+SBR K3
+
+// Rung 21
+// Address 72
+STRPD X2
+ORPD GY2
+SET Y2
+
+// Rung 22
+// Address 75
+STRND X2
+ANDN GY2
+STRND GY2
+ANDN X2
+ORSTR
+RST Y2
+
+// Rung 23
+// Address 81
+STR Y2
+RST Y10
+
+// Rung 24
+// Address 83
+NOP
+
+// Rung 25
+// Address 84
+RT
+
+// Rung 26
+// Address 85
+NOP

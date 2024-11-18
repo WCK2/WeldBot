@@ -1,0 +1,185 @@
+
+/*===================================================
+ * Global
+===================================================*/
+*{
+    font-family: Helvetica,monospace;
+    /* font-family: "Lucida Console", Courier, monospace; */
+    background-color:#000000;
+    margin:0;
+    padding:0;
+    border:0px transparent;
+    background-color: transparent;
+}
+
+/*===================================================
+ * Generic
+===================================================*/
+#BG {
+    background-color:#1a1a1a;
+}
+#btn {
+    min-width: 175px;
+    max-width: 175px;
+    padding-top: 5;
+    padding-bottom: 5;
+    background-color: rgb(10, 182, 194);
+    border: 1px solid rgb(1, 102, 102);
+    color:rgb(0, 0, 0);
+    font-size: 30px;
+}
+#btn:pressed {
+    background-color: rgb(25, 236, 243);
+    border: 2px solid rgb(1, 95, 102);
+    font-size: 28px;
+}
+#btn:disabled {
+    background-color: rgb(135, 135, 135);
+}
+#btn:hover {
+    border: 2px solid rgb(1, 95, 102);
+}
+#container1 {
+    background-color:#000000;
+    color: transparent;
+    border: 2px solid rgb(255, 255, 255);
+    /* qproperty-alignment: AlignCenter; */
+}
+
+#container {
+    background-color: rgb(14,21,29);
+}
+
+
+/*===================================================
+ * QMessageBox - Confirmation Box
+===================================================*/
+#confirmShutdownBox {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+}
+
+#confirmShutdownBox QLabel {
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+}
+
+#confirmShutdownBox QPushButton {
+    background-color: rgb(50, 50, 50);
+    border: 1px solid rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    font-size: 26px;
+    padding: 5px 35px; /* padding: top & bottom, left & right */
+    margin: 20px;
+}
+
+#confirmShutdownBox QPushButton:pressed {
+    background-color: rgb(75, 75, 75);
+    border: 2px solid rgb(255, 255, 255);
+    font-size: 24px;
+}
+
+
+/*===================================================
+ * header
+===================================================*/
+#header #banner {
+    border-radius: 10px;
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgb(0,196,240), stop:1 rgb(30,244,108));
+}
+#header #banner_h1 {
+    color: rgb(42, 53, 66);
+    font-size: 68px;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+}
+
+
+/*===================================================
+ * page home
+===================================================*/
+#page_home #h1 {
+    background-color: transparent;
+    color: rgb(30,240,110);
+    font-size: 40px;
+    text-decoration: underline;
+    qproperty-alignment: AlignCenter;
+}
+
+#page_home #image {
+    background-color: transparent;
+    border: 2px solid rgb(102, 102, 102);
+}
+#page_home #program_label {
+    background-color: rgb(0,0,0);
+    color: rgb(179, 179, 179);
+    font-size: 60px;
+    font-weight: bold;
+    border: 2px solid rgb(102, 102, 102);
+    qproperty-alignment: AlignCenter;
+}
+#page_home QPushButton {
+    color: rgb(0,0,0);
+    font-size: 68px;
+    background-color: rgb(0,196,240);
+    border-color: rgb(0,0,0);
+    border-width: 2px;
+    border-style: outset;
+}
+#page_home QPushButton:pressed {
+    font-size: 65px;
+    background-color: rgb(0, 156, 200);
+    border-width: 12px;
+    border-style: inset;
+}
+#page_home QPushButton:checked {
+    font-size: 65px;
+    background-color: rgb(0, 156, 200);
+    border-width: 12px;
+    border-style: inset;
+}
+
+#page_home #btn_start {background-color: rgb(0, 255, 0);}
+#page_home #btn_start:pressed {background-color: rgb(0, 215, 0);}
+/* #page_home #btn_start:disabled {background-color: rgb(135, 135, 135);}
+#page_home #btn_start:checked {background-color: rgb(135,135,135);} */
+
+#page_home #btn_stop {background-color: rgb(255, 0, 0);}
+#page_home #btn_stop:checked {
+    background-color: rgb(215, 0, 0);
+    border: 4px solid rgb(252, 247, 0);
+}
+
+#page_home #plc_io {
+    min-width: 275px;
+    max-width: 275px;
+    min-height: 80px;
+    max-height: 80px;
+    padding-top: 5;
+    padding-bottom: 5;
+    font-size: 24px;
+    border-width: 4px;
+}
+#page_home #plc_io:pressed {
+    font-size: 20px;
+}
+
+#page_home #log {
+    color: rgb(179, 179, 179);
+    background-color: rgb(0, 0, 0);
+    border: 2px solid rgb(102, 102, 102);
+    font-size: 20px;
+}
+
+#page_home #log QScrollBar:vertical {
+    width: 30px;
+}
+
+
+
+
+
+
+/* for testing */
+/* *{background-color:transparent;border:1px solid red;} */
