@@ -6,7 +6,7 @@ import math
 s_mig = 15, 15, 200, 5
 
 # f_mig = 75, 25, 100, 10 # for testing
-f_mig = 125, 40, 100, 25 # for production
+f_mig = 125, 40, 100, 25 # for production (276 seconds)
 
 
 

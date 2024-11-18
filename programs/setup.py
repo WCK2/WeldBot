@@ -2,6 +2,7 @@ from rdk.nos.willrdk import *
 from config import *
 
 ROBOT = "Robot0"
+TEST = False
 MAKE = True
 
 if ROBOT == "Robot0":     robot = rdk.Item("jaka12_0")
