@@ -107,29 +107,44 @@ class Laser_CALE(GENERIC_LASER):
 
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-        EaseOn(tars[0], [50, 10], [FAST, FAST])
-        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
-        RelativeEaseOff([10], [FAST])
+        EaseOn(tars[6], [80, 10], [FAST, FAST])
+        run_circular_weld(tars[6], RelFrame(tars[6], x=-rr, z=rr), RelFrame(tars[6], y=rr), speed=SLOWAF, myblend=rr/4)
+        autoblend_moves([robot.Pose().Offset(z=20), RelFrame(tars[6], z=100)])
 
-        EaseOn(tars[1], [10], [FAST])
-        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
+        robot.nos_MoveJ(FAST, RelFrame(tars[7], z=100))
+        EaseOn(tars[7], [20, 10], [FAST, FAST])
+        run_circular_weld(tars[7], RelFrame(tars[7], x=rr, z=rr), RelFrame(tars[7], y=-rr), speed=SLOWAF, myblend=rr/4)
         RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[2], [50, 10], [FAST, FAST])
-        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
+        t = RelFrame(tars[0], x = -3)
+        robot.nos_MoveJ(FAST, t.Offset(z=50))
+        EaseOn(t, [20, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
 
-        EaseOn(tars[3], [10], [FAST])
+        t = RelFrame(tars[0], x = 3)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = -4)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = 4)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        autoblend_moves(get_easeoffon_targets(50, tars[2], [20, 10]))
+        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), speed=SLOWAF, myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(10, tars[3], [10]))
         run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
-        RelativeEaseOff([70], [FAST])
 
-        EaseOn(tars[4], [70, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(70, tars[4], [70, 10]))
         run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
-
-        EaseOn(tars[5], [10], [FAST])
-        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), myblend=rr/4)
-        RelativeEaseOff([50, 100], [FAST, FAST])
+        
+        autoblend_moves(get_easeoffon_targets(10, tars[5], [10]))
+        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([100], [FAST])
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
@@ -142,29 +157,57 @@ class Laser_CALE(GENERIC_LASER):
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-        EaseOn(tars[0], [50, 10], [FAST, FAST])
-        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
-        RelativeEaseOff([10], [FAST])
+        t = RelFrame(tars[0], x = -4)
+        EaseOn(t, [50, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
 
-        EaseOn(tars[1], [10], [FAST])
-        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
-        RelativeEaseOff([50], [FAST])
+        t = RelFrame(tars[0], x = 4)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
 
-        EaseOn(tars[2], [50, 10], [FAST, FAST])
-        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), myblend=rr/4)
-        RelativeEaseOff([30], [FAST])
+        t = RelFrame(tars[0], x = -4 + 25)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
 
-        EaseOn(tars[3], [30], [FAST])
+        t = RelFrame(tars[0], x = 4 + 25)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = -4)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = 4)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = -4 + 25)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        t = RelFrame(tars[1], x = 4 + 25)
+        EaseOn(t, [1], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
+
+        autoblend_moves(get_easeoffon_targets(50, tars[2], [50, 10]))
+        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), speed=SLOWAF, myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(30, tars[3], [30, 10]))
         run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
-        RelativeEaseOff([70], [FAST])
 
-        EaseOn(tars[4], [70, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(70, tars[4], [70, 10]))
         run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[5], [10], [FAST])
-        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), myblend=rr/4)
-        RelativeEaseOff([50, 100], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[5], [10]))
+        run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), speed=SLOWAF, myblend=rr/4)
+        RelativeEaseOff([80], [FAST])
+
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[6], z=80)))
+        EaseOn(tars[6], [20, 10], [FAST])
+        run_circular_weld(tars[6], RelFrame(tars[6], x=-rr, z=rr), RelFrame(tars[6], y=rr), myblend=rr/4)
+        autoblend_moves([robot.Pose().Offset(z=20), RelFrame(tars[6], z=80)])
+
+        robot.nos_MoveJ(FAST, GetIK(tars[5].Offset(z=80))) # move back to previous joint config
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
@@ -177,16 +220,26 @@ class Laser_CALE(GENERIC_LASER):
         
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-        EaseOn(tars[0], [50, 10], [FAST, FAST])
-        run_linear_sleep_weld(RelFrame(tars[0], y=-2), RelFrame(tars[0], y=1))
-        RelativeEaseOff([10], [FAST])
+        t = RelFrame(tars[0], x = -4)
+        EaseOn(t, [50, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
 
-        EaseOn(tars[1], [10], [FAST])
-        run_linear_sleep_weld(RelFrame(tars[1], y=-2), RelFrame(tars[1], y=1))
+        t = RelFrame(tars[0], x = 2)
+        EaseOn(t, [10], [FAST])
+        run_linear_sleep_weld(RelFrame(t, y=-2), RelFrame(t, y=1))
         RelativeEaseOff([80], [FAST])
 
-        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=80)))
-        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        t = RelFrame(tars[1], x = 0)
+        robot.nos_MoveJ(FAST, t.Offset(z=75))
+        EaseOn(t, [20, 10], [FAST, FAST])
+        run_linear_sleep_weld(RelFrame(t, x=-2, y=-2), RelFrame(t, x=1, y=1))
+
+        t = RelFrame(tars[1], x = 4)
+        EaseOn(t, [10], [FAST])
+        run_linear_sleep_weld(RelFrame(t, x=-2, y=-2), RelFrame(t, x=1, y=1))
+        RelativeEaseOff([50], [FAST])
+
+        EaseOn(tars[2], [20, 10], [FAST, FAST])
         run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
         RelativeEaseOff([75], [FAST])
 
@@ -197,7 +250,7 @@ class Laser_CALE(GENERIC_LASER):
 
         robot.nos_MoveJ(FAST, GetIK(tars[4].Offset(z=50)))
         EaseOn(tars[4], [10], [FAST])
-        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
+        run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), speed=SLOWAF, myblend=rr/4)
         RelativeEaseOff([100], [FAST])
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
@@ -214,27 +267,22 @@ class Laser_CALE(GENERIC_LASER):
         robot.nos_MoveL(FAST, RelFrame(tars[0], z=100))
         EaseOn(tars[0], [25, 10], [FAST, FAST])
         run_circular_weld(tars[0], RelFrame(tars[0], y=rr, z=rr), RelFrame(tars[0], x=rr), myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[0], z=100), blend=1)
+        autoblend_moves([robot.Pose().Offset(z=50), RelFrame(tars[0], z=100)])
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], z=100)))
         EaseOn(tars[1], [50, 10], [FAST, FAST])
         run_circular_weld(tars[1], RelFrame(tars[1], x=rr, z=rr), RelFrame(tars[1], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[2], [10], [FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[2], [10]))
         run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
-        RelativeEaseOff([70], [FAST])
 
-        EaseOn(tars[3], [70, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(70, tars[3], [70, 10]))
         run_circular_weld(tars[3], RelFrame(tars[3], x=rr, z=rr), RelFrame(tars[3], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[4], [10], [FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[4], [10]))
         run_circular_weld(tars[4], RelFrame(tars[4], x=rr, z=rr), RelFrame(tars[4], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[5], [10], [FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[5], [10]))
         run_circular_weld(tars[5], RelFrame(tars[5], x=rr, z=rr), RelFrame(tars[5], y=-rr), myblend=rr/4)
         RelativeEaseOff([80], [FAST])
 
@@ -251,35 +299,28 @@ class Laser_CALE(GENERIC_LASER):
 
         EaseOn(tars[0], [80, 10], [FAST, FAST])
         run_circular_weld(tars[0], RelFrame(tars[0], x=rr, z=rr), RelFrame(tars[0], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[1], [10], [FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[1], [10]))
         run_circular_weld(tars[1], RelFrame(tars[1], x=rr, z=rr), RelFrame(tars[1], y=-rr), myblend=rr/4)
-        RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[2], [80, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(80, tars[2], [80, 10]))
         run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
 
-        EaseOn(tars[3], [10], [FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[3], [10]))
         run_circular_weld(tars[3], RelFrame(tars[3], x=rr, z=rr), RelFrame(tars[3], y=-rr), myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[4], [20, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(50, tars[4], [20, 10]))
         run_circular_weld(tars[4], RelFrame(tars[4], x=rr, z=rr), RelFrame(tars[4], y=-rr), myblend=rr/4)
-        RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[5], [80, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(80, tars[5], [80, 10]))
         run_circular_weld(tars[5], RelFrame(tars[5], x=rr, z=rr), RelFrame(tars[5], y=-rr), myblend=rr/4)
-        RelativeEaseOff([20], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[5], z=150))
+        autoblend_moves([robot.Pose().Offset(z=20), RelFrame(tars[5], z=150)])
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[6], z=150)))
         EaseOn(tars[6], [50, 10], [FAST, FAST])
         run_circular_weld(tars[6], RelFrame(tars[6], y=rr, z=rr), RelFrame(tars[6], x=rr), myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[7], [20, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(50, tars[7], [20, 10]))
         run_circular_weld(tars[7], RelFrame(tars[7], y=rr, z=rr), RelFrame(tars[7], x=rr), myblend=rr/4)
         RelativeEaseOff([80], [FAST])
         
@@ -299,20 +340,16 @@ class Laser_CALE(GENERIC_LASER):
         SetTool(self.TCP_Holder.findChild('right'))
         EaseOn(tars[0], [50, 10], [FAST, FAST])
         run_circular_weld(tars[0], RelFrame(tars[0], x=-rr, z=rr), RelFrame(tars[0], y=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[1], [50, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(50, tars[1], [10]))
         run_circular_weld(tars[1], RelFrame(tars[1], x=-rr, z=rr), RelFrame(tars[1], y=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[2], [50, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(20, tars[2], [20, 10]))
         run_circular_weld(tars[2], RelFrame(tars[2], x=-rr, z=rr), RelFrame(tars[2], y=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
 
-        EaseOn(tars[3], [50, 10], [FAST, FAST])
+        autoblend_moves(get_easeoffon_targets(10, tars[3], [50, 10]))
         run_circular_weld(tars[3], RelFrame(tars[3], x=-rr, z=rr), RelFrame(tars[3], y=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[3], z=100))
+        autoblend_moves([robot.Pose().Offset(z=20), RelFrame(tars[3], z=100)])
 
         #? second set of tars
         SetTool(self.TCP_Holder.findChild('mid'))
@@ -324,21 +361,18 @@ class Laser_CALE(GENERIC_LASER):
         robot.nos_MoveJ(FAST, GetIK(tars[5].Offset(z=75)))
         EaseOn(tars[5], [50, 10], [FAST, FAST])
         run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([25], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[5], z=100))
+        autoblend_moves([robot.Pose().Offset(z=25), RelFrame(tars[5], z=100)])
 
         SetTool(self.TCP_Holder.findChild('right'))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[6], z=100)))
         EaseOn(tars[6], [25, 10], [FAST, FAST])
         run_circular_weld(tars[6], RelFrame(tars[6], y=-rr, z=rr), RelFrame(tars[6], x=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([25], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[6], z=50))
+        autoblend_moves([robot.Pose().Offset(z=25), RelFrame(tars[6], z=50)])
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[7], z=50)))
         EaseOn(tars[7], [25, 10], [FAST, FAST])
         run_circular_weld(tars[7], RelFrame(tars[7], y=-rr, z=rr), RelFrame(tars[7], x=rr), speed=SLOWAF, myblend=rr/4)
-        RelativeEaseOff([25], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[7], z=50), blend=1)
+        autoblend_moves([robot.Pose().Offset(z=25), RelFrame(tars[7], z=50)])
 
         SetTool(self.TCP_Holder.findChild('mid'))
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
@@ -395,181 +429,47 @@ class Laser_CALE(GENERIC_LASER):
         robot.nos_MoveL(FAST, RelFrame(t, z=100))
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-    def test_SideBracketGap_(self, tar_frame):
-        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
-        tars = GetTargetMats(tar_frame)
-        SetFrame(tar_frame)
-        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
-        rr = 1.5
-        
-        # robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
-
-        #? test 1
-        # EaseOn(tars[0], [50], [FAST])
-
-        # _x = 30
-        # t = RelFrame(tars[0], x=_x, y=-3)
-        # EaseOn(t, [10], [FAST])
-        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
-        # RelativeEaseOff([10], [FAST])
-
-        # t = RelFrame(tars[0], x=15+_x, y=-3)
-        # EaseOn(t, [10], [FAST])
-        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=2, speed=SLOWAF, myblend=0.5)
-        # RelativeEaseOff([10], [FAST])
-
-
-        #? test 2
-        # EaseOn(tars[1], [50], [FAST])
-        
-        # _x = 60
-        # t = RelFrame(tars[1], x=_x, y=-4)
-        # EaseOn(t, [10], [FAST])
-        # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
-        # RelativeEaseOff([10], [FAST])
-
-        # t = RelFrame(tars[1], x=15+_x, y=-4)
-        # EaseOn(t, [10], [FAST])
-        # run_zigzag_weld(t, RelFrame(t, x=10), 2, y_amp=2, speed=SLOWAF, myblend=0.5)
-        # RelativeEaseOff([10], [FAST])
-
-        # t = RelFrame(tars[1], x=30+_x, y=-4)
-        # EaseOn(t, [10], [FAST])
-        # run_zigzag_weld(t, RelFrame(t, x=10), 2, y_amp=2, speed=SLOW, myblend=0.5)
-        # RelativeEaseOff([10], [FAST])
-
-        #? test 3
-        # EaseOn(tars[1], [50], [FAST])
-        
-        # _x = 40
-        # _y = -15
-        # rr = 1.5
-        # t = RelFrame(tars[1], x=_x, y=_y)
-        # EaseOn(t, [10], [FAST])
-        # # run_zigzag_weld(t, RelFrame(t, x=10), 1, y_amp=1.5, speed=SLOWAF, myblend=0.5)
-        # run_circular_weld(t, RelFrame(t, x=rr), RelFrame(t, y=-rr), speed=SLOWAF, myblend=rr/4)
-        # RelativeEaseOff([10], [FAST])
-
-        # t = RelFrame(tars[1], x=7.5+_x, y=_y)
-        # EaseOn(t, [10], [FAST])
-        # run_circular_weld(t, RelFrame(t, x=rr), RelFrame(t, y=-rr), speed=SLOW, myblend=rr/4)
-        # RelativeEaseOff([10], [FAST])
-
-        #? test 4
-        # EaseOn(tars[2], [50], [FAST])
-        
-        # _x = 55
-        # _y = -15
-        # rr = 1.5
-
-        # t = RelFrame(tars[2], x=_x, y=_y)
-        # EaseOn(t, [10], [FAST])
-        # robot.nos_MoveL(SLOW, t)
-        # Laser(1)
-        # AddSleep(0.25)
-        # robot.nos_MoveL(SLOWAF, RelFrame(t, y=3))
-        # Laser(0)
-        # RelativeEaseOff([10], [FAST])
-
-        # t = RelFrame(tars[2], x=7.5+_x, y=_y)
-        # EaseOn(t, [10], [FAST])
-        # robot.nos_MoveL(SLOW, t)
-        # Laser(1)
-        # AddSleep(0.5)
-        # robot.nos_MoveL(SLOWAF, RelFrame(t, y=3))
-        # Laser(0)
-        # RelativeEaseOff([10], [FAST])
-
-        #? test 5
-        # _x = 0 # -5, SLOWAF, sleep 0.25
-        # _x = 10 # -5, SLOWAF, sleep 0.25
-        # _x = 27 # -7.5, SLOWAF, sleep 0.25
-        # _x = 33 # -7.5, SLOWAF, sleep 0.5
-        # _x = 88 # -7.5, SLOWAF, sleep 0.25
-        # _x = 96 # -7.5, SLOWAF, sleep 0.5
-        # t1 = RelFrame(tars[3], x=_x, y=-2.5)
-        # t2 = RelFrame(tars[3], x=_x, y=1)
-
-        # EaseOn(t1, [50, 10], [FAST, FAST])
-        # robot.nos_MoveL(SLOW, t1)
-        # Laser(1)
-        # AddSleep(0.5)
-        # robot.nos_MoveL(SLOWAF, t2)
-        # Laser(0)
-        # RelativeEaseOff([10], [FAST])
-
-        #? test 5
-        t1 = RelFrame(tars[8], y=-2)
-        t2 = RelFrame(tars[8], y=1)
-
-        EaseOn(t1, [80, 10], [FAST, FAST])
-        robot.nos_MoveL(SLOW, t1)
-        Laser(1)
-        AddSleep(0.33)
-        robot.nos_MoveL(SLOWAF, t2)
-        Laser(0)
-        RelativeEaseOff([10], [FAST])
-
-        # t1 = RelFrame(tars[7], y=-2)
-        # t2 = RelFrame(tars[7], y=1)
-
-        # EaseOn(t1, [80, 10], [FAST, FAST])
-        # robot.nos_MoveL(SLOW, t1)
-        # Laser(1)
-        # AddSleep(0.33)
-        # robot.nos_MoveL(SLOWAF, t2)
-        # Laser(0)
-        # RelativeEaseOff([10], [FAST])
-
-        #? end
-        RelativeEaseOff([50], [FAST])
-        # robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
-
-    def __StiffenerBot__(self, tar_frame):
+    def test_SideBrackets_(self, tar_frame):
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
         SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
         rr = 1.5
 
-        if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+        # robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-        EaseOn(tars[0], [50, 10], [FAST, FAST])
-        run_circular_weld(tars[0], RelFrame(tars[0], y=rr, z=rr), RelFrame(tars[0], x=rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
+        #? tars[0]
+        # EaseOn(tars[0], [80, 10], [FAST, FAST])
+        # run_linear_sleep_weld(RelFrame(tars[0], x=2), RelFrame(tars[0], x=-1))
+        # RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[1], [10], [FAST])
-        run_circular_weld(tars[1], RelFrame(tars[1], y=rr, z=rr), RelFrame(tars[1], x=rr), myblend=rr/4)
-        RelativeEaseOff([50], [FAST])
-        robot.nos_MoveL(FAST, RelFrame(tars[1], z=150), blend=1)
-
-        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=150)))
-        EaseOn(tars[2], [50, 10], [FAST, FAST])
-        run_circular_weld(tars[2], RelFrame(tars[2], x=rr, z=rr), RelFrame(tars[2], y=-rr), myblend=rr/4)
+        EaseOn(tars[0], [80, 10], [FAST, FAST])
+        run_circular_weld(tars[0], RelFrame(tars[0], x=rr, z=rr), RelFrame(tars[0], y=-rr), speed=SLOWAF, myblend=rr/4)
         RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[3], [80, 10], [FAST, FAST])
-        run_circular_weld(tars[3], RelFrame(tars[3], x=rr, z=rr), RelFrame(tars[3], y=-rr), myblend=rr/4)
-        RelativeEaseOff([20], [FAST])
-        
-        EaseOn(tars[4], [10], [FAST])
-        run_circular_weld(tars[4], RelFrame(tars[4], x=rr, z=rr), RelFrame(tars[4], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
+        #? tars[1]
+        # EaseOn(tars[1], [80, 10], [FAST, FAST])
+        # run_linear_sleep_weld(RelFrame(tars[1], x=-2), RelFrame(tars[1], x=1))
+        # RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[5], [10], [FAST])
-        run_circular_weld(tars[5], RelFrame(tars[5], x=rr, z=rr), RelFrame(tars[5], y=-rr), myblend=rr/4)
-        RelativeEaseOff([80], [FAST])
-        
-        EaseOn(tars[6], [80, 10], [FAST, FAST])
-        run_circular_weld(tars[6], RelFrame(tars[6], x=rr, z=rr), RelFrame(tars[6], y=-rr), myblend=rr/4)
-        RelativeEaseOff([10], [FAST])
+        #? best run for tars[1]
+        # EaseOn(tars[1], [80, 10], [FAST, FAST])
+        # run_circular_weld(tars[1], RelFrame(tars[1], x=-rr, z=rr), RelFrame(tars[1], y=rr), speed=SLOWAF, myblend=rr/4)
+        # RelativeEaseOff([80], [FAST])
 
-        EaseOn(tars[7], [10], [FAST])
-        run_circular_weld(tars[7], RelFrame(tars[7], x=rr, z=rr), RelFrame(tars[7], y=-rr), myblend=rr/4)
-        RelativeEaseOff([80], [FAST])
 
-        if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+        # EaseOn(tars[3], [80, 10], [FAST, FAST])
+        # run_circular_weld(tars[3], RelFrame(tars[3], x=-rr, z=rr), RelFrame(tars[3], y=rr), myblend=rr/4)
+        # RelativeEaseOff([80], [FAST])
 
+
+        # EaseOn(tars[5], [80, 10], [FAST, FAST])
+        # run_linear_sleep_weld(RelFrame(tars[5], x=-2, y=-2), RelFrame(tars[5], x=1, y=1))
+        # RelativeEaseOff([80], [FAST])
+
+        # EaseOn(tars[6], [80, 10], [FAST, FAST])
+        # run_linear_sleep_weld(RelFrame(tars[6], x=-2, y=-2), RelFrame(tars[6], x=1, y=1))
+        # RelativeEaseOff([80], [FAST])
 
 
     #~ Run
@@ -583,7 +483,7 @@ class Laser_CALE(GENERIC_LASER):
 
             if False: pass            
             # elif tar_frame.Wname=='test_ScrapSurface_': self.test_ScrapSurface_(tar_frame)
-            # elif tar_frame.Wname=='test_SideBracketGap_': self.test_SideBracketGap_(tar_frame)
+            # elif tar_frame.Wname=='test_SideBrackets_': self.test_SideBrackets_(tar_frame)
 
             elif tar_frame.Wname=='SideBracketTop': self.SideBracketTop(tar_frame)
             elif tar_frame.Wname=='SideBracketMiddle': self.SideBracketMiddle(tar_frame)

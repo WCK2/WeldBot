@@ -111,6 +111,7 @@ def __EaseOn(tar, zdistances:list, speeds:list, autoblend=True):
             robot.nos_MoveL(sp, tar.Offset(z=dist), blend=blend)
 
 def EaseOn(tar, zdistances: list, speeds: list, autoblend=True):
+    blend_ratio = 0.2
     ilast = len(zdistances) - 1
     current_position = robot.Pose()
 
@@ -126,7 +127,7 @@ def EaseOn(tar, zdistances: list, speeds: list, autoblend=True):
             dist_to_next = calculate_distance(target_position, next_position)
             min_distance = min(dist_to_target, dist_to_next)
             
-            blend = 0.1 * min_distance if autoblend else 0
+            blend = blend_ratio * min_distance if autoblend else 0
             # print(f'blend: {blend}')
             
             robot.nos_MoveL(sp, target_position, blend=blend)
@@ -143,6 +144,50 @@ def RelativeEaseOff(zdistances:list, speeds:list, autoblend=True):
         else:
             robot.nos_MoveL(sp, tar.Offset(z=dist), blend=blend)
 
+def get_easeoffon_targets(z_easeoff, t, z_easeon):
+    targets = []
+
+    # Ease off wrt robot pose
+    targets.append(robot.Pose().Offset(z=z_easeoff))
+
+    # Ease on wrt target
+    if not isinstance(z_easeon, list):
+        targets.append(t.Offset(z=z_easeon))
+    else:
+        for z in z_easeon:
+            targets.append(t.Offset(z=z))
+    
+    return targets
+
+def autoblend_moves(targets, speeds=[FAST], blend_ratio=0.2):
+    if len(targets) != len(speeds):
+        # Extend speeds with speeds[0] until it matches the length of targets
+        speeds.extend([speeds[0]] * (len(targets) - len(speeds)))
+    
+    ilast = len(targets) - 1
+    current_position = robot.Pose()
+
+    for i, (tar, sp) in enumerate(zip(targets, speeds)):
+        if i == ilast:
+            robot.nos_MoveL(sp, tar, blend=0)
+        else:
+            next_position = targets[i + 1]
+            
+            dist_to_target = calculate_distance(current_position, tar)
+            dist_to_next = calculate_distance(tar, next_position)
+            min_distance = min(dist_to_target, dist_to_next)
+            
+            blend = blend_ratio * min_distance
+            # print(f'blend: {blend}')
+            
+            robot.nos_MoveL(sp, tar, blend=blend)
+            
+            current_position = tar
+
+
+
+
+#~ Target runs
 def generate_zigzag_path(t_start, t_end, step_size, x_amp=0, y_amp=0, z_amp=0):
     """
     Generate a zig-zag path from t_start to t_end with specified amplitudes for each axis, starting at the maximum displacement.
@@ -223,55 +268,11 @@ def run_zigzag_weld(t_start, t_end, step_size, x_amp=0, y_amp=0, z_amp=0, speed=
 
     Laser(0)
 
-
 def run_spot_weld(t, t_delay=1, sp=SLOW):
     robot.nos_MoveL(sp, t, blend=0)
     Laser(1)
     AddSleep(t_delay)
     Laser(0)
-
-
-def generate_spiral_path(target_pose, radius=3, spirals=1, steps=50, plane='xy'):
-    """
-    Generate a spiral path around a target point in a specified plane.
-
-    Args:
-        target_pose (Mat): Target Pose in [x, y, z, rx, ry, rz] format.
-        radius (float): Radius of the spiral.
-        spirals (int): Number of spirals around the target.
-        steps (int): Number of steps for generating the spiral path.
-        plane (str): Plane in which the spiral is drawn ('xy', 'xz', 'yz').
-
-    Returns:
-        list: List of transformation matrices (robomath.Mat) for the spiral path.
-    """
-    path_points = []
-    
-    # Extract target position and rotation
-    x, y, z = target_pose.Pos()
-
-    for i in range(steps):
-        angle = 2 * np.pi * spirals * (i / steps)  # Angle for each step around the circle
-        r = (radius * i) / steps  # Radius gradually increases for spiral
-
-        if plane == 'xy':
-            dx, dy, dz = r * np.cos(angle), r * np.sin(angle), 0
-        elif plane == 'xz':
-            dx, dy, dz = r * np.cos(angle), 0, r * np.sin(angle)
-        elif plane == 'yz':
-            dx, dy, dz = 0, r * np.cos(angle), r * np.sin(angle)
-        else:
-            raise ValueError("Plane must be 'xy', 'xz', or 'yz'.")
-
-        # Define the position with offsets
-        new_pos = [x + dx, y + dy, z + dz]
-
-        # Create transformation matrix from target_pose with new position
-        tar_pose = target_pose.copy()
-        tar_pose.setPos(new_pos)
-        path_points.append(tar_pose)
-
-    return path_points
 
 def generate_circular_path(center, point1, point2, num_circles=1):
     """

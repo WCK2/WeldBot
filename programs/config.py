@@ -5,8 +5,9 @@ import math
 #? CALE
 s_mig = 15, 15, 200, 5
 
-# f_mig = 75, 25, 100, 10 # for testing
-f_mig = 125, 40, 100, 25 # for production (276 seconds)
+# f_mig = 75, 25, 100, 10 # for testing (344 seconds)
+# f_mig = 200, 40, 100, 25 # for production (307 seconds)
+f_mig = 250, 60, 125, 40 # for production (280 seconds w/ RelOffset(1) for linear_sleep welds) (293 previously)
 
 
 
