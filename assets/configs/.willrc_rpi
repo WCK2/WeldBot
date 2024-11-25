@@ -1,6 +1,5 @@
 # ----- environment -----
-# export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages:/home/will/librealsense/build/Release/:/home/will/repos/deburrBot
-# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages:/home/will/librealsense/build/Release/:/home/wil># export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 PYTHONPATH=/home/will/repos/noslibs/python/lib:/home/will/repos/PickPlaceWeldBot
 export PYTHONPATH
@@ -27,3 +26,4 @@ alias wrc='source ~/.willrc'
 # cat /sys/class/drm/card1-HDMI-A-1/status
 # dmesg
 # lusb
+

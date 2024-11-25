@@ -4,6 +4,8 @@ import time
 
 #~ Setup
 def setup():
+    server.run_server()
+
     robot.init()
     robot.set_collision_val(1)
 

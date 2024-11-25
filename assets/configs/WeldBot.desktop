@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Run WeldBot GUI
+Comment=Execute WeldBot's "run GUI" shell script
+Exec=/home/will/repos/PickPlaceWeldBot/run_gui.sh
+Icon=utilities-terminal
+Terminal=true
+Categories=Utility;
+
+# Reminders:
+# chmod +x desktop and shell files
+# File Manager > Edit > Preferences > General > check "Open files with a single click"
+# File Manager > Edit > Preferences > General > check "Don't ask options on launch executable file"
