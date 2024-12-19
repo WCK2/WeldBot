@@ -192,13 +192,13 @@ class Laser_CALE(GENERIC_LASER):
         autoblend_moves(get_easeoffon_targets(50, tars[2], [50, 10]))
         run_circular_weld(tars[2], RelFrame(tars[2], y=rr, z=rr), RelFrame(tars[2], x=rr), speed=SLOWAF, myblend=rr/4)
 
-        autoblend_moves(get_easeoffon_targets(30, tars[3], [30, 10]))
+        autoblend_moves(get_easeoffon_targets(40, tars[3], [40, 10]))
         run_circular_weld(tars[3], RelFrame(tars[3], y=rr, z=rr), RelFrame(tars[3], x=rr), myblend=rr/4)
 
         autoblend_moves(get_easeoffon_targets(70, tars[4], [70, 10]))
         run_circular_weld(tars[4], RelFrame(tars[4], y=rr, z=rr), RelFrame(tars[4], x=rr), myblend=rr/4)
 
-        autoblend_moves(get_easeoffon_targets(10, tars[5], [10]))
+        autoblend_moves([RelFrame(robot.Pose(), z=10), RelFrame(tars[5], z=10)])
         run_circular_weld(tars[5], RelFrame(tars[5], y=rr, z=rr), RelFrame(tars[5], x=rr), speed=SLOWAF, myblend=rr/4)
         RelativeEaseOff([80], [FAST])
 
