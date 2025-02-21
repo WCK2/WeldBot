@@ -5,6 +5,7 @@ pip install keyboard requests pymodbus==2.5.3
 pip install pyrealsense2==2.54.2.5684 opencv-contrib-python matplotlib numpy==1.26.3 open3d #! numpy==1.26.3 for open3d
 pip install scikit-learn scikit-spatial
 pip install pyqt5
+pip install rich
 
 
 

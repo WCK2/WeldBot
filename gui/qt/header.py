@@ -30,14 +30,24 @@ class TopHeader(QLabel):
         header = QHBoxLayout(header_container)
         header.setContentsMargins(0, 5, 0, 5)
 
-        img=QPixmap(vp.images+'IPS-Logo-Blue-NO-Tagline.jpg')
-        self.header_image=QLabel(self)
+        img = QPixmap(vp.images+'IPS-Logo-Blue-NO-Tagline.jpg')
+        self.header_image = QLabel(self)
         self.header_image.setPixmap(img.scaledToHeight(settings.header_height-20))
-        self.header_title=QLabel(self,objectName='banner_h1',text='Robotic Welder',minimumWidth=800)
-        self.header_clock=QLabel(self,objectName='banner_h1',text='',minimumWidth=300)
+
+        self.header_title = QLabel(self, objectName='banner_h1', text='Robotic Welder', minimumWidth=800)
+        
+        self.header_clock = QLabel(self, objectName='banner_h1', text='', minimumWidth=300)
         self.header_clock.setStyleSheet('font-size: 40px')
         self.__update_clock()
-        self.__clock_timer=NTimer(15000, lambda:self.__update_clock(), repeat=True)
+        self.__clock_timer = NTimer(15000, lambda: self.__update_clock(), repeat=True)
+
+        self.btn_previous_page = QPushButton(self, objectName='btn_invis', text="")
+        self.btn_previous_page.setGeometry(0, 0, 100, settings.header_height)
+        self.btn_previous_page.clicked.connect(self._previous_page.emit)
+
+        self.btn_next_page = QPushButton(self, objectName='btn_invis', text="")
+        self.btn_next_page.setGeometry(SCREEN_WIDTH-100, 0, 100, settings.header_height)
+        self.btn_next_page.clicked.connect(self._next_page.emit)
 
         header.addSpacing(20)
         header.addWidget(self.header_image)

@@ -27,14 +27,19 @@ class RpiHttpHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         """Handle GET requests."""
         url = urlparse(self.path)
-        query = parse_qs(url.query)
         path = url.path
-        
-        if path == '/hello':
-            self.json_response(200, {"state": True})
-        else:
-            self.text_response(404, "Not Found")
-    
+        query_params = parse_qs(url.query)
+
+        try:
+            if path == "/hello":
+                self.json_response(200, {"state": True})
+            elif path == "/mem":
+                self.handle_mem_get(query_params)
+            else:
+                self.text_response(404, "Not Found")
+        except Exception as e:
+            self.text_response(500, f"Internal Server Error: {str(e)}")
+
     def do_POST(self):
         """Handle POST requests."""
         url = urlparse(self.path)
@@ -54,6 +59,23 @@ class RpiHttpHandler(SimpleHTTPRequestHandler):
         else:
             self.text_response(404, "Not Found")
 
+    def handle_mem_get(self, query_params):
+        """Handle GET /mem with query parameters."""
+        try:
+            name = query_params.get("name", [None])[0]
+
+            if not name:
+                return self.json_response(400, {"error": "Missing 'name' in query parameters"})
+
+            if name == "status":
+                return self.json_response(200, {"status": mem.status})
+            elif name.startswith('flag_'):
+                return self.json_response(200, {name: getattr(mem, name)})
+            else:
+                return self.json_response(400, {"error": f"Invalid 'name' value: {name}"})
+        except Exception as e:
+            self.json_response(500, {"error": f"Internal Server Error: {str(e)}"})
+
     def handle_set_mem(self, body_data):
         """Handle setting memory values via POST request."""
         name = body_data.get("name")
@@ -69,6 +91,28 @@ class RpiHttpHandler(SimpleHTTPRequestHandler):
         elif name == 'log':
             mem.log = str(value)
             return self.json_response(200, {"status": "success"})
+        elif name == 'part_request':
+            if isinstance(value, dict) and 'part_name' in value and 'part_id' in value:
+                part_name = value['part_name']
+                part_id = value['part_id']
+                mem.part_request = value
+                return self.json_response(200, {"status": "success"})
+            else:
+                return self.json_response(400, {"status": "error"})
+        elif name == 'flag_part_request_running':
+            mem.flag_part_request_running = bool(value)
+            return self.json_response(200, {"status": "success"})
+        elif name == 'flag_place_part':
+            mem.flag_place_part = bool(value)
+            return self.json_response(200, {"status": "success"})
+        elif name == 'flag_in_place':
+            mem.flag_in_place = bool(value)
+            return self.json_response(200, {"status": "success"})
+        elif name == 'flag_return_to_pickup':
+            mem.flag_return_to_pickup = bool(value)
+            return self.json_response(200, {"status": "success"})
+
+
         else:
             # Handle invalid 'name' values
             return self.text_response(400, f"Invalid 'name' value: {name}")

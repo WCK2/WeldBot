@@ -1,12 +1,14 @@
 from gui.qt.common import *
 from gui.pages.home import HOME
+from gui.pages.monitor import MONITOR
 from utils.memory import mem
 
 
 class DEBURRBOT(NStackedWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.page_home:HOME = self.addWidget(HOME())
+        self.page_home: HOME = self.addWidget(HOME())
+        self.page_monitor: MONITOR = self.addWidget(MONITOR())
 
         gsig.previous_page.connect(self.__previous_page)
         gsig.next_page.connect(self.__next_page)

@@ -94,7 +94,12 @@
     font-weight: bold;
     qproperty-alignment: AlignCenter;
 }
-
+#header #btn_invis {
+    color: transparent;
+    background-color: transparent;
+    border-color: transparent;
+    /* border-color: rgb(255, 0, 255); */
+}
 
 /*===================================================
  * page home
@@ -106,7 +111,6 @@
     text-decoration: underline;
     qproperty-alignment: AlignCenter;
 }
-
 #page_home #image {
     background-color: transparent;
     border: 2px solid rgb(102, 102, 102);
@@ -177,7 +181,47 @@
 }
 
 
+/*===================================================
+ * page monitor
+===================================================*/
+#page_monitor #h1 {
+    background-color: transparent;
+    color: rgb(30,240,110);
+    font-size: 40px;
+    text-decoration: underline;
+    qproperty-alignment: AlignCenter;
+}
 
+#page_monitor #label {
+    min-width: 750px;
+    max-width: 750px;
+    padding-top: 15;
+    padding-bottom: 15;
+    background-color: rgb(0,0,0);
+    color: rgb(179, 179, 179);
+    font-size: 32px;
+    font-weight: bold;
+    border: 2px solid rgb(102, 102, 102);
+    qproperty-alignment: AlignCenter;
+}
+#page_monitor #btn_flag {
+    min-width: 400px;
+    max-width: 400px;
+    padding-top: 15;
+    padding-bottom: 15;
+    color: rgb(0,0,0);
+    font-size: 30px;
+    background-color: rgb(209, 21, 8);
+    border-color: rgb(0,0,0);
+    border-width: 2px;
+    border-style: outset;
+}
+#page_monitor #btn_flag:pressed {
+    border-width: 4px;
+}
+#page_monitor #btn_flag:checked {
+    background-color: rgb(22, 173, 60);
+}
 
 
 
