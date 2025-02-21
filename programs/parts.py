@@ -500,3 +500,52 @@ class Laser_CALE(GENERIC_LASER):
 
 
 
+#^=========================
+#^ Laser Elite
+#^=========================
+class Laser_Elite(GENERIC_LASER):
+    def LockTab(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        for c, (t1, t2) in enumerate(zip(tars[::2], tars[1::2])):
+            robot.AddCode(f'# {inspect.currentframe().f_code.co_name} - loop {c}')
+
+            robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+            EaseOn(t1, [80, 10], [FAST, FAST])
+            run_circular_weld(t1, RelFrame(t1, x=-rr, z=rr), RelFrame(t1, y=rr), speed=SLOWAF, myblend=rr/4)
+            RelativeEaseOff([80], [FAST])
+
+            EaseOn(t2, [80, 10], [FAST, FAST])
+            run_circular_weld(t2, RelFrame(t2, x=-rr, z=rr), RelFrame(t2, y=rr), speed=SLOWAF, myblend=rr/4)
+            RelativeEaseOff([80], [FAST])
+
+            robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+
+    #~ Run
+    def run(self):
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        #? Loop through target frames
+        for c, tar_frame in enumerate(self.Target_Frames):
+
+            if False: pass
+            # elif tar_frame.Wname=='test_SideBrackets_': self.test_SideBrackets_(tar_frame)
+
+            elif tar_frame.Wname=='LockTab': self.LockTab(tar_frame)
+
+
+            else:
+                # robot.AddCode('pass')
+                print(f'no function call for "{tar_frame.Name()}" (aka: {tar_frame.Wname})')
+
+
+
+

@@ -3,7 +3,7 @@ from config import *
 
 ROBOT = "Robot0"
 TEST = False
-MAKE = True
+MAKE = False
 
 if ROBOT == "Robot0":     robot = rdk.Item("jaka12_0")
 elif ROBOT == "Robot1":   robot = rdk.Item("jaka7_1")
