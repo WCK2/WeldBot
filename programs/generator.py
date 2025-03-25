@@ -52,8 +52,9 @@ if __name__ == "__main__":
 
             # main.add(1, MIG_EliteDoor, extended=True, add_auto=True)
             # main.add(2, MIG_MS3CoinReturnCup, workpiece='MS3CoinReturnCup', add_auto=True)
-            # main.add(2, MIG_CanadaMS3_10in, workpiece='CanadaMS3', extended=True, add_auto=True)
-            main.add(1, Laser_CALE, workpiece='CALE', add_auto=False)
+
+            # main.add(1, Laser_CALE, workpiece='CALE', add_auto=False)
+            main.add(2, Laser_MS3_10in, workpiece='MS3_10in', add_auto=False)
 
             main.generate()
 
@@ -61,7 +62,8 @@ if __name__ == "__main__":
         else:
             rdk.setSimulationSpeed(1.0)
 
-            Laser_CALE(workpiece='CALE', add_auto=False)
+            # Laser_CALE(workpiece='CALE', add_auto=False)
+            Laser_MS3_10in(workpiece='MS3_10in', add_auto=False)
 
 
 

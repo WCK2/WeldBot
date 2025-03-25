@@ -4,7 +4,7 @@ import time
 
 #~ Setup
 def setup():
-    server.run_server()
+    # server.run_server()
 
     robot.init()
     robot.set_collision_val(1)
@@ -14,7 +14,7 @@ def setup():
 
 #~ Main Program
 def main():
-    Laser_CALE()
+    Laser_MS3_10in()
 
 
 

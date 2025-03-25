@@ -63,6 +63,9 @@ def SetSpeed(s:str):
     if s=='Laser_CALE':
         robot.setSlowSpeeds(*s_mig)
         robot.setFastSpeeds(*f_mig)
+    if s=='Laser_MS3_10in':
+        robot.setSlowSpeeds(*s_mig)
+        robot.setFastSpeeds(*f_mig)
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
@@ -306,7 +309,8 @@ def generate_circular_path(center, point1, point2, num_circles=1):
 
     # Generate concentric circles
     for i in range(num_circles):
-        current_radius = (i + 1) * radius
+        # current_radius = (i + 1) * radius
+        current_radius = (1) * radius
         circle_targets = []
 
         # Generate the 4 points around the circle
