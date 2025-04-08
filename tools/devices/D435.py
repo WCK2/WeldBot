@@ -71,38 +71,69 @@ def rgbd_read_data(folder_path:str, file_name:str='data_dict_1.pkl'):
 
 #~ D435 depth sensor class
 class D435:
+    _instance = None  # Class-level storage for the singleton instance
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(D435, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
     def __init__(self, **kwargs):
+        if hasattr(self, "initialized"):
+            return
+        self.initialized = True
+        self.device = None
+        self.p = None
+        self.profile = None
+
         self.camera = 'd435'
         self.vp_base = kwargs.get('vp_base', os.getcwd() + '/')
         self.vp_data = kwargs.get('vp_data', self.vp_base + 'assets/data/')
-        load_json = kwargs.get('load_json', self.vp_base + 'assets/configs/d435_default1.json')
+        self.load_json = kwargs.get('load_json', self.vp_base + 'assets/configs/d435_default1.json')
 
-        self.device = self.get_device()
-
+    def start_stream(self):
+        print(f'start_stream (1)')
         if self.device is None:
-            print(f'!!Warning!! Camera {self.camera} not detected')
-        else:
-            self.set_post_processing()
-            # self.log_camera_settings()
-        
-            if os.path.isfile(load_json):
-                self.load_json_params(load_json)
-            else:
-                print(f'!!Warning!! No file exists at: <{load_json}>')
-            
             self.device = self.get_device()
-            # self.log_camera_settings()
-            
-            self.p = rs.pipeline()
-            config = rs.config()
-            config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 30)
-            config.enable_stream(rs.stream.color, 1280, 720, rs.format.rgb8, 30)
+        if self.device is None:
+            raise RuntimeError(f"Camera {self.camera} not detected")
+        
+        self.set_post_processing()
 
-            self.profile = self.p.start(config)
-            self.init_intrinsics()
+        if os.path.isfile(self.load_json):
+            self.load_json_params(self.load_json)
+        else:
+            print(f'!!Warning!! No file exists at: <{self.load_json}>')
 
-            for _ in range(5):
-                self.p.wait_for_frames()
+        print(f'start_stream (2)')
+        self.p = rs.pipeline()
+        config = rs.config()
+        config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 30)
+        config.enable_stream(rs.stream.color, 1280, 720, rs.format.rgb8, 30)
+
+        print(f'start_stream (3)')
+        self.profile = self.p.start(config)
+        self.init_intrinsics()
+
+        print(f'start_stream (4)')
+        for _ in range(5):
+            self.p.wait_for_frames()
+        print(f'start_stream (5)')
+
+    def stop_stream(self):
+        print(f'stop_stream')
+        if self.p is not None:
+            try:
+                self.p.stop()
+            except RuntimeError as e:
+                print(f"Warning: {e}")
+            finally:
+                self.p = None
+                self.profile = None
+
+    def restart_stream(self):
+        self.stop_stream()
+        self.start_stream()
 
     def get_device(self):
         context = rs.context()
@@ -117,7 +148,6 @@ class D435:
             # elif 'd415' in device.get_info(rs.camera_info.name).lower():
             #     return device
         return None
-
 
     def log_camera_settings(self):
         depth_sensor = self.device.first_depth_sensor()
@@ -193,27 +223,13 @@ class D435:
             'coeffs': color_intrinsics.coeffs
         }
 
-        depth_stream = self.profile.get_stream(rs.stream.depth).as_video_stream_profile()
-        color_stream = self.profile.get_stream(rs.stream.color).as_video_stream_profile()
-        extrinsics = depth_stream.get_extrinsics_to(color_stream)
-        
-        self.extrinsics = {
-            'rotation': extrinsics.rotation,
-            'translation': extrinsics.translation
-        }
-        
         if log:
             print(f'depth_intrinsics: {self.depth_intrinsics}')
             print(f'color_intrinsics: {self.color_intrinsics}')
-            print(f'extrinsics: {self.extrinsics}')
-
-    def close(self):
-        try:
-            self.p.stop()
-        except Exception as e:
-            print(f'!!Warning!! Could not stop D435 pipeline...\n{e}')
 
     def get_data(self, n=10, save=False):
+        self.start_stream()
+        
         for frame_idx in range(n):
             frames = self.p.wait_for_frames()
             aligned_frames = align.process(frames)
@@ -264,8 +280,9 @@ class D435:
         if save:
             rgbd_save_data(rgbd_data)
 
-        return rgbd_data
+        self.stop_stream()
 
+        return rgbd_data
 
 
 
@@ -275,7 +292,7 @@ from tools.cv.img_processing import rgbd_imshow, cv2_show
 if __name__ == '__main__':
     # d435 = D435(load_json='')
     d435 = D435()
-    rgbd_data = d435.get_data(save=True)
+    # rgbd_data = d435.get_data(save=True)
     # print(d435.color_intrinsics)
 
     # cv2_show(rgbd_data.colors)
