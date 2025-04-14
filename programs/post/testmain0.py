@@ -7,7 +7,7 @@ def setup():
     # server.run_server()
 
     robot.init()
-    robot.set_collision_val(1)
+    robot.set_collision_val(2)
 
     plc.init()
 

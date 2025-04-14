@@ -44,7 +44,7 @@ def setup():
 
     robot.init()
     robot.servo_move_enable(False)
-    robot.set_collision_val(1)
+    robot.set_collision_val(2)
     # CheckForceSensor()
     print('> jaka initialize success')
 
