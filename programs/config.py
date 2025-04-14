@@ -6,12 +6,13 @@ import math
 s_mig = 15, 15, 200, 5 #! production
 
 # f_mig = 75, 25, 100, 10 #! testing
-f_mig = 250, 60, 125, 40 #! production
+# f_mig = 250, 60, 125, 40 #! production
+f_mig = 300, 80, 125, 60 #! production
 """
 Notes:
 Laser MS3 10in:
     - 215 seconds on testing speed (75, 25, 100, 10)
-    - 175 seconds on production speed (250, 60, 125, 40)
+    - 168-170 seconds on production speed (250, 60, 125, 40)
         - Time between start and stops is pretty long. More acceleration could help smooth it out
 """
 
