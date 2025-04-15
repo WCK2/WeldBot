@@ -44,7 +44,7 @@ class HOME(NFrame):
         self.program_image.setFixedSize(450,350)
         self.program_image.setScaledContents(True)
 
-        self.program_label = QLabel(self,objectName='program_label',text=f'{mem.program}', minimumWidth=450, maximumWidth=450, minimumHeight=125, maximumHeight=125)
+        self.program_label = QLabel(self, objectName='program_label', text=f'<div style="line-height: 150%;"><span style="color: #16C60C;">Program #:</span> {mem.program}<br><span style="color: #16C60C;">Name:</span> {mem.program_name}</div>', minimumWidth=450, maximumWidth=450, minimumHeight=125, maximumHeight=125)
 
         self.btn_program_sub = QPushButton(self,text="-", minimumWidth=150, maximumWidth=150, minimumHeight=75, maximumHeight=75)
         self.btn_program_sub.clicked.connect(lambda: self.__inc_program(False))
@@ -76,13 +76,9 @@ class HOME(NFrame):
         hbox_upper.addStretch(2)
 
         #~ grid1 (contols/start stop)
-        # self.btn_start = PLCStartButton(2,0o0,self,objectName='btn_start',text="START", minimumWidth=400, minimumHeight=100)
         self.btn_start = QPushButton(objectName='btn_start', text="START", minimumWidth=400, minimumHeight=100)
-        # self.btn_start.setCheckable(True)
-        # self.btn_start.setChecked(False)
         self.btn_start.clicked.connect(self.__onbtn_start)
         
-        # self.btn_stop=PLCStartButton(2,0o2,self,objectName='btn_stop',text="STOP", minimumWidth=400, minimumHeight=100)
         self.btn_stop = QPushButton(objectName='btn_stop', text="STOP", minimumWidth=400, minimumHeight=100)
         self.btn_stop.setCheckable(True)
         self.btn_stop.setChecked(False)
@@ -170,7 +166,7 @@ class HOME(NFrame):
         i = mem.program + n
         if i < 0: return
         mem.program = i
-        self.program_label.setText(f'{mem.program}')
+        self.program_label.setText(f'<div style="line-height: 150%;"><span style="color: #16C60C;">Program #:</span> {mem.program}<br><span style="color: #16C60C;">Name:</span> {mem.program_name}</div>')
         post_req_async(path='mem', data={'name': 'program', 'value': str(mem.program)})
 
         self.__update_program_image()
@@ -236,7 +232,7 @@ class HOME(NFrame):
         QApplication.quit()
 
         if os.name != 'nt':
-            os.system("echo hi1 && sleep 10 && echo hi2")
+            os.system("echo exiting QApplication!")
             # os.system("sleep 10 && sudo shutdown -h now")
 
     #? PyQt Events

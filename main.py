@@ -1,18 +1,20 @@
 from gui.qt.common import *
+from gui.pages.blank import BLANK
 from gui.pages.home import HOME
 from utils.memory import mem
 
 
-class DEBURRBOT(NStackedWidget):
+class WELDBOT(NStackedWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.page_blank:BLANK = self.addWidget(BLANK())
         self.page_home:HOME = self.addWidget(HOME())
 
         gsig.previous_page.connect(self.__previous_page)
         gsig.next_page.connect(self.__next_page)
 
         mem.page_count = self.count()
-        mem.page = 0
+        mem.page = 1
         self.setCurrentIndex(mem.page)
 
     # def reset(self):
@@ -39,7 +41,7 @@ if __name__ == "__main__":
     with open('assets/style.css', 'r') as f:
         qapp.setStyleSheet(f.read())
     
-    app = DEBURRBOT()
+    app = WELDBOT()
     if os.name == 'nt':
         app.resize(int(SCREEN_WIDTH), int(SCREEN_HEIGHT))
         app.show()
