@@ -105,6 +105,10 @@
     font-weight: bold;
     qproperty-alignment: AlignCenter;
 }
+#header #btn_invis {
+    border:0px transparent;
+    background-color: transparent;
+}
 
 
 /*===================================================

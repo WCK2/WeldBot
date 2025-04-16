@@ -6,16 +6,28 @@ from utils.memory import mem
 from gui.workers.tserver import server
 from gui.qt.header import TopHeader
 from utils.wplc import PLC, addr
+from utils.audiowrld import AUDIO_WRLD
 
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)    
 qapp = QApplication(sys.argv)
+
+
+class QPushButton(QPushButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.clicked.connect(self.__custom_connect)
+    def __custom_connect(self):
+        sound.click()
+        gsig.button_activity.emit()
+
 
 class GlobalSignals(QObject):
     previous_page = pyqtSignal()
     next_page = pyqtSignal()
     reset_signal = pyqtSignal()
     home_signal = pyqtSignal()
+    button_activity = pyqtSignal()
     def __new__(cls, *args, **kw):
          if not hasattr(cls, '_instance'):
              orig = super(GlobalSignals, cls)
@@ -30,6 +42,8 @@ server.run_server()
 
 plc = PLC(settings.plc_ip)
 plc.init()
+
+sound = AUDIO_WRLD()
 
 
 class TopHeader(TopHeader):

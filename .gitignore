@@ -5,7 +5,7 @@ plc/project/
 *.pyc
 *.bat
 
-*bu*
+*_bu*
 *test*
 !**/testmain0.py
 

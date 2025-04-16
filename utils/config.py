@@ -12,6 +12,7 @@ class VPath:
         self.data = os.getcwd() + '/assets/data/'
         self.images = os.getcwd() + '/assets/images/'
         self.temp = os.getcwd() + '/assets/temp/'
+        self.audio = os.getcwd() + '/assets/audio/'
 
 vp = VPath()
 
@@ -30,7 +31,7 @@ class SETTINGS:
 
         #? gui
         self.header_height = 150
-        self.volume = 0
+        self.volume = 50
 
         #? Server / Network
         self.plc_ip = '192.168.69.181'
