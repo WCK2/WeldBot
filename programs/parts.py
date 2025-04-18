@@ -586,10 +586,10 @@ class Laser_MS3_10in(GENERIC_LASER):
 
         autoblend_moves(get_easeoffon_targets(25, tars[1], [30, 10]))
         run_circular_weld(tars[1], RelFrame(tars[1], x=rr, z=rr), RelFrame(tars[1], y=rr), num_circles=2, speed=SLOWAF, myblend=rr/4)
-        autoblend_moves([robot.Pose().Offset(z=10), RelFrame(tars[1], z=100)])
+        autoblend_moves([robot.Pose().Offset(z=10), RelFrame(tars[1], x=-25, z=125)])
         
-        robot.nos_MoveJ(FAST, GetIK(Pose(40, 230, 150, 0, 0, 0)), blend=5)
-        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=150)), blend=5)
+        robot.nos_MoveJ(FAST, GetIK(Pose(40, 230, 150, 0, 0, 0)), blend=10)
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], z=150)), blend=10)
         EaseOn(tars[2], [25, 10], [FAST, FAST])
         run_circular_weld(tars[2], RelFrame(tars[2], x=-rr, z=rr), RelFrame(tars[2], y=rr), num_circles=2, speed=SLOWAF, myblend=rr/4)
 

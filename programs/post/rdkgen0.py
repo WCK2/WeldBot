@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Generated: April 16, 2025 -- 10:56:38 
+# Generated: April 18, 2025 -- 14:07:34 
 
 from header0 import *
 
@@ -176,23 +176,23 @@ def Laser_MS3_10in():
     robot.movel_joints(joints=[-201.261,97.8559,-124.984,152.044,101.247,-17.0914],speed=15.0,accel=200.0,blend=0.375)
     robot.movel_joints(joints=[-201.428,97.7646,-124.731,151.855,101.342,-17.2307],speed=15.0,accel=200.0,blend=0.0)
     Laser(0)
-    robot.movel_joints(joints=[-203.39,105.98,-123.995,142.563,102.46,-18.8788],speed=300.0,accel=125.0,blend=9.551)
-    robot.movel_joints(joints=[-197.733,103.992,-122.806,144.25,99.2139,-14.1611],speed=300.0,accel=125.0,blend=9.551)
-    robot.movel_joints(joints=[-196.471,96.9129,-123.32,152.003,98.4804,-13.121],speed=300.0,accel=125.0,blend=0.0)
-    robot.movel_joints(joints=[-196.306,95.8603,-123.312,153.068,98.3846,-12.9858],speed=15.0,accel=200.0,blend=0.0)
+    robot.movel_joints(joints=[-203.39,105.98,-123.995,142.563,102.46,-18.8788],speed=300.0,accel=125.0,blend=10.48)
+    robot.movel_joints(joints=[-197.171,103.986,-122.811,144.334,98.8877,-13.6975],speed=300.0,accel=125.0,blend=10.48)
+    robot.movel_joints(joints=[-195.951,96.9069,-123.323,152.074,98.1776,-12.6939],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-195.792,95.8544,-123.315,153.137,98.0849,-12.5634],speed=15.0,accel=200.0,blend=0.0)
     Laser(1)
-    robot.movel_joints(joints=[-196.268,95.7872,-123.075,152.908,98.3626,-12.9547],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.524,95.8615,-123.31,153.038,98.5114,-13.1648],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.344,95.933,-123.549,153.227,98.4067,-13.017],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.088,95.8583,-123.314,153.097,98.2576,-12.8066],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.268,95.7872,-123.075,152.908,98.3626,-12.9547],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.268,95.7872,-123.075,152.908,98.3626,-12.9547],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.524,95.8615,-123.31,153.038,98.5114,-13.1648],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.344,95.933,-123.549,153.227,98.4067,-13.017],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.088,95.8583,-123.314,153.097,98.2576,-12.8066],speed=15.0,accel=200.0,blend=0.375)
-    robot.movel_joints(joints=[-196.268,95.7872,-123.075,152.908,98.3626,-12.9547],speed=15.0,accel=200.0,blend=0.0)
+    robot.movel_joints(joints=[-195.755,95.7814,-123.077,152.977,98.0636,-12.5335],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-196.01,95.8574,-123.314,153.108,98.2122,-12.7427],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.828,95.927,-123.552,153.297,98.1062,-12.5935],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.573,95.8506,-123.314,153.166,97.9573,-12.3842],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.755,95.7814,-123.077,152.977,98.0636,-12.5335],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.755,95.7814,-123.077,152.977,98.0636,-12.5335],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-196.01,95.8574,-123.314,153.108,98.2122,-12.7427],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.828,95.927,-123.552,153.297,98.1062,-12.5935],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.573,95.8506,-123.314,153.166,97.9573,-12.3842],speed=15.0,accel=200.0,blend=0.375)
+    robot.movel_joints(joints=[-195.755,95.7814,-123.077,152.977,98.0636,-12.5335],speed=15.0,accel=200.0,blend=0.0)
     Laser(0)
-    robot.movel_joints(joints=[-196.432,96.8353,-123.082,151.848,98.4579,-13.0892],speed=300.0,accel=125.0,blend=2.0)
+    robot.movel_joints(joints=[-195.913,96.8294,-123.085,151.918,98.1558,-12.6633],speed=300.0,accel=125.0,blend=2.0)
     robot.movel_joints(joints=[-193.335,96.8112,-123.275,152.398,96.6473,-10.5544],speed=300.0,accel=125.0,blend=0.0)
     robot.movel_joints(joints=[-193.204,95.7605,-123.265,153.451,96.5706,-10.4477],speed=15.0,accel=200.0,blend=0.0)
     Laser(1)
@@ -259,9 +259,9 @@ def Laser_MS3_10in():
     robot.movel_joints(joints=[-166.448,59.6714,-77.688,88.426,37.3709,24.479],speed=10.0,accel=133.333,blend=0.0)
     Laser(0)
     robot.movel_joints(joints=[-165.974,59.5442,-76.7668,87.0495,37.5323,25.2127],speed=300.0,accel=125.0,blend=2.0)
-    robot.movel_joints(joints=[-166.353,62.1727,-71.3033,79.4226,37.4029,24.6266],speed=300.0,accel=125.0,blend=0.0)
-    robot.movej(joints=[-193.023,71.9913,-64.307,83.772,90.1774,-12.6407],speed=80.0,accel=60.0,blend=5.0)
-    robot.movej(joints=[-214.97,59.5793,-58.693,51.9903,133.856,-50.7731],speed=80.0,accel=60.0,blend=5.0)
+    robot.movel_joints(joints=[-164.91,61.448,-67.3443,74.4377,37.9103,26.8378],speed=300.0,accel=125.0,blend=0.0)
+    robot.movej(joints=[-193.023,71.9913,-64.307,83.772,90.1774,-12.6407],speed=80.0,accel=60.0,blend=10.0)
+    robot.movej(joints=[-214.97,59.5793,-58.693,51.9903,133.856,-50.7731],speed=80.0,accel=60.0,blend=10.0)
     robot.movel_joints(joints=[-215.824,56.9141,-68.144,63.4608,133.336,-51.7093],speed=300.0,accel=125.0,blend=3.0)
     robot.movel_joints(joints=[-215.213,57.3063,-69.7114,65.0964,133.709,-51.0409],speed=300.0,accel=125.0,blend=0.0)
     robot.movel_joints(joints=[-214.801,57.5468,-70.7266,66.186,133.957,-50.5861],speed=10.0,accel=133.333,blend=0.0)
@@ -415,4 +415,4 @@ def ProgSel(p):
     else: return prog_ext(p)
 
 #====================== END ======================
-# Generated: April 16, 2025 -- 10:56:42 
+# Generated: April 18, 2025 -- 14:07:37 
