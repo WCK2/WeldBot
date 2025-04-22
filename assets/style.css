@@ -133,7 +133,6 @@
     border: 2px solid rgb(102, 102, 102);
     padding-top: 10px;
     qproperty-alignment: AlignTopLeft;
-    /* qproperty-alignment: AlignCenter; */
 }
 #page_home QPushButton {
     color: rgb(0,0,0);
@@ -192,6 +191,16 @@
     width: 30px;
 }
 
+#page_home #start_popup {
+    background-color: rgb(0,0,0);
+    color: rgb(228, 224, 20);
+    font-size: 20px;
+    border: 2px solid rgb(102, 102, 102);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    qproperty-alignment: AlignCenter;
+}
 
 
 

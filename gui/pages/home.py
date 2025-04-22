@@ -3,6 +3,7 @@ from gui.qt.common import *
 from PIL import Image, ImageQt
 from utils.config import settings
 from gui.workers.tpost import post_req_async
+from gui.workers.ntimer import NTimer
 
 
 def ls(dir: str, filetype: str):
@@ -84,10 +85,13 @@ class HOME(NFrame):
         self.btn_stop.setChecked(False)
         self.btn_stop.clicked.connect(self.__onbtn_stop)
 
+        self.start_popup = QLabel(self, objectName='start_popup', text='** Remember to enable FGAP on the Senfeng Laser Welder **')
+
         grid1 = QGridLayout()
         grid1.setContentsMargins(0,0,0,0)
         grid1.addWidget(self.btn_start, 0,0, alignment=Qt.AlignCenter)
         grid1.addWidget(self.btn_stop, 0,1, alignment=Qt.AlignCenter)
+        grid1.addWidget(self.start_popup, 1,0,1,2, alignment=Qt.AlignCenter)
         grid1.setColumnStretch(0,1)
         grid1.setColumnStretch(1,1)
         grid1.setRowStretch(0,1)
@@ -119,7 +123,7 @@ class HOME(NFrame):
         controls_layout.addLayout(hbox_upper)
         controls_layout.addSpacing(30)
         controls_layout.addLayout(grid1)
-        controls_layout.addSpacing(60)
+        controls_layout.addSpacing(30)
         controls_layout.addLayout(grid2)
         controls_layout.addStretch()
 
@@ -152,10 +156,7 @@ class HOME(NFrame):
         page_layout.addLayout(control_and_status_layouts)
         page_layout.addStretch()
 
-
         #~ threads & signals
-        # self.start_btn_timer=NTimer(1500, lambda:self.__onbtn_start(False), repeat=False)
-
         mem.log_message.connect(self.__append_log)
         mem.new_status.connect(self.__on_new_status)
         # self.program_number.value_change_signal.connect(self.__update_program_image)
