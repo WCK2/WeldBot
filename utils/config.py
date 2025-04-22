@@ -31,7 +31,7 @@ class SETTINGS:
 
         #? gui
         self.header_height = 150
-        self.volume = 50
+        self.volume = 20 if os.name == 'nt' else 80
 
         #? Server / Network
         self.plc_ip = '192.168.69.181'

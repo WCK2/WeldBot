@@ -28,7 +28,7 @@ class AUDIO_WRLD(QMediaPlayer):
         return self.play()
     
     def click(self):
-        print(f'sound.click()')
+        # print(f'sound.click()')
         self.playaudio("btn_feedback")
 
     def changevolume(self,val):
