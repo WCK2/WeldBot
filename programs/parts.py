@@ -641,15 +641,6 @@ class Laser_MS3_10in(GENERIC_LASER):
         run_circular_weld(tars[2], RelFrame(tars[2], y=-(rr+0.5)), RelFrame(tars[2], x=-rr/2, z=-rr/2), num_circles=2, speed=SLOWAF, myblend=rr/4)
         autoblend_moves([robot.Pose().Offset(z=50), RelFrame(tars[2], x=-100, z=125).Offset(rx=10)])
 
-
-        # #? for crazy config tar
-        # robot.nos_MoveJ(FAST, self.Tar001.Joints())
-        # robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[2], x=-50, y=-50, z=125), ref_joints=[-178.171254, 97.369609, -151.094441, 202.789546, 47.037377, 91.735500]))
-        # EaseOn(tars[2], [50, 10], [FAST, FAST])
-        # run_circular_weld(tars[2], RelFrame(tars[2], x=-rr, y=rr), RelFrame(tars[2], z=-rr), speed=SLOWAF, myblend=rr/4)
-        # autoblend_moves([robot.Pose().Offset(z=50), RelFrame(tars[2], x=-50, y=-50, z=100)])
-        # robot.nos_MoveJ(FAST, self.Tar001.Joints())
-
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
     def SwitchMount(self, tar_frame):
