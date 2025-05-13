@@ -18,6 +18,7 @@ def main():
                 time.sleep(0.75)
         
         CheckRobotFlags(wait=True)
+        Laser(0)
 
         # start of run
         mem.log = f'running program: {p}'
