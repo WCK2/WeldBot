@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 PROGRAM_NAMES = {
     1: '965-0101-B CALE Door', # CALE
     2: '1881-0150M-B MS3 Door',
+    3: '101-0111 Vault Door Chassis',
 }
 
 

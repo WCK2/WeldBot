@@ -55,6 +55,7 @@ if __name__ == "__main__":
 
             # main.add(1, Laser_CALE, workpiece='CALE', add_auto=False)
             main.add(2, Laser_MS3_10in, workpiece='MS3_10in', add_auto=False)
+            main.add(3, Laser_Vault_Chassis, workpiece='Vault_Chassis', add_auto=False)
 
             main.generate()
 
@@ -63,7 +64,8 @@ if __name__ == "__main__":
             rdk.setSimulationSpeed(1.0)
 
             # Laser_CALE(workpiece='CALE', add_auto=False)
-            Laser_MS3_10in(workpiece='MS3_10in', add_auto=False)
+            # Laser_MS3_10in(workpiece='MS3_10in', add_auto=False)
+            Laser_Vault_Chassis(workpiece='Vault_Chassis', add_auto=False)
 
 
 

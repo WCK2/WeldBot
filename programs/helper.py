@@ -63,9 +63,13 @@ def SetSpeed(s:str):
     if s=='Laser_CALE':
         robot.setSlowSpeeds(*s_mig)
         robot.setFastSpeeds(*f_mig)
-    if s=='Laser_MS3_10in':
+    elif s=='Laser_MS3_10in':
         robot.setSlowSpeeds(*s_mig)
         robot.setFastSpeeds(*f_mig)
+    elif s=='Laser_Vault_Chassis':
+        robot.setSlowSpeeds(*s_mig)
+        # robot.setFastSpeeds(75, 25, 100, 10) #! testing
+        robot.setFastSpeeds(300, 80, 125, 60) #! production
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
