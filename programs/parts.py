@@ -702,14 +702,14 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
         SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
-        rr = (5.84 + 0.25) / 2 # actal diameter = 5.84
+        rr = (5.84 + 2) / 2 # actal diameter = 5.84
 
         #? right
         robot.nos_MoveJ(FASTAF, AddJoints(self.Tar001.Joints(), [-20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)), blend=5)
 
-        for c, y_off in enumerate([0, 100]): #! add z_off
-            t_right = RelFrame(tars[0], y=y_off)
+        for c, (y_off, z_off) in enumerate([[0, 0], [99.75, 0.25]]):
+            t_right = RelFrame(tars[0], y=y_off, z=z_off)
 
             EaseOn(t_right, [30, 5], [FAST, FAST])
             run_circular_weld(t_right, RelFrame(t_right, z=rr), RelFrame(t_right, y=rr), speed=SLOWAF, myblend=rr/2)
@@ -722,8 +722,8 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)), blend=5)
 
-        for c, y_off in enumerate([0, 100]): #! add z_off
-            t_left = RelFrame(tars[1], y=y_off)
+        for c, (y_off, z_off) in enumerate([[0, 0], [99.1, -0.25]]):
+            t_left = RelFrame(tars[1], y=y_off, z=z_off)
 
             EaseOn(t_left, [30, 5], [FAST, FAST])
             run_circular_weld(t_left, RelFrame(t_left, z=rr), RelFrame(t_left, y=rr), speed=SLOWAF, myblend=rr/2)
