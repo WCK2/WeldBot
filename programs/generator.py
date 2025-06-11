@@ -50,12 +50,19 @@ if __name__ == "__main__":
             for header in list(robot.HEADER.__dict__.values())[1:-3]: robot.AddCode(header)
             main = CARTELMAIN()
 
+            #? Production Progs
             # main.add(1, MIG_EliteDoor, extended=True, add_auto=True)
             # main.add(2, MIG_MS3CoinReturnCup, workpiece='MS3CoinReturnCup', add_auto=True)
 
-            # main.add(1, Laser_CALE, workpiece='CALE', add_auto=False)
-            main.add(2, Laser_MS3_10in, workpiece='MS3_10in', add_auto=False)
-            main.add(3, Laser_Vault_Chassis, workpiece='Vault_Chassis', add_auto=False)
+            # main.add(1, Laser_CALE, workpiece='CALE')
+            main.add(2, Laser_MS3_10in, workpiece='MS3_10in')
+            main.add(3, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x1', parts=[3])
+            main.add(4, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x2', parts=[2,3])
+            main.add(5, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x4', parts=[0,1,2,3])
+            # main.add(5, Laser_871_025B, workpiece='871_025B', add_auto=False)
+
+            #? Test progs
+            # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
 
             main.generate()
 
@@ -63,9 +70,12 @@ if __name__ == "__main__":
         else:
             rdk.setSimulationSpeed(1.0)
 
-            # Laser_CALE(workpiece='CALE', add_auto=False)
-            # Laser_MS3_10in(workpiece='MS3_10in', add_auto=False)
-            Laser_Vault_Chassis(workpiece='Vault_Chassis', add_auto=False)
+            # Laser_CALE(workpiece='CALE')
+            # Laser_MS3_10in(workpiece='MS3_10in')
+            Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
+            Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
+            Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
+            # Laser_871_025B(workpiece='871_025B')
 
 
 

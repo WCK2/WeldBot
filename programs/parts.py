@@ -25,6 +25,8 @@ class GENERIC_LASER():
         self.retracted          = get('retracted', True)
         self.extended           = get('extended', False)
         self.add_auto           = get('add_auto', False)
+        self.parts              = get('parts', None) # weld only the specified part indices (0-based), e.g. [0,1] to weld parts 1 and 2
+        self.test               = get('test', False)
 
         if bool(get("auto", True)): self.main()
 
@@ -697,22 +699,36 @@ class Laser_MS3_10in(GENERIC_LASER):
 #^ Laser Vault_Chassis
 #^=========================
 class Laser_Vault_Chassis(GENERIC_LASER):
-    def n1_pins(self, tar_frame):
+    def weld_pins(self, tar_frame):
+        """
+        Weld only the specified part indices.
+        - self.parts: list of indices (0-based), e.g. [0,1] to weld parts 1 and 2.
+        If None, weld all.
+        """
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
         SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
         rr = (5.84 + 2) / 2 # actal diameter = 5.84
+        
+        if self.parts is None:
+            self.parts = [0, 1, 2, 3]
 
         #? right
         robot.nos_MoveJ(FASTAF, AddJoints(self.Tar001.Joints(), [-20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)), blend=5)
 
-        for c, (y_off, z_off) in enumerate([[0, 0], [99.75, 0.25]]):
+        for c, (y_off, z_off) in enumerate([[-101, -0.625], [0, 0], [99.75, 0.25], [199.55, 0.0]]):
+            if c not in self.parts:
+                continue
+            robot.AddCode(f'# right weld, index: {c}')
             t_right = RelFrame(tars[0], y=y_off, z=z_off)
 
             EaseOn(t_right, [30, 5], [FAST, FAST])
-            run_circular_weld(t_right, RelFrame(t_right, z=rr), RelFrame(t_right, y=rr), speed=SLOWAF, myblend=rr/2)
+            if self.test:
+                run_spot_weld(t_right, t_delay=0.5)
+            else:
+                run_circular_weld(t_right, RelFrame(t_right, z=rr), RelFrame(t_right, y=rr), speed=SLOWAF, myblend=rr/2)
             RelativeEaseOff([30], [FAST])
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)))
@@ -722,13 +738,53 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)), blend=5)
 
-        for c, (y_off, z_off) in enumerate([[0, 0], [99.1, -0.25]]):
+        for c, (y_off, z_off) in enumerate([[-102.0, 0.0], [0, 0], [99.1, -0.25], [199.75, 0.0]]):
+            if c not in self.parts:
+                continue
+            robot.AddCode(f'# left weld, index: {c}')
             t_left = RelFrame(tars[1], y=y_off, z=z_off)
 
             EaseOn(t_left, [30, 5], [FAST, FAST])
-            run_circular_weld(t_left, RelFrame(t_left, z=rr), RelFrame(t_left, y=rr), speed=SLOWAF, myblend=rr/2)
+            if self.test:
+                run_spot_weld(t_left, t_delay=0.5)
+            else:
+                run_circular_weld(t_left, RelFrame(t_left, z=rr), RelFrame(t_left, y=rr), speed=SLOWAF, myblend=rr/2)
             RelativeEaseOff([30], [FAST])
         
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)))
+        robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+
+    #~ Run
+    def run(self):
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        self.weld_pins(self.Retracted_Frame.findChild('n1_pins'))
+
+
+
+
+
+
+#^=========================
+#^ Laser 871_025B (Tandem Battery Mount)
+#^=========================
+class Laser_871_025B(GENERIC_LASER):
+    def n1_pins(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = (5.84 + 0.25) / 2 # actal diameter = 5.84
+
+        #? right
+        robot.nos_MoveJ(FASTAF, AddJoints(self.Tar001.Joints(), [-20,0,0,0,0,0]))
+        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)), blend=5)
+
+
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)))
         robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
