@@ -70,6 +70,10 @@ def SetSpeed(s:str):
         robot.setSlowSpeeds(*s_mig)
         # robot.setFastSpeeds(75, 25, 100, 10) #! testing
         robot.setFastSpeeds(300, 80, 125, 60) #! production
+    elif s=='Laser_101_108':
+        robot.setSlowSpeeds(*s_mig)
+        # robot.setFastSpeeds(75, 25, 100, 10) #! testing
+        robot.setFastSpeeds(*f_mig) #! production
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
@@ -361,6 +365,39 @@ def run_circular_weld(center, point1, point2, num_circles=1, speed=SLOW, myblend
             robot.nos_MoveL(speed, t, blend=0)
         else:
             robot.nos_MoveL(speed, t, blend=myblend)
+
+    # Stop welding after the circular path is completed
+    Laser(0)
+
+def run_semi_circular_weld(center, point1, point2, sp=SLOW, myblend=0.0):
+    """
+    Generate and run a circular weld path around a center point.
+
+    Args:
+        center (robomath.Mat): Center transformation matrix for the circular path.
+        point1 (robomath.Mat): First point on the circle, used to define radius and plane.
+        point2 (robomath.Mat): Second point on the circle, used to define plane orientation.
+        sp: speed config for the movement. Can be int (SLOW, SLOWAF) or list [vel, acc]
+        myblend (float): blend value between targets.
+    """
+    # Generate circular targets using the provided center, point1, and point2
+    circular_targets = generate_circular_path(
+        center, point1, point2, num_circles=1
+    )
+    circular_targets = circular_targets[:4] # get rid of extra tars to keep it a semi-circle
+    circular_targets.append(circular_targets[0]) # re-add center tar to end
+
+    total_targets = len(circular_targets)
+
+    # Run through the generated circular targets
+    for i, t in enumerate(circular_targets):
+        if i == 0:
+            robot.nos_MoveL(sp, t, blend=0)
+            Laser(1)  # Start welding
+        elif i == total_targets - 1:
+            robot.nos_MoveL(sp, t, blend=0)
+        else:
+            robot.nos_MoveL(sp, t, blend=myblend)
 
     # Stop welding after the circular path is completed
     Laser(0)

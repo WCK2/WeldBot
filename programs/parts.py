@@ -703,7 +703,7 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         """
         Weld only the specified part indices.
         - self.parts: list of indices (0-based), e.g. [0,1] to weld parts 1 and 2.
-        If None, weld all.
+        If None or [], weld all.
         """
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
@@ -711,7 +711,7 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
         rr = (5.84 + 2) / 2 # actal diameter = 5.84
         
-        if self.parts is None:
+        if not self.parts:
             self.parts = [0, 1, 2, 3]
 
         #? right
@@ -763,6 +763,116 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.weld_pins(self.Retracted_Frame.findChild('n1_pins'))
+
+
+
+#^=========================
+#^ Laser SSPM Door Latch Plate (101-108)
+#^=========================
+class Laser_101_108(GENERIC_LASER):
+    def weld_pins(self, tar_frame):
+        """
+        Weld only the specified part indices.
+        - self.parts: list of indices (0-based), e.g. [0,1] to weld parts in block 1 and 2.
+        If None or [], weld all.
+        """
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        
+        if not self.parts:
+            self.parts = list(range(10)) # [0, 1, ..., 9]
+
+        #? prep
+        origin = tars[0]
+        rr = (4.76 + 2) / 2 # actal diameter = 4.76
+        C2C_DIST = 19.3
+        XOFF = 199.4
+        part_offsets = {
+            'block_1': [XOFF + 0.4,     162.3 + 0.9],
+            'block_2': [-XOFF - 0.55,   162.3 - 0.2],
+            'block_3': [XOFF + 0.1,     102.3 + 0.9],
+            'block_4': [-XOFF - 0.3,    102.3 - 0.1],
+            'block_5': [XOFF + 0.25,    -9.1 + 0.4],
+            'block_6': [-XOFF - 0.45,   -9.1 - 0.4],
+            'block_7': [XOFF + 0.2,     -69.1 + 0.45],
+            'block_8': [-XOFF - 0.6,    -69.1 - 0.5],
+            'block_9': [XOFF + 0.3,     -129.1 + 0.55],
+            'block_10': [-XOFF - 0.35,  -129.1 - 0.35],
+        }
+
+        row_vectors = []
+        block_names = list(part_offsets.keys())
+        block_values = list(part_offsets.values())
+        for i in range(0, len(block_names), 2):
+            p1 = np.array(block_values[i])
+            p2 = np.array(block_values[i+1])
+            vec = p2 - p1
+            row_vectors.append(vec)
+            # print(f'vector from {block_names[i]} to {block_names[i+1]}: {vec}')
+
+        #? robot controls
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        for idx, (part, (x_off, y_off)) in enumerate(part_offsets.items()):
+            if idx not in self.parts:
+                continue
+
+            step_multipliers = list(range(10))
+            if self.test:
+                step_multipliers = [0]
+
+            # Determine which row this block belongs to
+            row_idx = idx // 2 # (0,1)->0, (2,3)->1, etc.
+            vec = row_vectors[row_idx]
+
+            # Odd blocks: use vec as is; Even blocks: reverse direction
+            if idx % 2 == 1:
+                vec = -vec
+                step_multipliers.reverse()
+
+            vec_len = np.linalg.norm(vec)
+            if vec_len == 0:
+                step_x, step_y = 0, 0
+            else:
+                step_x, step_y = vec / vec_len
+
+            t = RelFrame(origin, x=x_off, y=y_off)
+
+            for cc, m in enumerate(step_multipliers):
+                xstep = step_x * C2C_DIST * m
+                ystep = step_y * C2C_DIST * m
+                tt = RelFrame(t, x=xstep, y=ystep)
+                
+                if idx == 0 and cc == 0:
+                    EaseOn(tt, [40, 10, 1], [FASTAF, FAST, FAST])
+                elif cc == 0:
+                    EaseOn(tt, [20, 5, 1], [FASTAF, FAST, FAST])
+                else:
+                    EaseOn(tt, [1], [FASTAF])
+
+                if self.test:
+                    run_spot_weld(tt, t_delay=0.5)
+                else:
+                    run_semi_circular_weld(tt, RelFrame(tt, x=rr), RelFrame(tt, y=rr), [10, 20], rr/4)
+
+                if cc == len(step_multipliers) - 1:
+                    RelativeEaseOff([20], [FASTAF])
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+
+
+
+    #~ Run
+    def run(self):
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        self.weld_pins(self.Retracted_Frame.findChild('part_ref'))
 
 
 
