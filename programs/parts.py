@@ -611,8 +611,8 @@ class Laser_MS3_10in(GENERIC_LASER):
         autoblend_moves([robot.Pose().Offset(z=10), RelFrame(tars[2], x=25, z=50)])
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[3], x=30, z=50)), blend=10)
-        EaseOn(tars[3], [25, 10], [FAST, FAST])
-        run_circular_weld(tars[3], RelFrame(tars[3], x=-rr, z=rr), RelFrame(tars[3], y=rr), num_circles=2, speed=0.33, myblend=rr/4)
+        EaseOn(tars[3], [25, 10, 5], [FAST, FAST, SLOW])
+        run_circular_weld(tars[3], RelFrame(tars[3], x=-rr, z=rr), RelFrame(tars[3], y=rr), num_circles=2, speed=0.25, myblend=rr/4)
 
         autoblend_moves([robot.Pose().Offset(z=10), RelFrame(tars[3], z=100)])
         robot.nos_MoveJ(FAST, GetIK(Pose(-50, 100, 150, 20, -10, 0)))
@@ -883,21 +883,43 @@ class Laser_101_108(GENERIC_LASER):
 #^ Laser 871_025B (Tandem Battery Mount)
 #^=========================
 class Laser_871_025B(GENERIC_LASER):
-    def n1_pins(self, tar_frame):
+    def juice_wrld(self, tar_frame):
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
         SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
         rr = (5.84 + 0.25) / 2 # actal diameter = 5.84
 
-        #? right
-        robot.nos_MoveJ(FASTAF, AddJoints(self.Tar001.Joints(), [-20,0,0,0,0,0]))
-        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)), blend=5)
+
+        #? prep
+        Z_OFF = 1.6
+        weld_targets = {
+            # tar_name: [part_0 sim coords], [part_0 offsets], [part_1 offsets]
+            # 'left0': [[-173.9, 70.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
+            'left': {
+                '0': [[-173.9, 70.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '1': [[-173.9, 48.2, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '2': [[-173.9, -33.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '3': [[-173.9, -55.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
+            },
+            'mid': {
+                '0': [[-133.9, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '1': [[-73.9, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '2': [[-133.9, 61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '3': [[-73.9, 61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+            },
+            'right': {
+                '0': [[-33.9, 65, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '1': [[-33.9, 50, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '2': [[-33.9, -35, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                '3': [[-33.9, -50, Z_OFF], [0, 0, 0], [0, 0, 0]],
+            }
+        }
 
 
-        robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)))
-        robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
-        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+        #? welds
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
 
 
@@ -907,7 +929,7 @@ class Laser_871_025B(GENERIC_LASER):
         SetTool(self.TCP_Holder.findChild('mid'))
         SetFrame(self.Retracted_Frame)
 
-        self.n1_pins(self.Retracted_Frame.findChild('n1_pins'))
+        self.juice_wrld(self.Retracted_Frame.findChild('part0'))
 
 
 
