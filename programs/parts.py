@@ -718,7 +718,8 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         robot.nos_MoveJ(FASTAF, AddJoints(self.Tar001.Joints(), [-20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=75, y=50, z=75)), blend=5)
 
-        for c, (y_off, z_off) in enumerate([[-101, -0.625], [0, 0], [99.75, 0.25], [199.55, 0.0]]):
+        # for c, (y_off, z_off) in enumerate([[-101, -0.625], [0, 0], [99.75, 0.25], [199.55, 0.0]]):
+        for c, (y_off, z_off) in enumerate([[-98.2, -1.5], [1.4, -0.9], [101.0, -1.15], [201.2, -0.65]]):
             if c not in self.parts:
                 continue
             robot.AddCode(f'# right weld, index: {c}')
@@ -738,7 +739,8 @@ class Laser_Vault_Chassis(GENERIC_LASER):
         robot.nos_MoveJ(FAST, AddJoints(self.Tar001.Joints(), [20,0,0,0,0,0]))
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[1], x=-75, y=50, z=75)), blend=5)
 
-        for c, (y_off, z_off) in enumerate([[-102.0, 0.0], [0, 0], [99.1, -0.25], [199.75, 0.0]]):
+        # for c, (y_off, z_off) in enumerate([[-102.0, 0.0], [0, 0], [99.1, -0.25], [199.75, 0.0]]):
+        for c, (y_off, z_off) in enumerate([[-99.35, -1.55], [1.65, -2.25], [101.6, -1.65], [200.85, -1.5]]):
             if c not in self.parts:
                 continue
             robot.AddCode(f'# left weld, index: {c}')

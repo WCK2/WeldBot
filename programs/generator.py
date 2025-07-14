@@ -65,7 +65,7 @@ if __name__ == "__main__":
             # main.add(5, Laser_871_025B, workpiece='871_025B', add_auto=False)
 
             #? Test progs
-            # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
+            main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
             # main.add(51, Laser_101_108, workpiece='101_108', fn='TEST_Laser_101_108_x100', parts=[], test=True)
 
             main.generate()
@@ -75,10 +75,10 @@ if __name__ == "__main__":
             rdk.setSimulationSpeed(1.0)
 
             # Laser_CALE(workpiece='CALE')
-            Laser_MS3_10in(workpiece='MS3_10in')
+            # Laser_MS3_10in(workpiece='MS3_10in')
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
-            # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
+            Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
 
             # Laser_101_108(workpiece='101_108', parts=[0])
             # Laser_101_108(workpiece='101_108', parts=[0,2,4,6,8])
