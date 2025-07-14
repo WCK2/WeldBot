@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Generated: July 14, 2025 -- 09:37:03 
+# Generated: July 14, 2025 -- 13:29:56 
 
 from header0 import *
 
@@ -554,17 +554,17 @@ def Laser_Vault_Chassis_x2():
     robot.movej(joints=[-174.612,99.3548,-91.506,92.6964,92.0807,-13.3326],speed=80.0,accel=60.0,blend=0.0)
     robot.movej(joints=[-149.96,59.2647,-74.8898,24.8581,32.0922,82.2079],speed=80.0,accel=60.0,blend=5.0)
     # left weld, index: 2
-    robot.movel_joints(joints=[-154.214,55.8213,-77.1758,31.8508,27.9003,80.7503],speed=300.0,accel=125.0,blend=5.0)
-    robot.movel_joints(joints=[-155.661,57.1483,-79.5971,33.471,26.4787,80.1591],speed=300.0,accel=125.0,blend=0.0)
-    robot.movel_joints(joints=[-155.956,57.4069,-80.0685,33.7981,26.1897,80.0315],speed=10.0,accel=133.333,blend=0.0)
+    robot.movel_joints(joints=[-154.19,55.8755,-77.2766,31.8893,27.9238,80.7596],speed=300.0,accel=125.0,blend=5.0)
+    robot.movel_joints(joints=[-155.638,57.2022,-79.6967,33.5078,26.5014,80.169],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-155.933,57.4608,-80.1679,33.8346,26.2122,80.0416],speed=10.0,accel=133.333,blend=0.0)
     Laser(1)
-    robot.movel_joints(joints=[-155.954,57.5623,-79.8927,33.4663,26.1913,80.0322],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-156.068,57.1225,-79.6015,33.6598,26.0797,79.9823],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.957,57.2496,-80.2416,34.1291,26.1881,80.0308],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.843,57.69,-80.5323,33.9346,26.3006,80.0808],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.954,57.5623,-79.8927,33.4663,26.1913,80.0322],speed=10.0,accel=133.333,blend=0.0)
+    robot.movel_joints(joints=[-155.931,57.6164,-79.9922,33.5027,26.2138,80.0423],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-156.045,57.1767,-79.7015,33.6966,26.102,79.9923],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.934,57.3033,-80.3408,34.1657,26.2107,80.0409],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.819,57.7436,-80.631,33.9707,26.3233,80.0908],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.931,57.6164,-79.9922,33.5027,26.2138,80.0423],speed=10.0,accel=133.333,blend=0.0)
     Laser(0)
-    robot.movel_joints(joints=[-154.212,55.97,-76.9963,31.522,27.902,80.751],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-154.188,56.0244,-77.0973,31.5603,27.9255,80.7603],speed=300.0,accel=125.0,blend=0.0)
     # left weld, index: 3
     robot.movel_joints(joints=[-156.921,48.0763,-63.9421,27.3964,25.2428,79.5942],speed=300.0,accel=125.0,blend=5.0)
     robot.movel_joints(joints=[-158.272,49.4678,-66.5982,29.2667,23.9203,78.9281],speed=300.0,accel=125.0,blend=0.0)
@@ -672,17 +672,17 @@ def Laser_Vault_Chassis_x4():
     Laser(0)
     robot.movel_joints(joints=[-150.911,62.7964,-88.0676,34.7555,31.1534,81.9128],speed=300.0,accel=125.0,blend=0.0)
     # left weld, index: 2
-    robot.movel_joints(joints=[-154.214,55.8213,-77.1758,31.8508,27.9003,80.7503],speed=300.0,accel=125.0,blend=5.0)
-    robot.movel_joints(joints=[-155.661,57.1483,-79.5971,33.471,26.4787,80.1591],speed=300.0,accel=125.0,blend=0.0)
-    robot.movel_joints(joints=[-155.956,57.4069,-80.0685,33.7981,26.1897,80.0315],speed=10.0,accel=133.333,blend=0.0)
+    robot.movel_joints(joints=[-154.19,55.8755,-77.2766,31.8893,27.9238,80.7596],speed=300.0,accel=125.0,blend=5.0)
+    robot.movel_joints(joints=[-155.638,57.2022,-79.6967,33.5078,26.5014,80.169],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-155.933,57.4608,-80.1679,33.8346,26.2122,80.0416],speed=10.0,accel=133.333,blend=0.0)
     Laser(1)
-    robot.movel_joints(joints=[-155.954,57.5623,-79.8927,33.4663,26.1913,80.0322],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-156.068,57.1225,-79.6015,33.6598,26.0797,79.9823],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.957,57.2496,-80.2416,34.1291,26.1881,80.0308],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.843,57.69,-80.5323,33.9346,26.3006,80.0808],speed=10.0,accel=133.333,blend=1.96)
-    robot.movel_joints(joints=[-155.954,57.5623,-79.8927,33.4663,26.1913,80.0322],speed=10.0,accel=133.333,blend=0.0)
+    robot.movel_joints(joints=[-155.931,57.6164,-79.9922,33.5027,26.2138,80.0423],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-156.045,57.1767,-79.7015,33.6966,26.102,79.9923],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.934,57.3033,-80.3408,34.1657,26.2107,80.0409],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.819,57.7436,-80.631,33.9707,26.3233,80.0908],speed=10.0,accel=133.333,blend=1.96)
+    robot.movel_joints(joints=[-155.931,57.6164,-79.9922,33.5027,26.2138,80.0423],speed=10.0,accel=133.333,blend=0.0)
     Laser(0)
-    robot.movel_joints(joints=[-154.212,55.97,-76.9963,31.522,27.902,80.751],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-154.188,56.0244,-77.0973,31.5603,27.9255,80.7603],speed=300.0,accel=125.0,blend=0.0)
     # left weld, index: 3
     robot.movel_joints(joints=[-156.921,48.0763,-63.9421,27.3964,25.2428,79.5942],speed=300.0,accel=125.0,blend=5.0)
     robot.movel_joints(joints=[-158.272,49.4678,-66.5982,29.2667,23.9203,78.9281],speed=300.0,accel=125.0,blend=0.0)
@@ -2144,13 +2144,13 @@ def TEST_Laser_Vault_Chassis_x4():
     Laser(0)
     robot.movel_joints(joints=[-150.913,62.6262,-88.2425,35.1013,31.1511,81.9121],speed=300.0,accel=125.0,blend=0.0)
     # left weld, index: 2
-    robot.movel_joints(joints=[-154.214,55.8213,-77.1758,31.8508,27.9003,80.7503],speed=300.0,accel=125.0,blend=5.0)
-    robot.movel_joints(joints=[-155.661,57.1483,-79.5971,33.471,26.4787,80.1591],speed=300.0,accel=125.0,blend=0.0)
-    robot.movel_joints(joints=[-155.956,57.4069,-80.0685,33.7981,26.1897,80.0315],speed=15.0,accel=200.0,blend=0.0)
+    robot.movel_joints(joints=[-154.19,55.8755,-77.2766,31.8893,27.9238,80.7596],speed=300.0,accel=125.0,blend=5.0)
+    robot.movel_joints(joints=[-155.638,57.2022,-79.6967,33.5078,26.5014,80.169],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-155.933,57.4608,-80.1679,33.8346,26.2122,80.0416],speed=15.0,accel=200.0,blend=0.0)
     Laser(1)
     time.sleep(0.5)
     Laser(0)
-    robot.movel_joints(joints=[-154.214,55.8213,-77.1758,31.8508,27.9003,80.7503],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-154.19,55.8755,-77.2766,31.8893,27.9238,80.7596],speed=300.0,accel=125.0,blend=0.0)
     # left weld, index: 3
     robot.movel_joints(joints=[-156.921,48.0763,-63.9421,27.3964,25.2428,79.5942],speed=300.0,accel=125.0,blend=5.0)
     robot.movel_joints(joints=[-158.272,49.4678,-66.5982,29.2667,23.9203,78.9281],speed=300.0,accel=125.0,blend=0.0)
@@ -2182,4 +2182,4 @@ def ProgSel(p):
     else: return prog_ext(p)
 
 #====================== END ======================
-# Generated: July 14, 2025 -- 09:37:11 
+# Generated: July 14, 2025 -- 13:30:06 
