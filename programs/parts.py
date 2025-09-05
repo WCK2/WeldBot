@@ -883,53 +883,224 @@ class Laser_101_108(GENERIC_LASER):
 #^ Laser 871_025B (Tandem Battery Mount)
 #^=========================
 class Laser_871_025B(GENERIC_LASER):
-    def juice_wrld(self, tar_frame):
-        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
-        tars = GetTargetMats(tar_frame)
-        SetFrame(tar_frame)
-        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
-        rr = (5.84 + 0.25) / 2 # actal diameter = 5.84
-
-
-        #? prep
-        Z_OFF = 1.6
-        weld_targets = {
-            # tar_name: [part_0 sim coords], [part_0 offsets], [part_1 offsets]
-            # 'left0': [[-173.9, 70.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
-            'left': {
-                '0': [[-173.9, 70.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '1': [[-173.9, 48.2, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '2': [[-173.9, -33.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '3': [[-173.9, -55.7, Z_OFF], [0, 0, 0], [0, 0, 0]],
-            },
-            'mid': {
-                '0': [[-133.9, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '1': [[-73.9, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '2': [[-133.9, 61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '3': [[-73.9, 61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
-            },
-            'right': {
-                '0': [[-33.9, 65, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '1': [[-33.9, 50, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '2': [[-33.9, -35, Z_OFF], [0, 0, 0], [0, 0, 0]],
-                '3': [[-33.9, -50, Z_OFF], [0, 0, 0], [0, 0, 0]],
-            }
+    def _get_weld_targets(self, part_idx: int, config_tars):
+        part_idx_offsets = {
+            0: [0, 0, 0],
+            1: [-189.88, 0, 0]
         }
 
+        Z_OFF = 2.8
+        weld_targets = {
+            "left": {
+                "0": [[16,  70.7, Z_OFF], [0,0,0], [0,0,0]],
+                "1": [[16,  48.2, Z_OFF], [0,0,0], [0,0,0]],
+                "2": [[16, -33.6, Z_OFF], [0,0,0], [0,0,0]],
+                "3": [[16, -55.7, Z_OFF], [0,0,0], [0,0,0]],
+            },
+            "mid": {
+                "0": [[44, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "1": [[68, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "2": [[104, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "3": [[128, -56.6, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "4": [[44,  61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "5": [[68,  61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "6": [[104,  61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+                "7": [[128,  61.4, Z_OFF], [0, 0, 0], [0, 0, 0]],
+            },
+            "right": {
+                "0": [[156,  65.0, Z_OFF], [0,0,0], [0,0,0]],
+                "1": [[156,  50.0, Z_OFF], [0,0,0], [0,0,0]],
+                "2": [[156, -35.0, Z_OFF], [0,0,0], [0,0,0]],
+                "3": [[156, -50.0, Z_OFF], [0,0,0], [0,0,0]],
+            },
+        }
+
+        left_tars, mid_tars, right_tars = [], [], []
+        for config in ['left', 'mid', 'right']:
+            for k,v in weld_targets[config].items():
+                if config == 'left':
+                    config_tar = config_tars[0]
+                elif config == 'mid':
+                    config_tar = config_tars[1]
+                elif config == 'right':
+                    config_tar = config_tars[2]
+                
+                t = RelFrame(
+                    config_tar,
+                    x = v[0][0] + v[1][0] + part_idx_offsets[part_idx][0],
+                    y = v[0][1] + v[1][1] + part_idx_offsets[part_idx][1],
+                    z = v[0][2] + v[1][2] + part_idx_offsets[part_idx][2],
+                )
+
+                if config == 'left':
+                    left_tars.append(t)
+                elif config == 'mid':
+                    mid_tars.append(t)
+                elif config == 'right':
+                    right_tars.append(t)
+
+        return left_tars, mid_tars, right_tars
+
+    def left(self, rr, p0_left_tars, p1_left_tars):
+        t = RelFrame(p0_left_tars[0], z=75)
+        vv, aa = custom_speed_movel(robot.Pose(), t, self.fast_ww, self.fast_aa)
+        robot.nos_MoveL([vv, aa], t, blend=5)
+
+        EaseOn(p0_left_tars[0], [30, 5], [FAST, FAST])
+        run_circular_weld(p0_left_tars[0], RelFrame(p0_left_tars[0], z=rr), RelFrame(p0_left_tars[0], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(5, p0_left_tars[1], [5]))
+        run_circular_weld(p0_left_tars[1], RelFrame(p0_left_tars[1], z=rr), RelFrame(p0_left_tars[1], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(50, p0_left_tars[2], [50, 5]))
+        run_circular_weld(p0_left_tars[2], RelFrame(p0_left_tars[2], z=rr), RelFrame(p0_left_tars[2], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(5, p0_left_tars[3], [5]))
+        run_circular_weld(p0_left_tars[3], RelFrame(p0_left_tars[3], z=rr), RelFrame(p0_left_tars[3], y=rr), myblend=rr/4)
+        if not p1_left_tars:
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+        else:
+            autoblend_moves([RelFrame(robot.Pose(), z=75), RelFrame(p1_left_tars[0], z=75), p1_left_tars[0].Offset(z=30), p1_left_tars[0].Offset(z=5)])
+            run_circular_weld(p1_left_tars[0], RelFrame(p1_left_tars[0], z=rr), RelFrame(p1_left_tars[0], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(5, p1_left_tars[1], [5]))
+            run_circular_weld(p1_left_tars[1], RelFrame(p1_left_tars[1], z=rr), RelFrame(p1_left_tars[1], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(50, p1_left_tars[2], [50, 5]))
+            run_circular_weld(p1_left_tars[2], RelFrame(p1_left_tars[2], z=rr), RelFrame(p1_left_tars[2], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(5, p1_left_tars[3], [5]))
+            run_circular_weld(p1_left_tars[3], RelFrame(p1_left_tars[3], z=rr), RelFrame(p1_left_tars[3], y=rr), myblend=rr/4)
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+
+    def __mid_(self, rr, p0_mid_tars, p1_mid_tars):
+        t = RelFrame(p0_mid_tars[0], z=75)
+        vv, aa = custom_speed_movel(robot.Pose(), t, self.fast_ww, self.fast_aa)
+        robot.nos_MoveL([vv, aa], t, blend=5)
+
+        autoblend_moves([RelFrame(p0_mid_tars[0], z=15), RelFrame(p0_mid_tars[0], z=5)])
+        run_circular_weld(p0_mid_tars[0], RelFrame(p0_mid_tars[0], y=rr, z=rr), RelFrame(p0_mid_tars[0], x=rr), myblend=rr/4)
+
+        autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p0_mid_tars[1], z=5)])
+        run_circular_weld(p0_mid_tars[1], RelFrame(p0_mid_tars[1], y=rr, z=rr), RelFrame(p0_mid_tars[1], x=rr), myblend=rr/4)
+
+        autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p0_mid_tars[2], z=5)])
+        run_circular_weld(p0_mid_tars[2], RelFrame(p0_mid_tars[2], y=rr, z=rr), RelFrame(p0_mid_tars[2], x=rr), myblend=rr/4)
+
+        autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p0_mid_tars[3], z=5)])
+        run_circular_weld(p0_mid_tars[3], RelFrame(p0_mid_tars[3], y=rr, z=rr), RelFrame(p0_mid_tars[3], x=rr), myblend=rr/4)
+        if not p1_mid_tars:
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+        else:
+            autoblend_moves([RelFrame(robot.Pose(), z=75), RelFrame(p1_mid_tars[0], z=75), RelFrame(p1_mid_tars[0], z=5)])
+            run_circular_weld(p1_mid_tars[0], RelFrame(p1_mid_tars[0], y=rr, z=rr), RelFrame(p1_mid_tars[0], x=rr), myblend=rr/4)
+
+            autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p1_mid_tars[1], z=5)])
+            run_circular_weld(p1_mid_tars[1], RelFrame(p1_mid_tars[1], y=rr, z=rr), RelFrame(p1_mid_tars[1], x=rr), myblend=rr/4)
+
+            autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p1_mid_tars[2], z=5)])
+            run_circular_weld(p1_mid_tars[2], RelFrame(p1_mid_tars[2], y=rr, z=rr), RelFrame(p1_mid_tars[2], x=rr), myblend=rr/4)
+
+            autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(p1_mid_tars[3], z=5)])
+            run_circular_weld(p1_mid_tars[3], RelFrame(p1_mid_tars[3], y=rr, z=rr), RelFrame(p1_mid_tars[3], x=rr), myblend=rr/4)
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+
+    def mid(self, rr, p0_mid_tars, p1_mid_tars):
+        t = RelFrame(p0_mid_tars[0], z=75)
+        vv, aa = custom_speed_movel(robot.Pose(), t, self.fast_ww, self.fast_aa)
+        robot.nos_MoveL([vv, aa], t, blend=5)
+
+        for i, t1, t2 in iter_pairs(p0_mid_tars):
+            if i == 0:
+                autoblend_moves([RelFrame(t1, z=15), RelFrame(t1, z=5)])
+            else:
+                autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(t1, z=15), RelFrame(t1, z=5)])
+            run_seam_weld(t1, t2, speed=SLOW, delay=0.15)
+
+        robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+        if not p1_mid_tars:
+            return
+        
+        for i, t1, t2 in iter_pairs(p1_mid_tars):
+            if i == 0:
+                autoblend_moves([RelFrame(t1, z=75), RelFrame(t1, z=15), RelFrame(t1, z=5)])
+            else:
+                autoblend_moves([RelFrame(robot.Pose(), z=15), RelFrame(t1, z=15), RelFrame(t1, z=5)])
+            run_seam_weld(t1, t2, speed=SLOW, delay=0.15)
+        
+        robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+
+    def right(self, rr, p0_right_tars, p1_right_tars):
+        t = RelFrame(p0_right_tars[0], z=75)
+        vv, aa = custom_speed_movel(robot.Pose(), t, self.fast_ww, self.fast_aa)
+        robot.nos_MoveL([vv, aa], t, blend=5)
+
+        EaseOn(p0_right_tars[0], [30, 5], [FAST, FAST])
+        run_circular_weld(p0_right_tars[0], RelFrame(p0_right_tars[0], z=rr), RelFrame(p0_right_tars[0], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(5, p0_right_tars[1], [5]))
+        run_circular_weld(p0_right_tars[1], RelFrame(p0_right_tars[1], z=rr), RelFrame(p0_right_tars[1], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(50, p0_right_tars[2], [50, 5]))
+        run_circular_weld(p0_right_tars[2], RelFrame(p0_right_tars[2], z=rr), RelFrame(p0_right_tars[2], y=rr), myblend=rr/4)
+
+        autoblend_moves(get_easeoffon_targets(5, p0_right_tars[3], [5]))
+        run_circular_weld(p0_right_tars[3], RelFrame(p0_right_tars[3], z=rr), RelFrame(p0_right_tars[3], y=rr), myblend=rr/4)
+        if not p1_right_tars:
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+        else:
+            autoblend_moves([RelFrame(robot.Pose(), z=75), RelFrame(p1_right_tars[0], z=75), p1_right_tars[0].Offset(z=30), p1_right_tars[0].Offset(z=5)])
+            run_circular_weld(p1_right_tars[0], RelFrame(p1_right_tars[0], z=rr), RelFrame(p1_right_tars[0], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(5, p1_right_tars[1], [5]))
+            run_circular_weld(p1_right_tars[1], RelFrame(p1_right_tars[1], z=rr), RelFrame(p1_right_tars[1], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(50, p1_right_tars[2], [50, 5]))
+            run_circular_weld(p1_right_tars[2], RelFrame(p1_right_tars[2], z=rr), RelFrame(p1_right_tars[2], y=rr), myblend=rr/4)
+
+            autoblend_moves(get_easeoffon_targets(5, p1_right_tars[3], [5]))
+            run_circular_weld(p1_right_tars[3], RelFrame(p1_right_tars[3], z=rr), RelFrame(p1_right_tars[3], y=rr), myblend=rr/4)
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=100), blend=5)
+
+    def prep_run(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        config_tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+        rr = 1.5
+
+        if not self.parts:
+            self.parts = list(range(2)) # [0, 1]
+
+        if self.parts == [0]:
+            p0_left_tars, p0_mid_tars, p0_right_tars = self._get_weld_targets(part_idx=0, config_tars=config_tars)
+            p1_left_tars, p1_mid_tars, p1_right_tars = [], [], []
+        else:
+            p0_left_tars, p0_mid_tars, p0_right_tars = self._get_weld_targets(part_idx=0, config_tars=config_tars)
+            p1_left_tars, p1_mid_tars, p1_right_tars = self._get_weld_targets(part_idx=1, config_tars=config_tars)
 
 
-        #? welds
-        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+        # self.left(rr, p0_left_tars, p1_left_tars)
+        self.mid(rr, p0_mid_tars, p1_mid_tars)
+        # self.right(rr, p0_right_tars, p1_right_tars)
+        
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+
 
 
 
     #~ Run
     def run(self):
+        self.fast_ww = 37
+        self.fast_aa = 30
         SetSpeed(self.__class__.__name__)
         SetTool(self.TCP_Holder.findChild('mid'))
         SetFrame(self.Retracted_Frame)
 
-        self.juice_wrld(self.Retracted_Frame.findChild('part0'))
+        self.prep_run(self.Retracted_Frame.findChild('config'))
 
 
 

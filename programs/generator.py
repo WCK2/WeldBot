@@ -62,7 +62,8 @@ if __name__ == "__main__":
             main.add(6, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x10', parts=[0])
             main.add(7, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x50', parts=[0,2,4,6,8])
             main.add(8, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x100', parts=[])
-            # main.add(5, Laser_871_025B, workpiece='871_025B', add_auto=False)
+            main.add(9, Laser_871_025B, workpiece='871_025B', tool='TCP 4mm z', fn='Laser_871_025B_x1', parts=[0])
+            main.add(10, Laser_871_025B, workpiece='871_025B', tool='TCP 4mm z', fn='Laser_871_025B_x2', parts=[])
 
             #? Test progs
             main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
@@ -78,14 +79,15 @@ if __name__ == "__main__":
             # Laser_MS3_10in(workpiece='MS3_10in')
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
-            Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
+            # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
 
             # Laser_101_108(workpiece='101_108', parts=[0])
             # Laser_101_108(workpiece='101_108', parts=[0,2,4,6,8])
             # Laser_101_108(workpiece='101_108', parts=[])
             # Laser_101_108(workpiece='101_108', parts=[], test=True)
             
-            # Laser_871_025B(workpiece='871_025B', parts=[])
+            Laser_871_025B(workpiece='871_025B', tool='TCP 4mm z', parts=[0])
+            # Laser_871_025B(workpiece='871_025B', tool_holder_name='TCP 4mm z', parts=[])
 
 
 

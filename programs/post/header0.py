@@ -34,6 +34,7 @@ def CheckRobotFlags(wait=True):
         (23) emergency stop. 0=not, 1=emergency stop
     """
     if not status[2]:
+        # mem.log = 'Emergency stop triggered' # will break the main loop if EM button is pressed in when the program is started
         raise Error(f'Raised ERROR: status[2]: {status[2]}')
     elif not status[3]:
         raise Error(f'Raised ERROR: status[3]: {status[3]}') # tripped when acceleration EM stop happens
