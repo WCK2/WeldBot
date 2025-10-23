@@ -99,6 +99,9 @@ def SetSpeed(s:str):
     elif s=='Laser_871_025B':
         robot.setSlowSpeeds(20, 15, 200, 5)
         robot.setFastSpeeds(*f_mig)
+    elif s=='Laser_767_2205_B':
+        robot.setSlowSpeeds(*s_mig)
+        robot.setFastSpeeds(*f_mig)
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
@@ -128,7 +131,7 @@ def Laser(b, t_delay=None):
 
 def AddSleep(t):
     if MAKE: robot.AddCode("time.sleep(%s)" % t)
-    else: time.sleep(t)
+    else: time.sleep(0.1)
 
 def Post(pn,qty):
     if MAKE: robot.AddCode("PostInc(\"%s\",%s)" % (pn, qty))

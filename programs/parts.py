@@ -863,9 +863,6 @@ class Laser_101_108(GENERIC_LASER):
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
-
-
-
     #~ Run
     def run(self):
         SetSpeed(self.__class__.__name__)
@@ -1101,6 +1098,141 @@ class Laser_871_025B(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.prep_run(self.Retracted_Frame.findChild('config'))
+
+
+
+
+
+#^=========================
+#^ Laser Anti Drill Plate (767-2205 B)
+#^=========================
+class Laser_767_2205_B(GENERIC_LASER):
+    def _get_weld_targets(self, config_tars):
+        Y_OFF_ROW_1 = 4.12
+        Y_OFF_ROW_2 = -85.88
+        Z_OFF = 12.5 # 10.125
+        
+        part_centerpoints = [
+            [114.3, 0 + Y_OFF_ROW_1, Z_OFF - 0.1],
+            [76.2,  0 + Y_OFF_ROW_1, Z_OFF - 0.2],
+            [38.1,  0 + Y_OFF_ROW_1, Z_OFF - 0.4],
+            [0,     0 + Y_OFF_ROW_1, Z_OFF - 0.5],
+            [-38.1, 0 + Y_OFF_ROW_1, Z_OFF - 0.7],
+            [-76.2, 0 + Y_OFF_ROW_1, Z_OFF - 0.9],
+            [-114.3, 0 + Y_OFF_ROW_1, Z_OFF - 1.1],
+
+            #! laser welding cable has too much stress against base for row 2 fixture position
+            # [114.3, 0 + Y_OFF_ROW_2, Z_OFF],
+            # [76.2,  0 + Y_OFF_ROW_2, Z_OFF],
+            # [38.1,  0 + Y_OFF_ROW_2, Z_OFF],
+            # [0,     0 + Y_OFF_ROW_2, Z_OFF],
+            # [-38.1, 0 + Y_OFF_ROW_2, Z_OFF],
+            # [-76.2, 0 + Y_OFF_ROW_2, Z_OFF],
+            # [-114.3, 0 + Y_OFF_ROW_2, Z_OFF],
+        ]
+
+        R = 3.832 / 2 # ACTUAL radius of the through-hole we are welding inside of
+        X_OFF = 7.56 # ACTUAL Center of part to center of through-hole we are welding inside of
+        center_tars, rx_tars, positive_ry_tars, negative_ry_tars = [], [], [], []
+        for n in self.parts:
+            for x_offset in [X_OFF, -X_OFF]:
+                # center - for testing
+                t_center = RelFrame(
+                    config_tars[0],
+                    x = part_centerpoints[n][0] + x_offset,
+                    y = part_centerpoints[n][1],
+                    z = part_centerpoints[n][2]
+                )
+                center_tars.append(t_center)
+
+                # rx
+                t_rx = RelFrame(
+                    config_tars[1],
+                    x = part_centerpoints[n][0] + x_offset,
+                    y = part_centerpoints[n][1] + R,
+                    z = part_centerpoints[n][2]
+                )
+                rx_tars.append(t_rx)
+
+            # +/- ry
+            t_pos_ry = RelFrame(
+                config_tars[3],
+                x = part_centerpoints[n][0] - X_OFF,
+                y = part_centerpoints[n][1],
+                z = part_centerpoints[n][2]
+            )
+            positive_ry_tars.append(t_pos_ry)
+
+            t_neg_ry = RelFrame(
+                config_tars[4],
+                x = part_centerpoints[n][0] + X_OFF,
+                y = part_centerpoints[n][1],
+                z = part_centerpoints[n][2]
+            )
+            negative_ry_tars.append(t_neg_ry)
+
+        return center_tars, rx_tars, positive_ry_tars, negative_ry_tars
+
+    def rx_welds(self, tar_frame):
+        robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
+        config_tars = GetTargetMats(tar_frame)
+        SetFrame(tar_frame)
+        SetTool(self.TCP_Holder.findChild(GetToolNameFromTarFrame(tar_frame)))
+
+        #? prep        
+        if not self.parts:
+            self.parts = list(range(7)) # [0, 1, ..., 6]
+            # self.parts = list(range(14)) # [0, 1, ..., 13] #! laser welding cable has too much stress against base for row 2 fixture position
+
+        center_tars, rx_tars, positive_ry_tars, negative_ry_tars = self._get_weld_targets(config_tars)
+        negative_ry_tars.reverse()
+
+        #? robot controls
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        last_tar = None
+        tars = center_tars if self.test else rx_tars
+        for c, tar in enumerate(tars):
+            extra_easeon = []
+            if c == 0:
+                t_approach = RelFrame(tar, z=75)
+                vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+                robot.nos_MoveL([vv, aa], t_approach, blend=10)
+
+            elif last_tar is not None:
+                last_pos = last_tar.Pos()
+                curr_pos = tar.Pos()
+                dist = calculate_distance(last_pos, curr_pos)
+                if dist > 100:
+                    print(f"Large jump detected ({dist:.1f} mm) between targets {c-1} and {c}")
+                    extra_easeon = [RelFrame(tar, z=50)]
+                if dist > 50:
+                    print(f"Large jump detected ({dist:.1f} mm) between targets {c-1} and {c}")
+                    extra_easeon = [RelFrame(tar, z=25)]
+
+            easeon_tars = extra_easeon + [RelFrame(tar, z=15), RelFrame(tar, z=5), RelFrame(tar, z=1)]
+            autoblend_moves(easeon_tars)
+            run_spot_weld(tar, t_delay=1.5, sp=SLOWAF)
+            
+            if c == len(tars) - 1:
+                robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=75))
+            else:
+                robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=15), blend=1)
+
+            last_tar = tar
+
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+
+    #~ Run
+    def run(self):
+        self.fast_ww = 37
+        self.fast_aa = 30
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        self.rx_welds(self.Retracted_Frame.findChild('config'))
 
 
 
