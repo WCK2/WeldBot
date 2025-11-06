@@ -80,7 +80,7 @@ if __name__ == "__main__":
             rdk.setSimulationSpeed(1.0)
 
             # Laser_CALE(workpiece='CALE')
-            # Laser_MS3_10in(workpiece='MS3_10in')
+            Laser_MS3_10in(workpiece='MS3_10in')
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             # Laser_871_025B(workpiece='871_025B', tool='TCP 4mm z', parts=[0])
             # Laser_871_025B(workpiece='871_025B', tool_holder_name='TCP 4mm z', parts=[])
 
-            Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6])
+            # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6])
             # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6], test=True)
 
 

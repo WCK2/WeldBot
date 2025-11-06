@@ -630,12 +630,12 @@ class Laser_MS3_10in(GENERIC_LASER):
 
         robot.nos_MoveJ(FAST, GetIK(RelFrame(tars[0], x=-100, z=75)), blend=5)
         EaseOn(tars[0], [50, 10], [FAST, FAST])
-        run_circular_weld(tars[0], RelFrame(tars[0], y=-rr, x=-rr/2, z=rr/2), RelFrame(tars[0], x=-rr, z=-rr), speed=SLOWAF, myblend=rr/4) # 45 deg surface
+        run_circular_weld(tars[0], RelFrame(tars[0], y=-rr, x=-rr/2, z=rr/2), RelFrame(tars[0], x=-rr, z=-rr), speed=0.5, myblend=rr/4) # 45 deg surface
         RelativeEaseOff([50], [FAST])
 
         robot.nos_MoveJ(FAST, GetIK(tars[1].Offset(z=50)), blend=5)
         EaseOn(tars[1], [10], [FAST])
-        run_circular_weld(tars[1], RelFrame(tars[1], y=-rr, x=-rr), RelFrame(tars[1], z=-rr), speed=SLOWAF, myblend=rr/4)
+        run_circular_weld(tars[1], RelFrame(tars[1], y=-rr, x=-rr), RelFrame(tars[1], z=-rr), speed=0.5, myblend=rr/4)
         RelativeEaseOff([75], [FAST])
 
         robot.nos_MoveJ(FAST, GetIK(tars[2].Offset(z=50)), blend=5)
@@ -661,10 +661,10 @@ class Laser_MS3_10in(GENERIC_LASER):
 
         robot.nos_MoveJ(FAST, GetIK(tars[1].Offset(z=75)), blend=5)
         EaseOn(tars[1], [10], [FAST])
-        run_circular_weld(tars[1], RelFrame(tars[1], y=rr, x=-rr/2, z=rr/2), RelFrame(tars[1], x=-rr, z=-rr), speed=SLOWAF, myblend=rr/4) # 45 deg surface
+        run_circular_weld(tars[1], RelFrame(tars[1], y=rr, x=-rr/2, z=rr/2), RelFrame(tars[1], x=-rr, z=-rr), speed=0.5, myblend=rr/4) # 45 deg surface
 
         autoblend_moves(get_easeoffon_targets(5, tars[2], 5))
-        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, x=-rr/2, z=rr/2), RelFrame(tars[2], x=-rr, z=-rr), speed=SLOWAF, myblend=rr/4) # 45 deg surface
+        run_circular_weld(tars[2], RelFrame(tars[2], y=rr, x=-rr/2, z=rr/2), RelFrame(tars[2], x=-rr, z=-rr), speed=0.5, myblend=rr/4) # 45 deg surface
         RelativeEaseOff([75], [FAST])
 
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints(), blend=5)
