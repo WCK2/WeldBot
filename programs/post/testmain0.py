@@ -4,15 +4,29 @@ import time
 
 #~ Setup
 def setup():
+    # server.run_server()
+
     robot.init()
-    robot.set_collision_val(1)
+    robot.set_collision_val(2)
 
     plc.init()
 
 
 #~ Main Program
 def main():
-    Laser_CALE()
+    # Laser_MS3_10in()
+    # Laser_Vault_Chassis_x4()
+    # TEST_Laser_Vault_Chassis_x4()
+
+    # TEST_Laser_101_108_x100()
+    # Laser_101_108_x10()
+    # Laser_101_108_x100()
+
+    # Laser_871_025B_x1()
+    # Laser_871_025B_x2()
+
+    # TEST_Laser_767_2205_B_x7()
+    Laser_767_2205_B_x7()
 
 
 

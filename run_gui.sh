@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 PROJECT_DIR="/home/will/repos/PickPlaceWeldBot"
 TIMESTAMP=$(date +"%Y_%m_%d_%H_%M_%S")
 LOG_FILE="$PROJECT_DIR/assets/logs/gui_$TIMESTAMP.log"
@@ -10,3 +10,7 @@ screen -S wmain -X stuff "python -u main.py | tee -a $LOG_FILE^M"
 # screen -dmS wmain bash -c "cd $PROJECT_DIR; set +e; python -u main.py | while IFS= read -r line; do printf '[%s] %s\n' \"\$(date '+%Y-%m-%d %H:%M:%S')\" \"\$line\"; done | tee -a $LOG_FILE; exec bash"
 # screen -dmS wmain bash -i -c "cd $PROJECT_DIR; python -u main.py | while IFS= read -r line; do printf '[%s] %s\n' \"\$(date '+%Y-%m-%d %H:%M:%S')\" \"\$line\"; done | tee -a $LOG_FILE"
 
+
+# Notes
+    # create shell script using nano (do not transfer using filezilla)
+    # chmod 777 both shell scripts and main python program

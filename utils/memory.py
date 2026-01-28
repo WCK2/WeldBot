@@ -2,6 +2,23 @@ import threading
 from PyQt5.QtCore import *
 
 
+PROGRAM_NAMES = {
+    1: '965-0101-B CALE Door', # CALE
+    2: '1881-0150M-B MS3 Door',
+    3: '101-0111 (Qty: 1)',
+    4: '101-0111 (Qty: 2)',
+    5: '101-0111 (Qty: 4)',
+    6: '101-108 (Qty: 1)',
+    7: '101-108 (Qty: 5)',
+    8: '101-108 (Qty: 10)',
+    9: '871-025B (Qty: 1)',
+    10: '871-025B (Qty: 2)',
+    11: '767-2205 B (Qty: 1)',
+    12: '767-2205 B (Qty: 2)',
+    13: '767-2205 B (Qty: 7)',
+}
+
+
 #~ memory class
 class MEM(QObject):
     new_status = pyqtSignal()
@@ -25,6 +42,8 @@ class MEM(QObject):
         self._status = 'Booting'
         self._log = ''
 
+        self._program = 0
+        self.program_name = '-'
         self.program = 1
 
     def _get_status(self):
@@ -45,6 +64,15 @@ class MEM(QObject):
         self.log_message.emit()
     log = property(_get_log, _set_log)
     
+    def _get_program(self):
+        with self.lock:
+            return self._program
+    def _set_program(self, n):
+        with self.lock:
+            self._program = n
+            self.program_name = PROGRAM_NAMES.get(n, '-')
+    program = property(_get_program, _set_program)
+
 
 mem = MEM()
 

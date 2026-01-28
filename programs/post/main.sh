@@ -13,3 +13,9 @@ LOG_FILE="$MY_DIR/assets/logs/robot_$TIMESTAMP.log"
 
 python3 -u main0.py | while IFS= read -r line; do printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$line"; done | tee $LOG_FILE
 #python3 -u main0.py
+
+
+
+# Notes
+    # create shell script using nano (do not transfer using filezilla)
+    # chmod 777 both shell scripts and main python program

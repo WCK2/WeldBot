@@ -5,15 +5,6 @@ from utils.config import settings
 from gui.workers.tpost import post_req_async
 
 
-import random
-import string
-def generate_random_string():
-    length = random.randint(20, 200)
-    chars = string.ascii_letters + " " * 10  # Increase space probability
-    random_string = ''.join(random.choices(chars, k=length))
-    return random_string
-
-
 class TopHeader(QLabel):
     _next_page = pyqtSignal()
     _previous_page = pyqtSignal()
@@ -46,6 +37,16 @@ class TopHeader(QLabel):
         header.addStretch()
         header.addWidget(self.header_clock)
         header.addSpacing(20)
+
+        #~ hidden buttons
+        self.btn_prev_page = QPushButton(self, objectName='btn_invis')
+        self.btn_prev_page.setGeometry(QRect(0, 0, 150, settings.header_height))
+        self.btn_prev_page.clicked.connect(self._previous_page.emit)
+
+        self.btn_next_page = QPushButton(self, objectName='btn_invis')
+        self.btn_next_page.setGeometry(QRect(SCREEN_WIDTH-150, 0, 150, settings.header_height))
+        self.btn_next_page.clicked.connect(self._next_page.emit)
+
 
     #? Header buttons / events
     def __update_clock(self):

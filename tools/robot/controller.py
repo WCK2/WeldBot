@@ -1,6 +1,7 @@
 from jaka.nos.jakabot import *
 import keyboard
 import datetime
+import pyperclip
 
 
 # ip_jaka = '192.168.69.170'
@@ -51,6 +52,22 @@ class CONTROLLER:
         keyboard.add_hotkey('z', lambda: self.change_mm(0))
 
         keyboard.wait('q')
+        
+        robot.waitmove()
+        frame = robot.get_frame(isdegs=True)[1]
+        tool = robot.get_tool(isdegs=True)[1]
+        pose = robot.get_tcp_pose()
+        joints = robot.get_joints()
+        
+        print(f'robot frame: {frame}')
+        print(f'robot tool: {tool}')
+        print(f'last tcp_pose: {pose}')
+        print(f'last joints: {joints}')
+
+        joints_str = ', '.join(f'{x:.6f}' for x in joints)
+        pyperclip.copy(joints_str)
+        # print(" >> joints copied to clipboard")
+        print("copied joints:", pyperclip.paste())
 
     def change_mm(self, n):
         if n==0:

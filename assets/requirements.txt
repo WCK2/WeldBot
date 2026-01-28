@@ -6,6 +6,16 @@ pip install pyrealsense2==2.54.2.5684 opencv-contrib-python matplotlib numpy==1.
 pip install scikit-learn scikit-spatial
 pip install pyqt5
 
+pip install cmake pupil-apriltags
+pip install rich
+
+
+
+
+
+
+
+
 
 
 

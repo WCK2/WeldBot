@@ -50,10 +50,28 @@ if __name__ == "__main__":
             for header in list(robot.HEADER.__dict__.values())[1:-3]: robot.AddCode(header)
             main = CARTELMAIN()
 
+            #? Production Progs
             # main.add(1, MIG_EliteDoor, extended=True, add_auto=True)
             # main.add(2, MIG_MS3CoinReturnCup, workpiece='MS3CoinReturnCup', add_auto=True)
-            # main.add(2, MIG_CanadaMS3_10in, workpiece='CanadaMS3', extended=True, add_auto=True)
-            main.add(1, Laser_CALE, workpiece='CALE', add_auto=False)
+
+            # main.add(1, Laser_CALE, workpiece='CALE')
+            main.add(2, Laser_MS3_10in, workpiece='MS3_10in')
+            main.add(3, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x1', parts=[3])
+            main.add(4, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x2', parts=[2,3])
+            main.add(5, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x4', parts=[0,1,2,3])
+            main.add(6, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x10', parts=[0])
+            main.add(7, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x50', parts=[0,2,4,6,8])
+            main.add(8, Laser_101_108, workpiece='101_108', fn='Laser_101_108_x100', parts=[])
+            main.add(9, Laser_871_025B, workpiece='871_025B', tool='TCP 4mm z', fn='Laser_871_025B_x1', parts=[0])
+            main.add(10, Laser_871_025B, workpiece='871_025B', tool='TCP 4mm z', fn='Laser_871_025B_x2', parts=[])
+            main.add(11, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x1', parts=[0])
+            main.add(12, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x2', parts=[0,1])
+            main.add(13, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6])
+
+            #? Test progs
+            # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
+            # main.add(51, Laser_101_108, workpiece='101_108', fn='TEST_Laser_101_108_x100', parts=[], test=True)
+            # main.add(52, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='TEST_Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6], test=True)
 
             main.generate()
 
@@ -61,7 +79,28 @@ if __name__ == "__main__":
         else:
             rdk.setSimulationSpeed(1.0)
 
-            Laser_CALE(workpiece='CALE', add_auto=False)
+            # Laser_CALE(workpiece='CALE')
+            Laser_MS3_10in(workpiece='MS3_10in')
+            # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
+            # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
+            # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
+
+            # Laser_101_108(workpiece='101_108', parts=[0])
+            # Laser_101_108(workpiece='101_108', parts=[0,2,4,6,8])
+            # Laser_101_108(workpiece='101_108', parts=[])
+            # Laser_101_108(workpiece='101_108', parts=[], test=True)
+            
+            # Laser_871_025B(workpiece='871_025B', tool='TCP 4mm z', parts=[0])
+            # Laser_871_025B(workpiece='871_025B', tool_holder_name='TCP 4mm z', parts=[])
+
+            # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6])
+            # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6], test=True)
+
+
+
+
+
+
 
 
 

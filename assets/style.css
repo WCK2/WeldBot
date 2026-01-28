@@ -82,6 +82,17 @@
 
 
 /*===================================================
+ * page blank
+===================================================*/
+#page_blank #btn_blank {
+    background-color: rgb(0, 0, 0);
+    color: rgb(30,240,110);
+    font-size: 40px;
+    qproperty-alignment: AlignCenter;
+}
+
+
+/*===================================================
  * header
 ===================================================*/
 #header #banner {
@@ -93,6 +104,10 @@
     font-size: 68px;
     font-weight: bold;
     qproperty-alignment: AlignCenter;
+}
+#header #btn_invis {
+    border:0px transparent;
+    background-color: transparent;
 }
 
 
@@ -114,10 +129,10 @@
 #page_home #program_label {
     background-color: rgb(0,0,0);
     color: rgb(179, 179, 179);
-    font-size: 60px;
-    font-weight: bold;
+    font-size: 26px;
     border: 2px solid rgb(102, 102, 102);
-    qproperty-alignment: AlignCenter;
+    padding-top: 10px;
+    qproperty-alignment: AlignTopLeft;
 }
 #page_home QPushButton {
     color: rgb(0,0,0);
@@ -176,6 +191,16 @@
     width: 30px;
 }
 
+#page_home #start_popup {
+    background-color: rgb(0,0,0);
+    color: rgb(228, 224, 20);
+    font-size: 20px;
+    border: 2px solid rgb(102, 102, 102);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    qproperty-alignment: AlignCenter;
+}
 
 
 

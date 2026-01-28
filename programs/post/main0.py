@@ -18,6 +18,7 @@ def main():
                 time.sleep(0.75)
         
         CheckRobotFlags(wait=True)
+        Laser(0)
 
         # start of run
         mem.log = f'running program: {p}'
@@ -26,7 +27,7 @@ def main():
             robot.drag_mode_enable(False)
         
         # run prog
-        # ProgSel(p)
+        ProgSel(p)
 
         # end of run
         robot.waitmove()
@@ -39,14 +40,17 @@ def main():
 def setup():
     # start server
     server.run_server()
+    mem.status = 'booting'
     print('> server running')
-
 
     robot.init()
     robot.servo_move_enable(False)
-    robot.set_collision_val(1)
+    robot.set_collision_val(2)
     # CheckForceSensor()
     print('> jaka initialize success')
+
+    plc.init()
+    print('> plc initialize success')
 
 #~ crash
 def crash():
@@ -57,6 +61,9 @@ def crash():
         if robot.connected:
             # robot.set_DO(0,0)
             robot.disable()
+        elif plc.connected:
+            plc.write_coil(addr.laser_trigger, False)
+
     except:
         print(exc_info())
         print(' ^^ crash crashed :o')
