@@ -501,8 +501,6 @@ class Laser_CALE(GENERIC_LASER):
             
 
 
-
-
 #^=========================
 #^ Laser MS3_10in
 #^=========================
@@ -693,8 +691,6 @@ class Laser_MS3_10in(GENERIC_LASER):
 
 
 
-
-
 #^=========================
 #^ Laser Vault_Chassis
 #^=========================
@@ -870,9 +866,6 @@ class Laser_101_108(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.weld_pins(self.Retracted_Frame.findChild('part_ref'))
-
-
-
 
 
 
@@ -1085,10 +1078,6 @@ class Laser_871_025B(GENERIC_LASER):
         
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
-
-
-
-
     #~ Run
     def run(self):
         self.fast_ww = 37
@@ -1098,8 +1087,6 @@ class Laser_871_025B(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.prep_run(self.Retracted_Frame.findChild('config'))
-
-
 
 
 
@@ -1236,6 +1223,183 @@ class Laser_767_2205_B(GENERIC_LASER):
 
 
 
+#^=========================
+#^ Laser MS3 Coin Return Cup (1881-1015)
+#^=========================
+class Laser_1881_1015(GENERIC_LASER):
+    def _get_weld_targets(self, part_idx: int):
+        DEFAULT_WELD_DISTANCE = 10.0
+        # DEFAULT_RADIUS_MM = 2.0
+
+        part_idx_offsets = {
+            0: [125, 0, 0],
+            1: [-125, 0, 0]
+        }
+
+        weld_targets = {
+            "top": [
+                {
+                    "name": "top_0",
+                    "base": [-27, -36.7, 80.7, 0, 0, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_1",
+                    "base": [-27, -5.4, 78, 0, 0, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_2",
+                    "base": [ 27, -36.7, 80.7, 0, 0, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_3",
+                    "base": [ 27, -5.4, 78, 0, 0, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "rear_left": [
+                {
+                    "name": "rl_0",
+                    "base": [-27, 37, 48, 0, 45, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "rl_1",
+                    "base": [-27, 59.4, 35.4, 0, 45, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "rear_right": [
+                {
+                    "name": "rr_0",
+                    "base": [27, 37, 48, 0, -45, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "rr_1",
+                    "base": [27, 59.4, 35.4, 0, -45, 0],
+                    "offsets": [[0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+        }
+
+        part_shift = part_idx_offsets.get(part_idx, [0,0,0])
+        all_groups = {}
+
+        for group_name, targets in weld_targets.items():
+            group_poses = []
+            for t in targets:
+                xyzrpw = t["base"][:]
+                offset = t["offsets"][part_idx]
+                full_xyzrpw = [
+                    xyzrpw[0] + part_shift[0] + offset[0],
+                    xyzrpw[1] + part_shift[1] + offset[1],
+                    xyzrpw[2] + part_shift[2] + offset[2],
+                    xyzrpw[3], xyzrpw[4], xyzrpw[5]
+                ]
+                pose = xyzrpw_2_pose(full_xyzrpw)
+                pose.name = t["name"]
+                pose.weld_distance = t.get("weld_distance", DEFAULT_WELD_DISTANCE)
+                group_poses.append(pose)
+            all_groups[group_name] = group_poses
+
+        return all_groups
+
+    def part_welds(self):
+        robot.AddCode(f"# {inspect.currentframe().f_code.co_name}")
+        SetFrame(self.Retracted_Frame)
+        SetTool(self.TCP_Holder.findChild('mid'))
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        for part_idx in self.parts:
+            all_groups = self._get_weld_targets(part_idx)
+
+            for group_name, poses in all_groups.items():
+                robot.AddCode(f"# {group_name.upper()} welds, part_idx: {part_idx}")
+
+                # group-specific approach
+                if group_name in ("rear_left", "rear_right"):
+                    t_approach = RelFrame(poses[0], z=100)
+                    vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+                    robot.nos_MoveL([vv, aa], t_approach, blend=10)
+                else:
+                    robot.nos_MoveL(FAST, RelFrame(poses[0], z=75), blend=7.5)
+
+                i = 0
+                while i < len(poses):
+                    p0 = poses[i]
+
+                    # if "spot" in p0.name.lower():
+                    #     rr = 1.5 # p0.weld_radius
+                    #     run_circular_weld(p0, RelFrame(p0, x=-rr, z=rr), RelFrame(p0, y=rr), speed=SLOWAF)
+                    #     i += 1
+                    #     continue
+
+                    # sssume linear pair
+                    if i + 1 >= len(poses):
+                        raise ValueError(f"Warning: unpaired linear target {p0.name}")
+
+                    p1 = poses[i+1]
+                    v = subs3(p1.Pos(), p0.Pos())
+
+                    L = norm(v)
+                    if L < 1:
+                        raise ValueError(f"Warning: very close targets {p0.name} and {p1.name}")
+                    
+                    v_hat = normalize3(v)
+                    delta_0 = mult3(v_hat, p0.weld_distance/2)
+                    delta_1 = mult3(v_hat, p1.weld_distance/2)
+                    # print(f"v: {v}, v_hat: {v_hat}, delta_0: {delta_0}, delta_1: {delta_1}")
+
+                    p0_start = RelFrame(p0, -delta_0[0], -delta_0[1], -delta_0[2])
+                    p0_end = RelFrame(p0, delta_0[0], delta_0[1], delta_0[2])
+
+                    p1_start = RelFrame(p1, -delta_1[0], -delta_1[1], -delta_1[2])
+                    p1_end = RelFrame(p1, delta_1[0], delta_1[1], delta_1[2])
+
+                    # final approach
+                    EaseOn(p0_start, [20, 5, 1], [FASTAF, FAST, FAST])
+                    run_seam_weld(p0_start, p0_end, speed=SLOW, delay=0.15)
+
+                    autoblend_moves(get_easeoffon_targets(20, p1_start, [15, 5, 1]))
+                    run_seam_weld(p1_start, p1_end, speed=SLOW, delay=0.15)
+                    robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=4)
+
+                    i += 2
+
+                # group-specific retract
+                print(f"Retracting from {group_name} welds")
+                robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=75), blend=5)
+
+            # end of part_idx
+            robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        # end of all parts
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
 
+    #~ Run
+    def run(self):
+        self.fast_ww = 37
+        self.fast_aa = 30
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
 
+        if not self.parts:
+            self.parts = list(range(2))
+
+        self.part_welds()
+        
+        

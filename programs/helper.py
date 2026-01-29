@@ -102,6 +102,10 @@ def SetSpeed(s:str):
     elif s=='Laser_767_2205_B':
         robot.setSlowSpeeds(*s_mig)
         robot.setFastSpeeds(*f_mig)
+    elif s=='Laser_1881_1015':
+        robot.setSlowSpeeds(*s_mig)
+        # robot.setFastSpeeds(75, 25, 100, 10) #! testing
+        robot.setFastSpeeds(*f_mig)
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
