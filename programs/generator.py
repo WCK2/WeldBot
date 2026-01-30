@@ -74,6 +74,7 @@ if __name__ == "__main__":
             # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
             # main.add(51, Laser_101_108, workpiece='101_108', fn='TEST_Laser_101_108_x100', parts=[], test=True)
             # main.add(52, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='TEST_Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6], test=True)
+            # main.add(53, Laser_1881_1015, workpiece='1881-1015', fn='TEST_Laser_1881_1015_x1', parts=[0], test=True)
 
             main.generate()
 
@@ -98,8 +99,9 @@ if __name__ == "__main__":
             # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6])
             # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6], test=True)
 
-            # Laser_1881_1015(workpiece='1881-1015', parts=[0])
-            Laser_1881_1015(workpiece='1881-1015', parts=[])
+            Laser_1881_1015(workpiece='1881-1015', parts=[0])
+            # Laser_1881_1015(workpiece='1881-1015', parts=[])
+            # Laser_1881_1015(workpiece='1881-1015', parts=[0], test=True)
 
 
 

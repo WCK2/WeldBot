@@ -1346,7 +1346,7 @@ class Laser_1881_1015(GENERIC_LASER):
                     #     i += 1
                     #     continue
 
-                    # sssume linear pair
+                    # asssume linear pair
                     if i + 1 >= len(poses):
                         raise ValueError(f"Warning: unpaired linear target {p0.name}")
 
@@ -1368,12 +1368,25 @@ class Laser_1881_1015(GENERIC_LASER):
                     p1_start = RelFrame(p1, -delta_1[0], -delta_1[1], -delta_1[2])
                     p1_end = RelFrame(p1, delta_1[0], delta_1[1], delta_1[2])
 
+                    if self.test:
+                        p0_start = p0
+                        p1_start = p1
+
                     # final approach
                     EaseOn(p0_start, [20, 5, 1], [FASTAF, FAST, FAST])
-                    run_seam_weld(p0_start, p0_end, speed=SLOW, delay=0.15)
+
+                    if self.test:
+                        run_spot_weld(p0, t_delay=0.5)
+                    else:
+                        run_seam_weld(p0_start, p0_end, speed=SLOW, delay=0.15)
 
                     autoblend_moves(get_easeoffon_targets(20, p1_start, [15, 5, 1]))
-                    run_seam_weld(p1_start, p1_end, speed=SLOW, delay=0.15)
+                    
+                    if self.test:
+                        run_spot_weld(p1, t_delay=0.5)
+                    else:
+                        run_seam_weld(p1_start, p1_end, speed=SLOW, delay=0.15)
+                    
                     robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=4)
 
                     i += 2

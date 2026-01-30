@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Generated: January 29, 2026 -- 14:20:37 
+# Generated: January 30, 2026 -- 09:25:36 
 
 from header0 import *
 
@@ -2659,6 +2659,95 @@ def Laser_1881_1015_x2():
     robot.movej(joints=[-200.787,118.938,-99.581,71.1697,90.1659,0.235893],speed=120.0,accel=90.0,blend=0.0)
     # DONE
 
+#=================================================
+# TEST_Laser_1881_1015_x1
+#=================================================
+def TEST_Laser_1881_1015_x1():
+    print("running TEST_Laser_1881_1015_x1")
+    # INITIALIZATION
+    robot.set_tool([3.216, -15.094, 355.596, -179.976, -0.438, 1.441])
+    robot.set_frame([-705.7052, 24.87574, 172.20213, 1.487, 0.329, 88.189])
+    # part_welds
+    robot.set_frame([-705.7052, 24.87574, 172.20213, 1.487, 0.329, 88.189])
+    robot.set_tool([3.216, -15.094, 355.596, -179.976, -0.438, 1.441])
+    robot.movej(joints=[-194.612,99.3548,-91.506,92.6964,92.0807,-13.3326],speed=120.0,accel=90.0,blend=0.0)
+    # TOP welds, part_idx: 0
+    robot.movel_joints(joints=[-202.259,95.0253,-90.3387,86.7223,90.4088,-21.8746],speed=300.0,accel=125.0,blend=7.5)
+    robot.movel_joints(joints=[-202.188,95.0696,-95.8964,92.2362,90.4071,-21.8028],speed=450.0,accel=187.5,blend=3.0)
+    robot.movel_joints(joints=[-202.168,94.9927,-97.3305,93.7473,90.4066,-21.7832],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-202.163,94.9657,-97.7072,94.1511,90.4064,-21.778],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-202.162,94.9585,-97.801,94.2521,90.4064,-21.7767],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-202.188,95.0696,-95.8964,92.2362,90.4071,-21.8028],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-201.239,91.9848,-93.701,93.1322,90.3837,-20.8544],speed=300.0,accel=125.0,blend=2.0)
+    robot.movel_joints(joints=[-201.227,91.923,-94.6443,94.1374,90.3834,-20.8423],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-201.222,91.8935,-95.0173,94.5399,90.3832,-20.8375],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-201.221,91.8857,-95.1101,94.6405,90.3832,-20.8363],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-201.245,92.0094,-93.2234,92.6299,90.3838,-20.8605],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-206.658,94.0526,-94.9875,92.3083,90.5157,-26.2718],speed=450.0,accel=187.5,blend=3.0)
+    robot.movel_joints(joints=[-206.636,93.9744,-96.419,93.8182,90.5151,-26.2503],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-206.631,93.9471,-96.7949,94.2216,90.515,-26.2446],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-206.629,93.9398,-96.8885,94.3224,90.515,-26.2431],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-206.658,94.0526,-94.9875,92.3083,90.5157,-26.2718],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-205.53,91.0187,-92.7858,93.1504,90.4885,-25.1447],speed=300.0,accel=125.0,blend=2.0)
+    robot.movel_joints(joints=[-205.517,90.9569,-93.7281,94.1546,90.4882,-25.1314],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-205.512,90.9274,-94.1006,94.5566,90.4881,-25.1261],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-205.51,90.9197,-94.1933,94.6571,90.4881,-25.1247],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-205.537,91.0432,-92.3086,92.6486,90.4887,-25.1513],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-205.637,90.9053,-84.6438,85.121,90.4911,-25.2514],speed=300.0,accel=125.0,blend=5.0)
+    # REAR_LEFT welds, part_idx: 0
+    robot.movel_joints(joints=[-221.516,75.2098,-76.2376,59.3541,123.678,-51.5755],speed=36.533,accel=18.267,blend=10.0)
+    robot.movel_joints(joints=[-222.142,73.5493,-82.7031,67.128,123.347,-52.2132],speed=450.0,accel=187.5,blend=3.0)
+    robot.movel_joints(joints=[-221.564,73.9084,-84.2973,68.6878,123.652,-51.6248],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-221.408,73.9982,-84.7154,69.1044,123.734,-51.4657],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-221.369,74.0202,-84.8195,69.2086,123.754,-51.4258],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-222.142,73.5493,-82.7031,67.128,123.347,-52.2132],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-220.956,71.6251,-81.8668,68.8879,123.97,-51.0008],speed=300.0,accel=125.0,blend=2.0)
+    robot.movel_joints(joints=[-220.573,71.8435,-82.9133,69.937,124.168,-50.6063],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-220.42,71.9264,-83.3267,70.3571,124.248,-50.447],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-220.381,71.9467,-83.4295,70.4621,124.268,-50.4071],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-220.409,72.3382,-81.9065,68.5312,124.253,-50.4362],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-220.515,73.2385,-75.5132,61.1761,124.199,-50.5456],speed=300.0,accel=125.0,blend=5.0)
+    # REAR_RIGHT welds, part_idx: 0
+    robot.movel_joints(joints=[-178.603,85.635,-94.7577,97.3457,44.9002,3.14112],speed=20.08,accel=30.0,blend=10.0)
+    robot.movel_joints(joints=[-177.464,83.2117,-100.688,104.558,44.9469,4.75231],speed=450.0,accel=187.5,blend=3.0)
+    robot.movel_joints(joints=[-178.292,83.0614,-101.818,106.668,44.9107,3.58067],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-178.514,83.0139,-102.113,107.232,44.903,3.26727],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-178.569,83.0015,-102.186,107.374,44.9013,3.18886],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-177.464,83.2117,-100.688,104.558,44.9469,4.75231],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-177.857,80.7091,-99.5273,106.294,44.9282,4.19602],speed=300.0,accel=125.0,blend=2.0)
+    robot.movel_joints(joints=[-178.393,80.5876,-100.253,107.679,44.9071,3.43742],speed=300.0,accel=125.0,blend=0.8)
+    robot.movel_joints(joints=[-178.608,80.5337,-100.539,108.234,44.9,3.13335],speed=300.0,accel=125.0,blend=0.0)
+    robot.movel_joints(joints=[-178.662,80.5197,-100.61,108.372,44.8984,3.05728],speed=15.0,accel=200.0,blend=0.0)
+    Laser(1)
+    time.sleep(0.5)
+    Laser(0)
+    robot.movel_joints(joints=[-178.668,81.2085,-99.2992,106.38,44.8982,3.04795],speed=300.0,accel=125.0,blend=4.0)
+    robot.movel_joints(joints=[-178.693,83.1995,-93.8216,98.936,44.8975,3.01285],speed=300.0,accel=125.0,blend=5.0)
+    robot.movej(joints=[-194.612,99.3548,-91.506,92.6964,92.0807,-13.3326],speed=120.0,accel=90.0,blend=0.0)
+    robot.movej(joints=[-200.787,118.938,-99.581,71.1697,90.1659,0.235893],speed=120.0,accel=90.0,blend=0.0)
+    # DONE
+
 
 #=================================================
 # Main program select
@@ -2680,7 +2769,8 @@ def ProgSel(p):
     elif p==13: Laser_767_2205_B_x7()
     elif p==14: Laser_1881_1015_x1()
     elif p==15: Laser_1881_1015_x2()
+    elif p==53: TEST_Laser_1881_1015_x1()
     else: return prog_ext(p)
 
 #====================== END ======================
-# Generated: January 29, 2026 -- 14:20:40 
+# Generated: January 30, 2026 -- 09:25:39 
