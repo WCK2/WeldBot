@@ -1237,6 +1237,32 @@ class Laser_1881_1015(GENERIC_LASER):
         }
 
         weld_targets = {
+            # "front": [
+            #     {
+            #         "name": "front_0",
+            #         "base": [-27, -63.6, 72.8, 35, 0, 0],
+            #         "offsets": [[0, 0, 0], [0, 0, 0]],
+            #         "weld_radius": 0,
+            #     },
+            #     {
+            #         "name": "front_1",
+            #         "base": [-27, -56.9, 72.8, 35, 0, 0],
+            #         "offsets": [[0, 0, 0], [0, 0, 0]],
+            #         "weld_radius": 0,
+            #     },
+            #     {
+            #         "name": "front_2",
+            #         "base": [27, -63.6, 72.8, 35, 0, 0],
+            #         "offsets": [[0, 0, 0], [0, 0, 0]],
+            #         "weld_radius": 0,
+            #     },
+            #     {
+            #         "name": "front_3",
+            #         "base": [27, -56.9, 72.8, 35, 0, 0],
+            #         "offsets": [[0, 0, 0], [0, 0, 0]],
+            #         "weld_radius": 0,
+            #     },
+            # ],
             "top": [
                 {
                     "name": "top_0",
@@ -1310,6 +1336,7 @@ class Laser_1881_1015(GENERIC_LASER):
                 pose = xyzrpw_2_pose(full_xyzrpw)
                 pose.name = t["name"]
                 pose.weld_distance = t.get("weld_distance", DEFAULT_WELD_DISTANCE)
+                pose.weld_radius = t.get("weld_radius", None)
                 group_poses.append(pose)
             all_groups[group_name] = group_poses
 
@@ -1329,7 +1356,7 @@ class Laser_1881_1015(GENERIC_LASER):
                 robot.AddCode(f"# {group_name.upper()} welds, part_idx: {part_idx}")
 
                 # group-specific approach
-                if group_name in ("rear_left", "rear_right"):
+                if group_name in ("front", "top", "rear_left", "rear_right"):
                     t_approach = RelFrame(poses[0], z=100)
                     vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
                     robot.nos_MoveL([vv, aa], t_approach, blend=10)
@@ -1339,12 +1366,22 @@ class Laser_1881_1015(GENERIC_LASER):
                 i = 0
                 while i < len(poses):
                     p0 = poses[i]
+                    
+                    if hasattr(p0, 'weld_radius') and p0.weld_radius is not None:
+                        rr = p0.weld_radius
 
-                    # if "spot" in p0.name.lower():
-                    #     rr = 1.5 # p0.weld_radius
-                    #     run_circular_weld(p0, RelFrame(p0, x=-rr, z=rr), RelFrame(p0, y=rr), speed=SLOWAF)
-                    #     i += 1
-                    #     continue
+                        # final approach
+                        EaseOn(p0, [20, 5, 1], [FASTAF, FAST, FAST])
+
+                        if rr == 0 or self.test:
+                            run_spot_weld(p0, t_delay=0.5)
+                        else:
+                            run_circular_weld(p0, RelFrame(p0, x=rr), RelFrame(p0, y=rr), speed=SLOWAF)
+
+                        robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=4)
+
+                        i += 1
+                        continue
 
                     # asssume linear pair
                     if i + 1 >= len(poses):
