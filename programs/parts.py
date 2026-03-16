@@ -1294,7 +1294,7 @@ class Laser_1881_1015(GENERIC_LASER):
                     "name": "rl_0",
                     "base": [-27, 37, 48, 0, 45, 0],
                     "offsets": [[0, 0, 0], [0, 0, 0]],
-                    "weld_distance": 10.0
+                    "weld_distance": 7.0
                 },
                 {
                     "name": "rl_1",
@@ -1308,7 +1308,7 @@ class Laser_1881_1015(GENERIC_LASER):
                     "name": "rr_0",
                     "base": [27, 37, 48, 0, -45, 0],
                     "offsets": [[0, 0, 0], [0, 0, 0]],
-                    "weld_distance": 10.0
+                    "weld_distance": 7.0
                 },
                 {
                     "name": "rr_1",
