@@ -342,6 +342,13 @@ def custom_speed_movel(p0, p1, max_rot_velocity, aa, log=True):
             v_mm_s=f"{v:.1f}",
             t_s=f"{t:.3f}",
         )
+    
+    if L < 0.01 and theta > 0.01:
+        raise ValueError(f"Invalid move in custom_speed_movel: very small translation but significant rotation. \np0={p0}, p1={p1}")
+    if v < 0.01:
+        raise ValueError(f"Cannot use near zero velocity. \np0={p0}, p1={p1}")
+    if new_aa < 0.01:
+        raise ValueError(f"Cannot use near zero acceleration. \np0={p0}, p1={p1}")
 
     return v, new_aa
 
