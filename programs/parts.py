@@ -1463,13 +1463,13 @@ class Laser_767_119(GENERIC_LASER):
             "top_left": [
                 {
                     "name": "top_0",
-                    "base": [-27, -26.5, 94, 0, 15, 0],
+                    "base": [-27, -26.5, 94, 0, 35, 0],
                     "offsets": [0, 0, -0.2],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "top_1",
-                    "base": [-27, -62.47, 94, 0, 15, 0],
+                    "base": [-27, -62.47, 94, 0, 35, 0],
                     "offsets": [0, 0, -0.2],
                     "weld_distance": 10.0
                 }
@@ -1477,13 +1477,13 @@ class Laser_767_119(GENERIC_LASER):
             "top_right": [
                 {
                     "name": "top_2",
-                    "base": [ 27, -26.5, 94, 0, -15, 0],
+                    "base": [ 27, -26.5, 94, 0, -35, 0],
                     "offsets": [-1.2, 0, -0.2],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "top_3",
-                    "base": [ 27, -62.47, 94, 0, -15, 0],
+                    "base": [ 27, -62.47, 94, 0, -35, 0],
                     "offsets": [-1.2, 0, -0.2],
                     "weld_distance": 10.0
                 },
@@ -1491,24 +1491,24 @@ class Laser_767_119(GENERIC_LASER):
             "front_left_angled": [
                 {
                     "name": "fla_0",
-                    "base": [-27, -76.5, 85.7, 35, 15, 0],
+                    "base": [-27, -76.5, 85.7, 35, 25, 0],
                     "offsets": [0.75, 0, 0],
                 },
                 {
                     "name": "fla_1",
-                    "base": [-27, -85.15, 73.4, 35, 15, 0],
+                    "base": [-27, -85.15, 73.4, 35, 25, 0],
                     "offsets": [0.75, 0, 0],
                 }
             ],
             "front_right_angled": [
                 {
                     "name": "fra_0",
-                    "base": [27, -76.5, 85.7, 35, -15, 0],
+                    "base": [27, -76.5, 85.7, 35, -25, 0],
                     "offsets": [-1.0, 0, 0],
                 },
                 {
                     "name": "fra_1",
-                    "base": [27, -85.15, 73.4, 35, -15, 0],
+                    "base": [27, -85.15, 73.4, 35, -25, 0],
                     "offsets": [-1.0, 0, 0],
                 },
             ],
@@ -1543,11 +1543,31 @@ class Laser_767_119(GENERIC_LASER):
             "left_side": [
                 {
                     "name": "left_side_0",
+                    "base": [-28.3, -36.4, 91.1, 0, -45, 0],
+                    "offsets": [0, -1, -0.5],
+                },
+                {
+                    "name": "left_side_1",
+                    "base": [-28.3, -41.4, 86.9, 0, -45, 0],
+                    "offsets": [0, -1, -0.5],
+                },
+                {
+                    "name": "left_side_2",
+                    "base": [-28.3, -89.5, 53.4, 0, -45, 0],
+                    "offsets": [0, 0.5, -1.2],
+                },
+                {
+                    "name": "left_side_3",
+                    "base": [-28.3, -90.15, 38.5, 0, -45, 0],
+                    "offsets": [0, -0.5, -1.2],
+                },
+                {
+                    "name": "left_side_4",
                     "base": [-28.3, -85.4, 14.1, 0, -45, 0],
                     "offsets": [0, -0.5, -1.2],
                 },
                 {
-                    "name": "left_side_1",
+                    "name": "left_side_5",
                     "base": [-28.3, -81.2, 11.38, 0, -45, 0],
                     "offsets": [0, -0.5, -1.2],
                 }
@@ -1555,11 +1575,31 @@ class Laser_767_119(GENERIC_LASER):
             "right_side": [
                 {
                     "name": "right_side_0",
+                    "base": [28.3, -36.4, 91.1, 0, 45, 0],
+                    "offsets": [0, 0, 1.0],
+                },
+                {
+                    "name": "right_side_1",
+                    "base": [28.3, -41.4, 86.9, 0, 45, 0],
+                    "offsets": [0, 0, 1.0],
+                },
+                {
+                    "name": "right_side_2",
+                    "base": [28.3, -89.5, 53.4, 0, 45, 0],
+                    "offsets": [0, 1, 1.5],
+                },
+                {
+                    "name": "right_side_3",
+                    "base": [28.3, -90.15, 38.5, 0, 45, 0],
+                    "offsets": [0, 0, 1.5],
+                },
+                {
+                    "name": "right_side_4",
                     "base": [28.3, -85.4, 14.1, 0, 45, 0],
                     "offsets": [0, 0, 1.5],
                 },
                 {
-                    "name": "right_side_1",
+                    "name": "right_side_5",
                     "base": [28.3, -81.2, 11.38, 0, 45, 0],
                     "offsets": [0, 0, 1.5],
                 }
@@ -1597,14 +1637,14 @@ class Laser_767_119(GENERIC_LASER):
             t_approach = RelFrame(poses[0], z=40)
             vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
             robot.nos_MoveL([vv, aa], t_approach, blend=5)
-        elif group_name in ("front_left"):
-            robot.nos_MoveL(FAST, RelTool(poses[0], z=30), blend=3)
+        # elif group_name in ("front_left"):
+        #     robot.nos_MoveL(FAST, RelTool(poses[0], z=30), blend=3)
         elif group_name in ("front_right_angled", "front_left_angled", "front_right"):
             t_approach = RelTool(poses[0], z=50)
             vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
             robot.nos_MoveL([vv, aa], t_approach, blend=5)
         elif group_name in ("left_side", "right_side"):
-            t_approach = RelFrame(RelTool(poses[0], z=50), z=75)
+            t_approach = RelFrame(RelTool(poses[0], z=50), z=15)
             vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
             robot.nos_MoveL([vv, aa], t_approach, blend=10)
         else:
@@ -1614,11 +1654,11 @@ class Laser_767_119(GENERIC_LASER):
         if group_name in ("top_left", "top_right"):
             robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=30), blend=3)
         elif group_name in ("front_left_angled", "front_right_angled"):
-            robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=30), blend=3)
-        elif group_name == "front_left":
-            robot.nos_MoveL(FAST, RelFrame(RelTool(robot.Pose(), z=20), z=30), blend=3)
-        elif group_name == "front_right":
-            robot.nos_MoveL(FASTAF, RelFrame(robot.Pose(), y=25, z=100), blend=3)
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=3)
+        # elif group_name == "front_left":
+        #     robot.nos_MoveL(FAST, RelFrame(RelTool(robot.Pose(), z=20), z=30), blend=3)
+        # elif group_name == "front_right":
+        #     robot.nos_MoveL(FASTAF, RelFrame(robot.Pose(), y=25, z=100), blend=3)
         elif group_name in ("left_side", "right_side"):
             robot.nos_MoveL(FASTAF, RelFrame(RelTool(robot.Pose(), z=50), z=100), blend=3)
         else:
@@ -1662,14 +1702,14 @@ class Laser_767_119(GENERIC_LASER):
         if self.test:
             run_spot_weld(p0, t_delay=0.5)
         else:
-            run_seam_weld(p0_start, p0_end, speed=weld_speed, delay=0.15)
+            run_seam_weld(p0_start, p0_end, speed=weld_speed, delay=0.25)
 
         autoblend_moves(get_easeoffon_targets(20, p1_start, [15, 5, 1]))
         
         if self.test:
             run_spot_weld(p1, t_delay=0.5)
         else:
-            run_seam_weld(p1_start, p1_end, speed=weld_speed, delay=0.15)
+            run_seam_weld(p1_start, p1_end, speed=weld_speed, delay=0.25)
 
         robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
 
@@ -1681,18 +1721,30 @@ class Laser_767_119(GENERIC_LASER):
             autoblend_moves(get_easeoffon_targets(20, p1, [15, 5, 1]))
             run_spot_weld(p1, t_delay=0.5)
         else:
-            run_seam_weld(p0, p1, speed=weld_speed, delay=0.15)
+            run_seam_weld(p0, p1, speed=weld_speed, delay=0.25)
 
         robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
 
+    def _get_group_weld_speed(self, weld_speed, weld_index):
+        if isinstance(weld_speed, (list, tuple)):
+            if weld_index >= len(weld_speed):
+                raise ValueError(f"Missing weld speed for weld index {weld_index}")
+            return weld_speed[weld_index]
+
+        return weld_speed
+
     def _run_group_targets(self, poses, weld_speed):
         i = 0
+        weld_index = 0
         while i < len(poses):
             p0 = poses[i]
+            current_weld_speed = self._get_group_weld_speed(weld_speed, weld_index)
+            # print(f"current_weld_speed: {current_weld_speed}")
 
             if hasattr(p0, 'weld_radius') and p0.weld_radius is not None:
-                self._run_circular_weld(p0, weld_speed)
+                self._run_circular_weld(p0, current_weld_speed)
                 i += 1
+                weld_index += 1
                 continue
 
             if i + 1 >= len(poses):
@@ -1701,11 +1753,12 @@ class Laser_767_119(GENERIC_LASER):
             p1 = poses[i+1]
 
             if hasattr(p0, 'weld_distance'):
-                self._run_linear_pair_weld(p0, p1, weld_speed)
+                self._run_linear_pair_weld(p0, p1, current_weld_speed)
             else:
-                self._run_direct_pair_weld(p0, p1, weld_speed)
+                self._run_direct_pair_weld(p0, p1, current_weld_speed)
 
             i += 2
+            weld_index += 1
 
     def _run_group(self, all_groups, group_name, weld_speed=SLOW):
         poses = all_groups[group_name]
@@ -1723,16 +1776,16 @@ class Laser_767_119(GENERIC_LASER):
 
         all_groups = self._get_weld_targets()
 
-        self._run_group(all_groups, "top_left")
-        self._run_group(all_groups, "top_right")
-        self._run_group(all_groups, "front_right_angled")
-        self._run_group(all_groups, "front_left_angled")
-        SetTool(self.TCP_Holder_long.findChild('mid'))
-        self._run_group(all_groups, "front_left", weld_speed=SLOWAF)
-        self._run_group(all_groups, "front_right", weld_speed=SLOWAF)
-        SetTool(self.TCP_Holder.findChild('mid'))
-        self._run_group(all_groups, "right_side", weld_speed=SLOWAF)
-        self._run_group(all_groups, "left_side", weld_speed=SLOWAF)
+        self._run_group(all_groups, "top_left", weld_speed=0.5)
+        self._run_group(all_groups, "top_right", weld_speed=0.5)
+        self._run_group(all_groups, "front_right_angled", weld_speed=0.5)
+        self._run_group(all_groups, "front_left_angled", weld_speed=0.5)
+        # SetTool(self.TCP_Holder_long.findChild('mid'))
+        # self._run_group(all_groups, "front_left", weld_speed=SLOWAF)
+        # self._run_group(all_groups, "front_right", weld_speed=SLOWAF)
+        # SetTool(self.TCP_Holder.findChild('mid'))
+        self._run_group(all_groups, "right_side", weld_speed=[0.2, SLOWAF, 0.2])
+        self._run_group(all_groups, "left_side", weld_speed=[0.2, SLOWAF, 0.2])
 
         # end
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
