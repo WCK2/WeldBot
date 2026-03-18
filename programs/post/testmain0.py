@@ -29,10 +29,10 @@ def main():
     # Laser_767_2205_B_x7()
 
     # TEST_Laser_1881_1015_x1()
-    Laser_1881_1015_x1()
+    # Laser_1881_1015_x1()
     # Laser_1881_1015_x2()
 
-    # TEST_Laser_767_119_x1()
+    TEST_Laser_767_119_x1()
     # Laser_767_119()
 
 

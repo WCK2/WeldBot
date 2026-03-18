@@ -1511,13 +1511,13 @@ class Laser_767_119(GENERIC_LASER):
         weld_targets = {
             "top_left": [
                 {
-                    "name": "top_0",
+                    "name": "top_left_0",
                     "base": [-27, -26.5, 94, 0, 35, 0],
                     "offsets": [0, 0, -0.2],
                     "weld_distance": 10.0
                 },
                 {
-                    "name": "top_1",
+                    "name": "top_left_1",
                     "base": [-27, -62.47, 94, 0, 35, 0],
                     "offsets": [0, 0, -0.2],
                     "weld_distance": 10.0
@@ -1525,17 +1525,41 @@ class Laser_767_119(GENERIC_LASER):
             ],
             "top_right": [
                 {
-                    "name": "top_2",
-                    "base": [ 27, -26.5, 94, 0, -35, 0],
+                    "name": "top_right_0",
+                    "base": [27, -26.5, 94, 0, -35, 0],
                     "offsets": [-1.2, 0, -0.2],
                     "weld_distance": 10.0
                 },
                 {
-                    "name": "top_3",
-                    "base": [ 27, -62.47, 94, 0, -35, 0],
+                    "name": "top_right_1",
+                    "base": [27, -62.47, 94, 0, -35, 0],
                     "offsets": [-1.2, 0, -0.2],
                     "weld_distance": 10.0
                 },
+            ],
+            "top_left_inside": [
+                {
+                    "name": "top_left_inside_0",
+                    "base": [-27, -40.44, 87.53, 20, 35, 0],
+                    "offsets": [0, 0, 0],
+                },
+                {
+                    "name": "top_left_inside_1",
+                    "base": [-27, -43.73, 84.75, 20, 35, 0],
+                    "offsets": [0, 0, 0],
+                }
+            ],
+            "top_right_inside": [
+                {
+                    "name": "top_right_inside_0",
+                    "base": [27, -40.44, 87.53, 20, -35, 0],
+                    "offsets": [-0.4, 0, 0],
+                },
+                {
+                    "name": "top_right_inside_1",
+                    "base": [27, -43.73, 84.75, 20, -35, 0],
+                    "offsets": [-0.4, 0, 0],
+                }
             ],
             "front_left_angled": [
                 {
@@ -1590,16 +1614,16 @@ class Laser_767_119(GENERIC_LASER):
                 }
             ],
             "left_side": [
-                {
-                    "name": "left_side_0",
-                    "base": [-28.3, -36.4, 91.1, 0, -45, 0],
-                    "offsets": [0, -1, -0.5],
-                },
-                {
-                    "name": "left_side_1",
-                    "base": [-28.3, -41.4, 86.9, 0, -45, 0],
-                    "offsets": [0, -1, -0.5],
-                },
+                # {
+                #     "name": "left_side_0",
+                #     "base": [-28.3, -36.4, 91.1, 0, -45, 0],
+                #     "offsets": [0, -1, -0.5],
+                # },
+                # {
+                #     "name": "left_side_1",
+                #     "base": [-28.3, -41.4, 86.9, 0, -45, 0],
+                #     "offsets": [0, -1, -0.5],
+                # },
                 {
                     "name": "left_side_2",
                     "base": [-28.3, -89.5, 53.4, 0, -45, 0],
@@ -1622,16 +1646,16 @@ class Laser_767_119(GENERIC_LASER):
                 }
             ],
             "right_side": [
-                {
-                    "name": "right_side_0",
-                    "base": [28.3, -36.4, 91.1, 0, 45, 0],
-                    "offsets": [0, 0, 1.0],
-                },
-                {
-                    "name": "right_side_1",
-                    "base": [28.3, -41.4, 86.9, 0, 45, 0],
-                    "offsets": [0, 0, 1.0],
-                },
+                # {
+                #     "name": "right_side_0",
+                #     "base": [28.3, -36.4, 91.1, 0, 45, 0],
+                #     "offsets": [0, 0, 1.0],
+                # },
+                # {
+                #     "name": "right_side_1",
+                #     "base": [28.3, -41.4, 86.9, 0, 45, 0],
+                #     "offsets": [0, 0, 1.0],
+                # },
                 {
                     "name": "right_side_2",
                     "base": [28.3, -89.5, 53.4, 0, 45, 0],
@@ -1680,14 +1704,10 @@ class Laser_767_119(GENERIC_LASER):
         return all_groups
 
     def _approach_group(self, group_name, poses):
-        robot.AddCode(f"# {group_name.upper()} welds")
-
-        if group_name in ("top_left", "top_right"):
+        if group_name in ("top_left", "top_right", "top_left_inside", "top_right_inside"):
             t_approach = RelFrame(poses[0], z=40)
             vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
             robot.nos_MoveL([vv, aa], t_approach, blend=5)
-        # elif group_name in ("front_left"):
-        #     robot.nos_MoveL(FAST, RelTool(poses[0], z=30), blend=3)
         elif group_name in ("front_right_angled", "front_left_angled", "front_right"):
             t_approach = RelTool(poses[0], z=50)
             vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
@@ -1700,14 +1720,10 @@ class Laser_767_119(GENERIC_LASER):
             print(f"{group_name} is missing an approach block")
 
     def _retract_group(self, group_name):
-        if group_name in ("top_left", "top_right"):
+        if group_name in ("top_left", "top_right", "front_left_angled", "top_right_inside"):
             robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=30), blend=3)
-        elif group_name in ("front_left_angled", "front_right_angled"):
+        elif group_name in ("front_right_angled", "top_left_inside"):
             robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=3)
-        # elif group_name == "front_left":
-        #     robot.nos_MoveL(FAST, RelFrame(RelTool(robot.Pose(), z=20), z=30), blend=3)
-        # elif group_name == "front_right":
-        #     robot.nos_MoveL(FASTAF, RelFrame(robot.Pose(), y=25, z=100), blend=3)
         elif group_name in ("left_side", "right_side"):
             robot.nos_MoveL(FASTAF, RelFrame(RelTool(robot.Pose(), z=50), z=100), blend=3)
         else:
@@ -1812,6 +1828,7 @@ class Laser_767_119(GENERIC_LASER):
     def _run_group(self, all_groups, group_name, weld_speed=SLOW):
         poses = all_groups[group_name]
 
+        robot.AddCode(f"# {group_name.upper()} welds")
         self._approach_group(group_name, poses)
         self._run_group_targets(poses, weld_speed)
         self._retract_group(group_name)
@@ -1829,12 +1846,10 @@ class Laser_767_119(GENERIC_LASER):
         self._run_group(all_groups, "top_right", weld_speed=0.5)
         self._run_group(all_groups, "front_right_angled", weld_speed=0.5)
         self._run_group(all_groups, "front_left_angled", weld_speed=0.5)
-        # SetTool(self.TCP_Holder_long.findChild('mid'))
-        # self._run_group(all_groups, "front_left", weld_speed=SLOWAF)
-        # self._run_group(all_groups, "front_right", weld_speed=SLOWAF)
-        # SetTool(self.TCP_Holder.findChild('mid'))
-        self._run_group(all_groups, "right_side", weld_speed=[0.2, SLOWAF, 0.2])
-        self._run_group(all_groups, "left_side", weld_speed=[0.2, SLOWAF, 0.2])
+        self._run_group(all_groups, "top_left_inside", weld_speed=0.2)
+        self._run_group(all_groups, "top_right_inside", weld_speed=0.2)
+        self._run_group(all_groups, "left_side", weld_speed=[SLOWAF, 0.2])
+        self._run_group(all_groups, "right_side", weld_speed=[SLOWAF, 0.2])
 
         # end
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
