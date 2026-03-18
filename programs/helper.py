@@ -102,6 +102,14 @@ def SetSpeed(s:str):
     elif s=='Laser_767_2205_B':
         robot.setSlowSpeeds(*s_mig)
         robot.setFastSpeeds(*f_mig)
+    elif s=='Laser_1881_1015':
+        robot.setSlowSpeeds(*s_mig)
+        # robot.setFastSpeeds(75, 25, 100, 10) #! testing
+        robot.setFastSpeeds(*f_mig)
+    elif s=='Laser_767_119':
+        robot.setSlowSpeeds(*s_mig)
+        # robot.setFastSpeeds(75, 25, 100, 10); #! testing
+        robot.setFastSpeeds(*f_mig)
     else:
         print(f'!!Warning!! No speed set for "{s}"')
 
@@ -334,6 +342,13 @@ def custom_speed_movel(p0, p1, max_rot_velocity, aa, log=True):
             v_mm_s=f"{v:.1f}",
             t_s=f"{t:.3f}",
         )
+    
+    if L < 0.01 and theta > 0.01:
+        raise ValueError(f"Invalid move in custom_speed_movel: very small translation but significant rotation. \np0={p0}, p1={p1}")
+    if v < 0.01:
+        raise ValueError(f"Cannot use near zero velocity. \np0={p0}, p1={p1}")
+    if new_aa < 0.01:
+        raise ValueError(f"Cannot use near zero acceleration. \np0={p0}, p1={p1}")
 
     return v, new_aa
 

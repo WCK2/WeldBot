@@ -501,8 +501,6 @@ class Laser_CALE(GENERIC_LASER):
             
 
 
-
-
 #^=========================
 #^ Laser MS3_10in
 #^=========================
@@ -693,8 +691,6 @@ class Laser_MS3_10in(GENERIC_LASER):
 
 
 
-
-
 #^=========================
 #^ Laser Vault_Chassis
 #^=========================
@@ -870,9 +866,6 @@ class Laser_101_108(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.weld_pins(self.Retracted_Frame.findChild('part_ref'))
-
-
-
 
 
 
@@ -1085,10 +1078,6 @@ class Laser_871_025B(GENERIC_LASER):
         
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
-
-
-
-
     #~ Run
     def run(self):
         self.fast_ww = 37
@@ -1098,8 +1087,6 @@ class Laser_871_025B(GENERIC_LASER):
         SetFrame(self.Retracted_Frame)
 
         self.prep_run(self.Retracted_Frame.findChild('config'))
-
-
 
 
 
@@ -1236,6 +1223,662 @@ class Laser_767_2205_B(GENERIC_LASER):
 
 
 
+#^=========================
+#^ Laser MS3 Coin Return Cup (1881-1015)
+#^=========================
+class Laser_1881_1015(GENERIC_LASER):
+    def _get_weld_targets(self, part_idx: int):
+        DEFAULT_WELD_DISTANCE = 10.0
+        # DEFAULT_RADIUS_MM = 2.0
+
+        part_idx_offsets = {
+            0: [125, 0, 0],
+            1: [-125, 0, 0]
+        }
+
+        weld_targets = {
+            "front_left": [
+                {
+                    "name": "front_left_0",
+                    "base": [-27, -50.15, 80.56, 25, 30, 0],
+                    "offsets": [[-0.75, 0, 0], [0, 0, 0]],
+                },
+                {
+                    "name": "front_left_1",
+                    "base": [-27, -55.9, 73, 25, 30, 0],
+                    "offsets": [[-0.75, 0, 0], [0, 0, 0]],
+                },
+            ],
+            "front_right": [
+                {
+                    "name": "front_right_0",
+                    "base": [27, -50.15, 80.56, 25, -30, 0],
+                    "offsets": [[-0.75, 0, 0], [0, 0, 0]],
+                },
+                {
+                    "name": "front_right_1",
+                    "base": [27, -55.9, 73, 25, -30, 0],
+                    "offsets": [[-0.75, 0, 0], [0, 0, 0]],
+                },
+            ],
+            "top_left": [
+                {
+                    "name": "top_left_0",
+                    "base": [-27, -36.7, 80.7, 0, 30, 0],
+                    "offsets": [[-1.0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_left_1",
+                    "base": [-27, -5.4, 78, 0, 30, 0],
+                    "offsets": [[-1.25, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "top_right": [
+                {
+                    "name": "top_right_0",
+                    "base": [ 27, -36.7, 80.7, 0, -30, 0],
+                    "offsets": [[-1.0, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_right_1",
+                    "base": [ 27, -5.4, 78, 0, -30, 0],
+                    "offsets": [[-1.25, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "rear_left": [
+                {
+                    "name": "rl_0",
+                    "base": [-27, 37, 48, 0, 45, 0],
+                    "offsets": [[-1.5, 0, 0], [0, 0, 0]],
+                    "weld_distance": 7.0
+                },
+                {
+                    "name": "rl_1",
+                    "base": [-27, 59.4, 35.4, 0, 45, 0],
+                    "offsets": [[-1.5, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "rear_right": [
+                {
+                    "name": "rr_0",
+                    "base": [27, 37, 48, 0, -45, 0],
+                    "offsets": [[-1.5, 0, 0], [0, 0, 0]],
+                    "weld_distance": 7.0
+                },
+                {
+                    "name": "rr_1",
+                    "base": [27, 59.4, 35.4, 0, -45, 0],
+                    "offsets": [[-1.5, 0, 0], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+            ],
+        }
+
+        part_shift = part_idx_offsets.get(part_idx, [0,0,0])
+        all_groups = {}
+
+        for group_name, targets in weld_targets.items():
+            group_poses = []
+            for t in targets:
+                xyzrpw = t["base"][:]
+                offset = t["offsets"][part_idx]
+                full_xyzrpw = [
+                    xyzrpw[0] + part_shift[0] + offset[0],
+                    xyzrpw[1] + part_shift[1] + offset[1],
+                    xyzrpw[2] + part_shift[2] + offset[2],
+                    xyzrpw[3], xyzrpw[4], xyzrpw[5]
+                ]
+                pose = xyzrpw_2_pose(full_xyzrpw)
+                pose.name = t["name"]
+                if "weld_distance" in t:
+                    pose.weld_distance = t["weld_distance"]
+                if "weld_radius" in t:
+                    pose.weld_radius = t["weld_radius"]
+                group_poses.append(pose)
+            all_groups[group_name] = group_poses
+
+        return all_groups
+
+    def _approach_group(self, group_name, poses):
+        if group_name in ("rear_right"):
+            t_approach = RelFrame(RelTool(poses[0], z=20), z=30)
+            vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+            robot.nos_MoveL([vv, aa], t_approach, blend=3)
+        elif group_name in ("front_right", "front_left", "top_left", "top_right", "rear_left"):
+            t_approach = RelTool(poses[0], z=40)
+            vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+            robot.nos_MoveL([vv, aa], t_approach, blend=3)
+        else:
+            print(f"{group_name} is missing an approach block")
+
+    def _retract_group(self, group_name):
+        if group_name in ("rear_left"):
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=40), blend=5)
+        else:
+            robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _run_circular_weld(self, p0, weld_speed):
+        rr = p0.weld_radius
+
+        EaseOn(p0, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if rr == 0 or self.test:
+            run_spot_weld(p0, t_delay=0.5)
+        else:
+            run_circular_weld(p0, RelFrame(p0, x=rr), RelFrame(p0, y=rr), speed=weld_speed)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _run_linear_pair_weld(self, p0, p1, weld_speed):
+        v = subs3(p1.Pos(), p0.Pos())
+
+        L = norm(v)
+        if L < 1:
+            raise ValueError(f"Warning: very close targets {p0.name} and {p1.name}")
+
+        v_hat = normalize3(v)
+        delta_0 = mult3(v_hat, p0.weld_distance/2)
+        delta_1 = mult3(v_hat, p1.weld_distance/2)
+
+        p0_start = RelFrame(p0, -delta_0[0], -delta_0[1], -delta_0[2])
+        p0_end = RelFrame(p0, delta_0[0], delta_0[1], delta_0[2])
+
+        p1_start = RelFrame(p1, -delta_1[0], -delta_1[1], -delta_1[2])
+        p1_end = RelFrame(p1, delta_1[0], delta_1[1], delta_1[2])
+
+        if self.test:
+            p0_start = p0
+            p1_start = p1
+
+        EaseOn(p0_start, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if self.test:
+            run_spot_weld(p0, t_delay=0.5)
+        else:
+            run_seam_weld(p0_start, p0_end, speed=weld_speed, delay=0.25)
+
+        autoblend_moves(get_easeoffon_targets(20, p1_start, [15, 5, 1]))
+
+        if self.test:
+            run_spot_weld(p1, t_delay=0.5)
+        else:
+            run_seam_weld(p1_start, p1_end, speed=weld_speed, delay=0.25)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _run_direct_pair_weld(self, p0, p1, weld_speed):
+        EaseOn(p0, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if self.test:
+            run_spot_weld(p0, t_delay=0.5)
+            autoblend_moves(get_easeoffon_targets(20, p1, [15, 5, 1]))
+            run_spot_weld(p1, t_delay=0.5)
+        else:
+            run_seam_weld(p0, p1, speed=weld_speed, delay=0.25)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _get_group_weld_speed(self, weld_speed, weld_index):
+        if isinstance(weld_speed, (list, tuple)):
+            if weld_index >= len(weld_speed):
+                raise ValueError(f"Missing weld speed for weld index {weld_index}")
+            return weld_speed[weld_index]
+
+        return weld_speed
+
+    def _run_group_targets(self, poses, weld_speed):
+        i = 0
+        weld_index = 0
+        while i < len(poses):
+            p0 = poses[i]
+            current_weld_speed = self._get_group_weld_speed(weld_speed, weld_index)
+
+            if hasattr(p0, 'weld_radius') and p0.weld_radius is not None:
+                self._run_circular_weld(p0, current_weld_speed)
+                i += 1
+                weld_index += 1
+                continue
+
+            if i + 1 >= len(poses):
+                raise ValueError(f"Warning: unpaired target {p0.name}")
+
+            p1 = poses[i+1]
+
+            if hasattr(p0, 'weld_distance'):
+                self._run_linear_pair_weld(p0, p1, current_weld_speed)
+            else:
+                self._run_direct_pair_weld(p0, p1, current_weld_speed)
+
+            i += 2
+            weld_index += 1
+
+    def _run_group(self, all_groups, group_name, part_idx, weld_speed=SLOW):
+        poses = all_groups[group_name]
+
+        robot.AddCode(f"# {group_name.upper()} welds, part_idx: {part_idx}")
+        self._approach_group(group_name, poses)
+        self._run_group_targets(poses, weld_speed)
+        self._retract_group(group_name)
+
+    def part_welds(self):
+        robot.AddCode(f"# {inspect.currentframe().f_code.co_name}")
+        SetFrame(self.Retracted_Frame)
+        SetTool(self.TCP_Holder.findChild('mid'))
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        for part_idx in self.parts:
+            all_groups = self._get_weld_targets(part_idx)
+            self._run_group(all_groups, "front_right", part_idx, weld_speed=0.4)
+            self._run_group(all_groups, "front_left", part_idx, weld_speed=0.4)
+
+            # SetTool(self.TCP_Holder.findChild('mid'))
+            self._run_group(all_groups, "top_left", part_idx, weld_speed=0.4)
+            self._run_group(all_groups, "top_right", part_idx, weld_speed=0.4)
+            self._run_group(all_groups, "rear_right", part_idx, weld_speed=0.4)
+            self._run_group(all_groups, "rear_left", part_idx, weld_speed=0.4)
+
+            robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
 
+    #~ Run
+    def run(self):
+        self.fast_ww = 37
+        self.fast_aa = 30
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
 
+        if not self.parts:
+            self.parts = list(range(2))
+
+        self.part_welds()
+        
+        
+
+#^=========================
+#^ Laser Smaller Coin Return Cup (767-119)
+#^=========================
+class Laser_767_119(GENERIC_LASER):
+    def _get_part_idx(self):
+        """ parts = [0] => Fixture A | parts = [1] => Fixture B """
+        if not self.parts:
+            self.parts = [0]
+
+        if len(self.parts) != 1:
+            raise ValueError(f"{self.__class__.__name__} expects self.parts to contain exactly one item, got {self.parts}")
+
+        part_idx = self.parts[0]
+        if part_idx not in (0, 1):
+            raise ValueError(f"{self.__class__.__name__} only supports part_idx 0 or 1, got {part_idx}")
+        
+        return part_idx
+
+    def _get_weld_targets(self, part_idx: int):
+        weld_targets = {
+            "top_left": [
+                {
+                    "name": "top_left_0",
+                    "base": [-27, -26.5, 94, 0, 35, 0],
+                    "offsets": [[0, 0, -0.2], [-1.25, 0, -0.2]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_left_1",
+                    "base": [-27, -62.47, 94, 0, 35, 0],
+                    "offsets": [[0, 0, -0.2], [-1.25, 0, -0.2]],
+                    "weld_distance": 10.0
+                }
+            ],
+            "top_right": [
+                {
+                    "name": "top_right_0",
+                    "base": [27, -26.5, 94, 0, -35, 0],
+                    "offsets": [[-1.2, 0, -0.2], [-2.5, 0, -0.2]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "top_right_1",
+                    "base": [27, -62.47, 94, 0, -35, 0],
+                    "offsets": [[-1.2, 0, -0.2], [-2.5, 0, -0.2]],
+                    "weld_distance": 10.0
+                },
+            ],
+            "top_left_inside": [
+                {
+                    "name": "top_left_inside_0",
+                    "base": [-27, -40.44, 87.53, 20, 35, 0],
+                    "offsets": [[0, 0, 0], [-0.75, -0.75, 0]],
+                },
+                {
+                    "name": "top_left_inside_1",
+                    "base": [-27, -43.73, 84.75, 20, 35, 0],
+                    "offsets": [[0, 0, 0], [-0.75, -0.75, 0]],
+                }
+            ],
+            "top_right_inside": [
+                {
+                    "name": "top_right_inside_0",
+                    "base": [27, -40.44, 87.53, 20, -35, 0],
+                    "offsets": [[-0.4, 0, 0], [-2.25, -1.25, 0]],
+                },
+                {
+                    "name": "top_right_inside_1",
+                    "base": [27, -43.73, 84.75, 20, -35, 0],
+                    "offsets": [[-0.4, 0, 0], [-2.25, -1.25, 0]],
+                }
+            ],
+            "front_left_angled": [
+                {
+                    "name": "fla_0",
+                    "base": [-27, -76.5, 85.7, 35, 25, 0],
+                    "offsets": [[0.75, 0, 0], [-0.25, 0, 0]],
+                },
+                {
+                    "name": "fla_1",
+                    "base": [-27, -85.15, 73.4, 35, 25, 0],
+                    "offsets": [[0.75, 0, 0], [-0.25, 0, 0]],
+                }
+            ],
+            "front_right_angled": [
+                {
+                    "name": "fra_0",
+                    "base": [27, -76.5, 85.7, 35, -25, 0],
+                    "offsets": [[-1.0, 0, 0], [-2.0, 0, 0]],
+                },
+                {
+                    "name": "fra_1",
+                    "base": [27, -85.15, 73.4, 35, -25, 0],
+                    "offsets": [[-1.0, 0, 0], [-2.0, 0, 0]],
+                },
+            ],
+            "front_left": [
+                {
+                    "name": "fl_0",
+                    "base": [-27, -90.7, 59.1, 35, 15, 0],
+                    "offsets": [[0.75, 0, 2.5], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "fl_1",
+                    "base": [-27, -92.0, 34.15, 35, 15, 0],
+                    "offsets": [[0.75, 0, 2.5], [0, 0, 0]],
+                    "weld_distance": 8.0
+                }
+            ],
+            "front_right": [
+                {
+                    "name": "fr_0",
+                    "base": [27, -90.7, 59.1, 35, -15, 0],
+                    "offsets": [[-1.1, 0, 2.5], [0, 0, 0]],
+                    "weld_distance": 10.0
+                },
+                {
+                    "name": "fr_1",
+                    "base": [27, -92.0, 34.15, 35, -15, 0],
+                    "offsets": [[-1.1, 0, 2.5], [0, 0, 0]],
+                    "weld_distance": 8.0
+                }
+            ],
+            "left_side": [
+                # {
+                #     "name": "left_side_0",
+                #     "base": [-28.3, -36.4, 91.1, 0, -45, 0],
+                #     "offsets": [0, -1, -0.5],
+                # },
+                # {
+                #     "name": "left_side_1",
+                #     "base": [-28.3, -41.4, 86.9, 0, -45, 0],
+                #     "offsets": [0, -1, -0.5],
+                # },
+                {
+                    "name": "left_side_2",
+                    "base": [-28.3, -89.5, 53.4, 0, -45, 0],
+                    "offsets": [[0, 0.5, -1.2], [0, -1.0, -1.2]],
+                },
+                {
+                    "name": "left_side_3",
+                    "base": [-28.3, -90.15, 38.5, 0, -45, 0],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
+                },
+                {
+                    "name": "left_side_4",
+                    "base": [-28.3, -85.4, 14.1, 0, -45, 0],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
+                },
+                {
+                    "name": "left_side_5",
+                    "base": [-28.3, -81.2, 11.38, 0, -45, 0],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
+                }
+            ],
+            "right_side": [
+                # {
+                #     "name": "right_side_0",
+                #     "base": [28.3, -36.4, 91.1, 0, 45, 0],
+                #     "offsets": [0, 0, 1.0],
+                # },
+                # {
+                #     "name": "right_side_1",
+                #     "base": [28.3, -41.4, 86.9, 0, 45, 0],
+                #     "offsets": [0, 0, 1.0],
+                # },
+                {
+                    "name": "right_side_2",
+                    "base": [28.3, -89.5, 53.4, 0, 45, 0],
+                    "offsets": [[0, 1, 1.5], [0, 0.25, 1.5]],
+                },
+                {
+                    "name": "right_side_3",
+                    "base": [28.3, -90.15, 38.5, 0, 45, 0],
+                    "offsets": [[0, 0, 1.5], [0, -0.5, 1.5]],
+                },
+                {
+                    "name": "right_side_4",
+                    "base": [28.3, -85.4, 14.1, 0, 45, 0],
+                    "offsets": [[0, 0, 1.5], [0, 0, 2.0]],
+                },
+                {
+                    "name": "right_side_5",
+                    "base": [28.3, -81.2, 11.38, 0, 45, 0],
+                    "offsets": [[0, 0, 1.5], [0, 0, 1.5]],
+                }
+            ],
+        }
+
+        all_groups = {}
+
+        for group_name, targets in weld_targets.items():
+            group_poses = []
+            for t in targets:
+                xyzrpw = t["base"][:]
+                offset = t["offsets"][part_idx]
+                full_xyzrpw = [
+                    xyzrpw[0] + offset[0],
+                    xyzrpw[1] + offset[1],
+                    xyzrpw[2] + offset[2],
+                    xyzrpw[3], xyzrpw[4], xyzrpw[5]
+                ]
+                pose = xyzrpw_2_pose(full_xyzrpw)
+                pose.name = t["name"]
+                if "weld_distance" in t:
+                    pose.weld_distance = t["weld_distance"]
+                if "weld_radius" in t:
+                    pose.weld_radius = t["weld_radius"]
+                group_poses.append(pose)
+            all_groups[group_name] = group_poses
+
+        return all_groups
+
+    def _approach_group(self, group_name, poses):
+        if group_name in ("top_left", "top_right", "top_left_inside", "top_right_inside"):
+            t_approach = RelFrame(poses[0], z=40)
+            vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+            robot.nos_MoveL([vv, aa], t_approach, blend=5)
+        elif group_name in ("front_right_angled", "front_left_angled", "front_right"):
+            t_approach = RelTool(poses[0], z=50)
+            vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+            robot.nos_MoveL([vv, aa], t_approach, blend=5)
+        elif group_name in ("left_side", "right_side"):
+            t_approach = RelFrame(RelTool(poses[0], z=50), z=15)
+            vv, aa = custom_speed_movel(robot.Pose(), t_approach, self.fast_ww, self.fast_aa)
+            robot.nos_MoveL([vv, aa], t_approach, blend=10)
+        else:
+            print(f"{group_name} is missing an approach block")
+
+    def _retract_group(self, group_name):
+        if group_name in ("top_left", "top_right", "front_left_angled", "top_right_inside"):
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=30), blend=3)
+        elif group_name in ("front_right_angled", "top_left_inside"):
+            robot.nos_MoveL(FAST, RelFrame(robot.Pose(), z=20), blend=3)
+        elif group_name in ("left_side", "right_side"):
+            robot.nos_MoveL(FASTAF, RelFrame(RelTool(robot.Pose(), z=50), z=100), blend=3)
+        else:
+            print(f"{group_name} is missing a retract block")
+
+    def _run_circular_weld(self, p0, weld_speed):
+        rr = p0.weld_radius
+
+        EaseOn(p0, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if rr == 0 or self.test:
+            run_spot_weld(p0, t_delay=0.5)
+        else:
+            run_circular_weld(p0, RelFrame(p0, x=rr), RelFrame(p0, y=rr), speed=weld_speed)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _run_linear_pair_weld(self, p0, p1, weld_speed):
+        v = subs3(p1.Pos(), p0.Pos())
+
+        L = norm(v)
+        if L < 1:
+            raise ValueError(f"Warning: very close targets {p0.name} and {p1.name}")
+        
+        v_hat = normalize3(v)
+        delta_0 = mult3(v_hat, p0.weld_distance/2)
+        delta_1 = mult3(v_hat, p1.weld_distance/2)
+
+        p0_start = RelFrame(p0, -delta_0[0], -delta_0[1], -delta_0[2])
+        p0_end = RelFrame(p0, delta_0[0], delta_0[1], delta_0[2])
+
+        p1_start = RelFrame(p1, -delta_1[0], -delta_1[1], -delta_1[2])
+        p1_end = RelFrame(p1, delta_1[0], delta_1[1], delta_1[2])
+
+        if self.test:
+            p0_start = p0
+            p1_start = p1
+
+        EaseOn(p0_start, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if self.test:
+            run_spot_weld(p0, t_delay=0.5)
+        else:
+            run_seam_weld(p0_start, p0_end, speed=weld_speed, delay=0.25)
+
+        autoblend_moves(get_easeoffon_targets(20, p1_start, [15, 5, 1]))
+        
+        if self.test:
+            run_spot_weld(p1, t_delay=0.5)
+        else:
+            run_seam_weld(p1_start, p1_end, speed=weld_speed, delay=0.25)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _run_direct_pair_weld(self, p0, p1, weld_speed):
+        EaseOn(p0, [20, 5, 1], [FASTAF, FAST, FAST])
+
+        if self.test:
+            run_spot_weld(p0, t_delay=0.5)
+            autoblend_moves(get_easeoffon_targets(20, p1, [15, 5, 1]))
+            run_spot_weld(p1, t_delay=0.5)
+        else:
+            run_seam_weld(p0, p1, speed=weld_speed, delay=0.25)
+
+        robot.nos_MoveL(FAST, RelTool(robot.Pose(), z=20), blend=4)
+
+    def _get_group_weld_speed(self, weld_speed, weld_index):
+        if isinstance(weld_speed, (list, tuple)):
+            if weld_index >= len(weld_speed):
+                raise ValueError(f"Missing weld speed for weld index {weld_index}")
+            return weld_speed[weld_index]
+
+        return weld_speed
+
+    def _run_group_targets(self, poses, weld_speed):
+        i = 0
+        weld_index = 0
+        while i < len(poses):
+            p0 = poses[i]
+            current_weld_speed = self._get_group_weld_speed(weld_speed, weld_index)
+            # print(f"current_weld_speed: {current_weld_speed}")
+
+            if hasattr(p0, 'weld_radius') and p0.weld_radius is not None:
+                self._run_circular_weld(p0, current_weld_speed)
+                i += 1
+                weld_index += 1
+                continue
+
+            if i + 1 >= len(poses):
+                raise ValueError(f"Warning: unpaired target {p0.name}")
+
+            p1 = poses[i+1]
+
+            if hasattr(p0, 'weld_distance'):
+                self._run_linear_pair_weld(p0, p1, current_weld_speed)
+            else:
+                self._run_direct_pair_weld(p0, p1, current_weld_speed)
+
+            i += 2
+            weld_index += 1
+
+    def _run_group(self, all_groups, group_name, part_idx, weld_speed=SLOW):
+        poses = all_groups[group_name]
+
+        robot.AddCode(f"# {group_name.upper()} welds, part_idx: {part_idx}")
+        self._approach_group(group_name, poses)
+        self._run_group_targets(poses, weld_speed)
+        self._retract_group(group_name)
+
+    def part_welds(self):
+        robot.AddCode(f"# {inspect.currentframe().f_code.co_name}")
+        SetFrame(self.Retracted_Frame)
+        SetTool(self.TCP_Holder.findChild('mid'))
+
+        robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
+
+        part_idx = self._get_part_idx()
+        all_groups = self._get_weld_targets(part_idx)
+
+        self._run_group(all_groups, "top_left", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "top_right", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "front_right_angled", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "front_left_angled", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "top_left_inside", part_idx, weld_speed=0.2)
+        self._run_group(all_groups, "top_right_inside", part_idx, weld_speed=0.2)
+        self._run_group(all_groups, "left_side", part_idx, weld_speed=[SLOWAF, 0.2])
+        self._run_group(all_groups, "right_side", part_idx, weld_speed=[SLOWAF, 0.2])
+
+        # end
+        robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
+
+
+    #~ Run
+    def run(self):
+        self.fast_ww = 37
+        self.fast_aa = 30
+        SetSpeed(self.__class__.__name__)
+        SetTool(self.TCP_Holder.findChild('mid'))
+        SetFrame(self.Retracted_Frame)
+
+        self._get_part_idx()
+        self.part_welds()
+        
+        

@@ -67,11 +67,18 @@ if __name__ == "__main__":
             main.add(11, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x1', parts=[0])
             main.add(12, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x2', parts=[0,1])
             main.add(13, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6])
+            main.add(14, Laser_1881_1015, workpiece='1881-1015', tool='TCP 5.5mm z', fn='Laser_1881_1015_x1', parts=[0])
+            # main.add(15, Laser_1881_1015, workpiece='1881-1015', tool='TCP 5.5mm z', fn='Laser_1881_1015_x2', parts=[0,1])
+            main.add(16, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='Laser_767_119_FixtureA', parts=[0])
+            main.add(17, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='Laser_767_119_FixtureB', parts=[1])
 
             #? Test progs
             # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
             # main.add(51, Laser_101_108, workpiece='101_108', fn='TEST_Laser_101_108_x100', parts=[], test=True)
             # main.add(52, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='TEST_Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6], test=True)
+            # main.add(53, Laser_1881_1015, workpiece='1881-1015', tool='TCP 5.5mm z', fn='TEST_Laser_1881_1015_x1', parts=[0], test=True)
+            main.add(54, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureA', parts=[0], test=True)
+            main.add(55, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureB', parts=[1], test=True)
 
             main.generate()
 
@@ -80,7 +87,7 @@ if __name__ == "__main__":
             rdk.setSimulationSpeed(1.0)
 
             # Laser_CALE(workpiece='CALE')
-            Laser_MS3_10in(workpiece='MS3_10in')
+            # Laser_MS3_10in(workpiece='MS3_10in')
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[0,1,2,3])
@@ -96,8 +103,14 @@ if __name__ == "__main__":
             # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6])
             # Laser_767_2205_B(workpiece='767-2205 B', tool='TCP 5.5mm z', parts=[0,1,2,3,4,5,6], test=True)
 
+            # Laser_1881_1015(workpiece='1881-1015', tool='TCP 5.5mm z', parts=[0])
+            # Laser_1881_1015(workpiece='1881-1015', tool='TCP 5.5mm z', parts=[])
+            # Laser_1881_1015(workpiece='1881-1015', tool='TCP 5.5mm z', parts=[0], test=True)
 
-
+            # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[0])
+            Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[1])
+            # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[0] test=True)
+            # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[1] test=True)
 
 
 
