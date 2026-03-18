@@ -505,6 +505,10 @@ class Laser_CALE(GENERIC_LASER):
 #^ Laser MS3_10in
 #^=========================
 class Laser_MS3_10in(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 2m 57s (177 seconds)
+    """
     #~ Spot Welds
     def UpperStiffener(self, tar_frame):
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
@@ -695,6 +699,12 @@ class Laser_MS3_10in(GENERIC_LASER):
 #^ Laser Vault_Chassis
 #^=========================
 class Laser_Vault_Chassis(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 0m 30s
+        Qty 2: 0m 42s
+        Qty 4: 1m 08s (68 seconds)
+    """
     def weld_pins(self, tar_frame):
         """
         Weld only the specified part indices.
@@ -771,6 +781,11 @@ class Laser_101_108(GENERIC_LASER):
         Weld only the specified part indices.
         - self.parts: list of indices (0-based), e.g. [0,1] to weld parts in block 1 and 2.
         If None or [], weld all.
+
+        Runtime:
+            Qty 1 (10x parts): 0m 40s
+            Qty 5 (50x parts): 3m 04s (184 seconds)
+            Qty 10 (100x parts): 6m 04s (364 seconds)
         """
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
@@ -873,6 +888,11 @@ class Laser_101_108(GENERIC_LASER):
 #^ Laser 871_025B (Tandem Battery Mount)
 #^=========================
 class Laser_871_025B(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 0m 24s
+        Qty 2: 0m 41s
+    """
     def _get_weld_targets(self, part_idx: int, config_tars):
         part_idx_offsets = {
             0: [0, 0, 0],
@@ -1094,6 +1114,12 @@ class Laser_871_025B(GENERIC_LASER):
 #^ Laser Anti Drill Plate (767-2205 B)
 #^=========================
 class Laser_767_2205_B(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 0m 17s
+        Qty 2: 0m 24s
+        Qty 7: 1m 01s (61 seconds)
+    """
     def _get_weld_targets(self, config_tars):
         Y_OFF_ROW_1 = 4.12
         Y_OFF_ROW_2 = -85.88
@@ -1227,6 +1253,11 @@ class Laser_767_2205_B(GENERIC_LASER):
 #^ Laser MS3 Coin Return Cup (1881-1015)
 #^=========================
 class Laser_1881_1015(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 1m 05s (65 seconds)
+        Qty 2: TBD
+    """
     def _get_weld_targets(self, part_idx: int):
         DEFAULT_WELD_DISTANCE = 10.0
         # DEFAULT_RADIUS_MM = 2.0
@@ -1500,13 +1531,17 @@ class Laser_1881_1015(GENERIC_LASER):
             self.parts = list(range(2))
 
         self.part_welds()
-        
-        
+
+
 
 #^=========================
 #^ Laser Smaller Coin Return Cup (767-119)
 #^=========================
 class Laser_767_119(GENERIC_LASER):
+    """
+    Runtime:
+        Qty 1: 1m 25s (85 seconds)
+    """
     def _get_part_idx(self):
         """ parts = [0] => Fixture A | parts = [1] => Fixture B """
         if not self.parts:
@@ -1880,5 +1915,6 @@ class Laser_767_119(GENERIC_LASER):
 
         self._get_part_idx()
         self.part_welds()
-        
-        
+
+
+
