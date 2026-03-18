@@ -1507,19 +1507,33 @@ class Laser_1881_1015(GENERIC_LASER):
 #^ Laser Smaller Coin Return Cup (767-119)
 #^=========================
 class Laser_767_119(GENERIC_LASER):
-    def _get_weld_targets(self):
+    def _get_part_idx(self):
+        """ parts = [0] => Fixture A | parts = [1] => Fixture B """
+        if not self.parts:
+            self.parts = [0]
+
+        if len(self.parts) != 1:
+            raise ValueError(f"{self.__class__.__name__} expects self.parts to contain exactly one item, got {self.parts}")
+
+        part_idx = self.parts[0]
+        if part_idx not in (0, 1):
+            raise ValueError(f"{self.__class__.__name__} only supports part_idx 0 or 1, got {part_idx}")
+        
+        return part_idx
+
+    def _get_weld_targets(self, part_idx: int):
         weld_targets = {
             "top_left": [
                 {
                     "name": "top_left_0",
                     "base": [-27, -26.5, 94, 0, 35, 0],
-                    "offsets": [0, 0, -0.2],
+                    "offsets": [[0, 0, -0.2], [-1.25, 0, -0.2]],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "top_left_1",
                     "base": [-27, -62.47, 94, 0, 35, 0],
-                    "offsets": [0, 0, -0.2],
+                    "offsets": [[0, 0, -0.2], [-1.25, 0, -0.2]],
                     "weld_distance": 10.0
                 }
             ],
@@ -1527,13 +1541,13 @@ class Laser_767_119(GENERIC_LASER):
                 {
                     "name": "top_right_0",
                     "base": [27, -26.5, 94, 0, -35, 0],
-                    "offsets": [-1.2, 0, -0.2],
+                    "offsets": [[-1.2, 0, -0.2], [-2.5, 0, -0.2]],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "top_right_1",
                     "base": [27, -62.47, 94, 0, -35, 0],
-                    "offsets": [-1.2, 0, -0.2],
+                    "offsets": [[-1.2, 0, -0.2], [-2.5, 0, -0.2]],
                     "weld_distance": 10.0
                 },
             ],
@@ -1541,61 +1555,61 @@ class Laser_767_119(GENERIC_LASER):
                 {
                     "name": "top_left_inside_0",
                     "base": [-27, -40.44, 87.53, 20, 35, 0],
-                    "offsets": [0, 0, 0],
+                    "offsets": [[0, 0, 0], [-0.75, -0.75, 0]],
                 },
                 {
                     "name": "top_left_inside_1",
                     "base": [-27, -43.73, 84.75, 20, 35, 0],
-                    "offsets": [0, 0, 0],
+                    "offsets": [[0, 0, 0], [-0.75, -0.75, 0]],
                 }
             ],
             "top_right_inside": [
                 {
                     "name": "top_right_inside_0",
                     "base": [27, -40.44, 87.53, 20, -35, 0],
-                    "offsets": [-0.4, 0, 0],
+                    "offsets": [[-0.4, 0, 0], [-2.25, -1.25, 0]],
                 },
                 {
                     "name": "top_right_inside_1",
                     "base": [27, -43.73, 84.75, 20, -35, 0],
-                    "offsets": [-0.4, 0, 0],
+                    "offsets": [[-0.4, 0, 0], [-2.25, -1.25, 0]],
                 }
             ],
             "front_left_angled": [
                 {
                     "name": "fla_0",
                     "base": [-27, -76.5, 85.7, 35, 25, 0],
-                    "offsets": [0.75, 0, 0],
+                    "offsets": [[0.75, 0, 0], [-0.25, 0, 0]],
                 },
                 {
                     "name": "fla_1",
                     "base": [-27, -85.15, 73.4, 35, 25, 0],
-                    "offsets": [0.75, 0, 0],
+                    "offsets": [[0.75, 0, 0], [-0.25, 0, 0]],
                 }
             ],
             "front_right_angled": [
                 {
                     "name": "fra_0",
                     "base": [27, -76.5, 85.7, 35, -25, 0],
-                    "offsets": [-1.0, 0, 0],
+                    "offsets": [[-1.0, 0, 0], [-2.0, 0, 0]],
                 },
                 {
                     "name": "fra_1",
                     "base": [27, -85.15, 73.4, 35, -25, 0],
-                    "offsets": [-1.0, 0, 0],
+                    "offsets": [[-1.0, 0, 0], [-2.0, 0, 0]],
                 },
             ],
             "front_left": [
                 {
                     "name": "fl_0",
                     "base": [-27, -90.7, 59.1, 35, 15, 0],
-                    "offsets": [0.75, 0, 2.5],
+                    "offsets": [[0.75, 0, 2.5], [0, 0, 0]],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "fl_1",
                     "base": [-27, -92.0, 34.15, 35, 15, 0],
-                    "offsets": [0.75, 0, 2.5],
+                    "offsets": [[0.75, 0, 2.5], [0, 0, 0]],
                     "weld_distance": 8.0
                 }
             ],
@@ -1603,13 +1617,13 @@ class Laser_767_119(GENERIC_LASER):
                 {
                     "name": "fr_0",
                     "base": [27, -90.7, 59.1, 35, -15, 0],
-                    "offsets": [-1.1, 0, 2.5],
+                    "offsets": [[-1.1, 0, 2.5], [0, 0, 0]],
                     "weld_distance": 10.0
                 },
                 {
                     "name": "fr_1",
                     "base": [27, -92.0, 34.15, 35, -15, 0],
-                    "offsets": [-1.1, 0, 2.5],
+                    "offsets": [[-1.1, 0, 2.5], [0, 0, 0]],
                     "weld_distance": 8.0
                 }
             ],
@@ -1627,22 +1641,22 @@ class Laser_767_119(GENERIC_LASER):
                 {
                     "name": "left_side_2",
                     "base": [-28.3, -89.5, 53.4, 0, -45, 0],
-                    "offsets": [0, 0.5, -1.2],
+                    "offsets": [[0, 0.5, -1.2], [0, -1.0, -1.2]],
                 },
                 {
                     "name": "left_side_3",
                     "base": [-28.3, -90.15, 38.5, 0, -45, 0],
-                    "offsets": [0, -0.5, -1.2],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
                 },
                 {
                     "name": "left_side_4",
                     "base": [-28.3, -85.4, 14.1, 0, -45, 0],
-                    "offsets": [0, -0.5, -1.2],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
                 },
                 {
                     "name": "left_side_5",
                     "base": [-28.3, -81.2, 11.38, 0, -45, 0],
-                    "offsets": [0, -0.5, -1.2],
+                    "offsets": [[0, -0.5, -1.2], [0, -1.75, -1.2]],
                 }
             ],
             "right_side": [
@@ -1659,22 +1673,22 @@ class Laser_767_119(GENERIC_LASER):
                 {
                     "name": "right_side_2",
                     "base": [28.3, -89.5, 53.4, 0, 45, 0],
-                    "offsets": [0, 1, 1.5],
+                    "offsets": [[0, 1, 1.5], [0, 0.25, 1.5]],
                 },
                 {
                     "name": "right_side_3",
                     "base": [28.3, -90.15, 38.5, 0, 45, 0],
-                    "offsets": [0, 0, 1.5],
+                    "offsets": [[0, 0, 1.5], [0, -0.5, 1.5]],
                 },
                 {
                     "name": "right_side_4",
                     "base": [28.3, -85.4, 14.1, 0, 45, 0],
-                    "offsets": [0, 0, 1.5],
+                    "offsets": [[0, 0, 1.5], [0, 0, 2.0]],
                 },
                 {
                     "name": "right_side_5",
                     "base": [28.3, -81.2, 11.38, 0, 45, 0],
-                    "offsets": [0, 0, 1.5],
+                    "offsets": [[0, 0, 1.5], [0, 0, 1.5]],
                 }
             ],
         }
@@ -1685,7 +1699,7 @@ class Laser_767_119(GENERIC_LASER):
             group_poses = []
             for t in targets:
                 xyzrpw = t["base"][:]
-                offset = t["offsets"]
+                offset = t["offsets"][part_idx]
                 full_xyzrpw = [
                     xyzrpw[0] + offset[0],
                     xyzrpw[1] + offset[1],
@@ -1825,10 +1839,10 @@ class Laser_767_119(GENERIC_LASER):
             i += 2
             weld_index += 1
 
-    def _run_group(self, all_groups, group_name, weld_speed=SLOW):
+    def _run_group(self, all_groups, group_name, part_idx, weld_speed=SLOW):
         poses = all_groups[group_name]
 
-        robot.AddCode(f"# {group_name.upper()} welds")
+        robot.AddCode(f"# {group_name.upper()} welds, part_idx: {part_idx}")
         self._approach_group(group_name, poses)
         self._run_group_targets(poses, weld_speed)
         self._retract_group(group_name)
@@ -1840,16 +1854,17 @@ class Laser_767_119(GENERIC_LASER):
 
         robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-        all_groups = self._get_weld_targets()
+        part_idx = self._get_part_idx()
+        all_groups = self._get_weld_targets(part_idx)
 
-        self._run_group(all_groups, "top_left", weld_speed=0.5)
-        self._run_group(all_groups, "top_right", weld_speed=0.5)
-        self._run_group(all_groups, "front_right_angled", weld_speed=0.5)
-        self._run_group(all_groups, "front_left_angled", weld_speed=0.5)
-        self._run_group(all_groups, "top_left_inside", weld_speed=0.2)
-        self._run_group(all_groups, "top_right_inside", weld_speed=0.2)
-        self._run_group(all_groups, "left_side", weld_speed=[SLOWAF, 0.2])
-        self._run_group(all_groups, "right_side", weld_speed=[SLOWAF, 0.2])
+        self._run_group(all_groups, "top_left", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "top_right", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "front_right_angled", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "front_left_angled", part_idx, weld_speed=0.5)
+        self._run_group(all_groups, "top_left_inside", part_idx, weld_speed=0.2)
+        self._run_group(all_groups, "top_right_inside", part_idx, weld_speed=0.2)
+        self._run_group(all_groups, "left_side", part_idx, weld_speed=[SLOWAF, 0.2])
+        self._run_group(all_groups, "right_side", part_idx, weld_speed=[SLOWAF, 0.2])
 
         # end
         robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
@@ -1857,14 +1872,13 @@ class Laser_767_119(GENERIC_LASER):
 
     #~ Run
     def run(self):
-        self.TCP_Holder_long = self.Robot_Frame.findChild("TCP 9.5mm z")
-
         self.fast_ww = 37
         self.fast_aa = 30
         SetSpeed(self.__class__.__name__)
         SetTool(self.TCP_Holder.findChild('mid'))
         SetFrame(self.Retracted_Frame)
 
+        self._get_part_idx()
         self.part_welds()
         
         
