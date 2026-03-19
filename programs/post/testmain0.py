@@ -34,8 +34,8 @@ def main():
 
     # TEST_Laser_767_119_FixtureA()
     # TEST_Laser_767_119_FixtureB()
-    # Laser_767_119_FixtureA()
-    Laser_767_119_FixtureB()
+    Laser_767_119_FixtureA()
+    # Laser_767_119_FixtureB()
 
 
 
