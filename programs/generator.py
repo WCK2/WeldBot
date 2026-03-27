@@ -71,14 +71,18 @@ if __name__ == "__main__":
             # main.add(15, Laser_1881_1015, workpiece='1881-1015', tool='TCP 5.5mm z', fn='Laser_1881_1015_x2', parts=[0,1])
             main.add(16, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='Laser_767_119_FixtureA', parts=[0])
             main.add(17, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='Laser_767_119_FixtureB', parts=[1])
+            main.add(18, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='Laser_1881_0151_x1', parts=[0])
+            main.add(19, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='Laser_1881_0151_x2', parts=[])
 
             #? Test progs
             # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
             # main.add(51, Laser_101_108, workpiece='101_108', fn='TEST_Laser_101_108_x100', parts=[], test=True)
             # main.add(52, Laser_767_2205_B, workpiece='767-2205 B', tool='TCP 5.5mm z', fn='TEST_Laser_767_2205_B_x7', parts=[0,1,2,3,4,5,6], test=True)
             # main.add(53, Laser_1881_1015, workpiece='1881-1015', tool='TCP 5.5mm z', fn='TEST_Laser_1881_1015_x1', parts=[0], test=True)
-            main.add(54, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureA', parts=[0], test=True)
-            main.add(55, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureB', parts=[1], test=True)
+            # main.add(54, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureA', parts=[0], test=True)
+            # main.add(55, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='TEST_Laser_767_119_FixtureB', parts=[1], test=True)
+            # main.add(56, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='TEST_Laser_1881_0151_p0', parts=[0], test=True)
+            # main.add(57, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='TEST_Laser_1881_0151_p1', parts=[1], test=True)
 
             main.generate()
 
@@ -108,10 +112,12 @@ if __name__ == "__main__":
             # Laser_1881_1015(workpiece='1881-1015', tool='TCP 5.5mm z', parts=[0], test=True)
 
             # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[0])
-            Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[1])
+            # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[1])
             # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[0] test=True)
             # Laser_767_119(workpiece='767-119', tool='TCP 5.5mm z', parts=[1] test=True)
 
+            Laser_1881_0151(workpiece='1881-0151', tool='TCP 9.5mm z', parts=[0])
+            # Laser_1881_0151(workpiece='1881-0151', tool='TCP 9.5mm z', parts=[])
 
 
 
