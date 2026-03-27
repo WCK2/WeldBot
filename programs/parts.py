@@ -1925,7 +1925,7 @@ class Laser_1881_0151(GENERIC_LASER):
     """
     Runtime:
         Qty 1: TBD
-        Qty 2: TBD
+        Qty 2: 0m54s
     """
     def _get_weld_targets(self, part_idx: int):
         DEFAULT_WELD_DISTANCE = 10.0
