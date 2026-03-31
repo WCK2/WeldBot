@@ -3,8 +3,8 @@ from PyQt5.QtCore import *
 
 
 PROGRAM_NAMES = {
-    1: '965-0101-B CALE Door', # CALE
-    2: '1881-0150M-B MS3 Door',
+    1: '1881-0150M-B MS3 Door - No LHBracket',
+    2: '1881-0150M-B MS3 Door - Full',
     3: '101-0111 (Qty: 1)',
     4: '101-0111 (Qty: 2)',
     5: '101-0111 (Qty: 4)',

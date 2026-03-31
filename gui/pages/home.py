@@ -45,7 +45,8 @@ class HOME(NFrame):
         self.program_image.setFixedSize(450,350)
         self.program_image.setScaledContents(True)
 
-        self.program_label = QLabel(self, objectName='program_label', text=f'<div style="line-height: 150%;"><span style="color: #16C60C;">Program #:</span> {mem.program}<br><span style="color: #16C60C;">Name:</span> {mem.program_name}</div>', minimumWidth=450, maximumWidth=450, minimumHeight=125, maximumHeight=125)
+        self.program_label = QLabel(self, objectName='program_label', text=f'<div style="line-height: 150%;"><span style="color: #16C60C;">Program #:</span> {mem.program}<br><span style="color: #16C60C;">Name:</span> {mem.program_name}</div>', minimumWidth=450, maximumWidth=450, minimumHeight=175, maximumHeight=175)
+        self.program_label.setWordWrap(True)
 
         self.btn_program_sub = QPushButton(self,text="-", minimumWidth=150, maximumWidth=150, minimumHeight=75, maximumHeight=75)
         self.btn_program_sub.clicked.connect(lambda: self.__inc_program(False))

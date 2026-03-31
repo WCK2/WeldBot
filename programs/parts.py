@@ -509,7 +509,20 @@ class Laser_MS3_10in(GENERIC_LASER):
     Runtime:
         Qty 1: 2m 57s (177 seconds)
     """
-    #~ Spot Welds
+    def _get_part_idx(self):
+        """ parts = [0] => Full program | parts = [1] => Skip LHBracket """
+        if not self.parts:
+            self.parts = [0]
+
+        if len(self.parts) != 1:
+            raise ValueError(f"{self.__class__.__name__} expects self.parts to contain exactly one item, got {self.parts}")
+
+        part_idx = self.parts[0]
+        if part_idx not in (0, 1):
+            raise ValueError(f"{self.__class__.__name__} only supports part_idx 0 or 1, got {part_idx}")
+        
+        return part_idx
+
     def UpperStiffener(self, tar_frame):
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
@@ -621,7 +634,11 @@ class Laser_MS3_10in(GENERIC_LASER):
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-    def LHBracket(self, tar_frame):
+    def LHBracket(self, tar_frame, part_idx):
+        if part_idx == 1:
+            robot.AddCode(f'# SKIPPING {inspect.currentframe().f_code.co_name} due to part_idx={part_idx}')
+            return
+        
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
@@ -676,6 +693,9 @@ class Laser_MS3_10in(GENERIC_LASER):
 
     #~ Run
     def run(self):
+        part_idx = self._get_part_idx()
+        robot.AddCode(f'# Running part index: {part_idx}')
+
         SetSpeed(self.__class__.__name__)
         SetTool(self.TCP_Holder.findChild('mid'))
         SetFrame(self.Retracted_Frame)
@@ -687,7 +707,7 @@ class Laser_MS3_10in(GENERIC_LASER):
             elif tar_frame.Wname=='UpperStiffener': self.UpperStiffener(tar_frame)
             elif tar_frame.Wname=='LowerStiffener': self.LowerStiffener(tar_frame)
             elif tar_frame.Wname=='TicketSpout': self.TicketSpout(tar_frame)
-            elif tar_frame.Wname=='LHBracket': self.LHBracket(tar_frame)
+            elif tar_frame.Wname=='LHBracket': self.LHBracket(tar_frame, part_idx)
             elif tar_frame.Wname=='SwitchMount': self.SwitchMount(tar_frame)
 
             else:
