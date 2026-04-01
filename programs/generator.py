@@ -51,7 +51,7 @@ if __name__ == "__main__":
             main = CARTELMAIN()
 
             #? Production Progs
-            main.add(1, Laser_MS3_10in, workpiece='MS3_10in', fn='Laser_MS3_10in_SKIP_LHBracket', parts=[1])
+            # main.add(1, Laser_CALE, workpiece='CALE')
             main.add(2, Laser_MS3_10in, workpiece='MS3_10in', fn='Laser_MS3_10in_Full', parts=[0])
             main.add(3, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x1', parts=[3])
             main.add(4, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='Laser_Vault_Chassis_x2', parts=[2,3])
@@ -70,6 +70,9 @@ if __name__ == "__main__":
             main.add(17, Laser_767_119, workpiece='767-119', tool='TCP 5.5mm z', fn='Laser_767_119_FixtureB', parts=[1])
             main.add(18, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='Laser_1881_0151_x1', parts=[0])
             main.add(19, Laser_1881_0151, workpiece='1881-0151', tool='TCP 9.5mm z', fn='Laser_1881_0151_x2', parts=[])
+            main.add(20, Laser_MS3_10in, workpiece='MS3_10in', fn='Laser_MS3_10in_NO_LHBracket', parts=[1])
+            main.add(21, Laser_MS3_10in, workpiece='MS3_10in', fn='Laser_MS3_10in_NO_SwitchMount', parts=[2])
+            main.add(22, Laser_MS3_10in, workpiece='MS3_10in', fn='Laser_MS3_10in_NO_LHBracket_or_SwitchMount', parts=[3])
 
             #? Test progs
             # main.add(50, Laser_Vault_Chassis, workpiece='Vault_Chassis', fn='TEST_Laser_Vault_Chassis_x4', parts=[0,1,2,3], test=True)
@@ -90,6 +93,8 @@ if __name__ == "__main__":
             # Laser_CALE(workpiece='CALE')
             # Laser_MS3_10in(workpiece='MS3_10in', parts=[0])
             # Laser_MS3_10in(workpiece='MS3_10in', parts=[1])
+            # Laser_MS3_10in(workpiece='MS3_10in', parts=[2])
+            # Laser_MS3_10in(workpiece='MS3_10in', parts=[3])
 
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[3])
             # Laser_Vault_Chassis(workpiece='Vault_Chassis', parts=[2,3])

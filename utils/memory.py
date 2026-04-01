@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 
 
 PROGRAM_NAMES = {
-    1: '1881-0150M-B MS3 Door - No LHBracket',
+    1: '965-0101-B CALE Door',
     2: '1881-0150M-B MS3 Door - Full',
     3: '101-0111 (Qty: 1)',
     4: '101-0111 (Qty: 2)',
@@ -22,6 +22,9 @@ PROGRAM_NAMES = {
     17: '767-119 Fixture B',
     18: '1881-0151 (Qty: 1)',
     19: '1881-0151 (Qty: 2)',
+    20: '1881-0150M-B MS3 Door - No LHBracket',
+    21: '1881-0150M-B MS3 Door - No Switch Mount',
+    22: '1881-0150M-B MS3 Door - No LHBracket or Switch Mount',
 }
 
 

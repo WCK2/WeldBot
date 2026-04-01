@@ -507,10 +507,18 @@ class Laser_CALE(GENERIC_LASER):
 class Laser_MS3_10in(GENERIC_LASER):
     """
     Runtime:
-        Qty 1: 2m 57s (177 seconds)
+        [0] Full: 2m 57s (177 seconds)
+        [1] No LHBracket: TBD
+        [2] No Switch Mount: TBD
+        [3] No LHBracket or Switch Mount: TBD
     """
     def _get_part_idx(self):
-        """ parts = [0] => Full program | parts = [1] => Skip LHBracket """
+        """ 
+        parts = [0] => Full program
+        parts = [1] => No LHBracket
+        parts = [2] => No Switch Mount
+        parts = [3] => No LHBracket or Switch Mount
+        """
         if not self.parts:
             self.parts = [0]
 
@@ -518,7 +526,7 @@ class Laser_MS3_10in(GENERIC_LASER):
             raise ValueError(f"{self.__class__.__name__} expects self.parts to contain exactly one item, got {self.parts}")
 
         part_idx = self.parts[0]
-        if part_idx not in (0, 1):
+        if part_idx not in (0, 1, 2, 3):
             raise ValueError(f"{self.__class__.__name__} only supports part_idx 0 or 1, got {part_idx}")
         
         return part_idx
@@ -635,7 +643,7 @@ class Laser_MS3_10in(GENERIC_LASER):
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
     def LHBracket(self, tar_frame, part_idx):
-        if part_idx == 1:
+        if part_idx in (1, 3):
             robot.AddCode(f'# SKIPPING {inspect.currentframe().f_code.co_name} due to part_idx={part_idx}')
             return
         
@@ -664,7 +672,11 @@ class Laser_MS3_10in(GENERIC_LASER):
 
         if TEST: robot.nos_MoveJ(FASTAF, self.Tar001.Joints())
 
-    def SwitchMount(self, tar_frame):
+    def SwitchMount(self, tar_frame, part_idx):
+        if part_idx in (2, 3):
+            robot.AddCode(f'# SKIPPING {inspect.currentframe().f_code.co_name} due to part_idx={part_idx}')
+            return
+        
         robot.AddCode(f'# {inspect.currentframe().f_code.co_name}')
         tars = GetTargetMats(tar_frame)
         SetFrame(tar_frame)
@@ -708,11 +720,14 @@ class Laser_MS3_10in(GENERIC_LASER):
             elif tar_frame.Wname=='LowerStiffener': self.LowerStiffener(tar_frame)
             elif tar_frame.Wname=='TicketSpout': self.TicketSpout(tar_frame)
             elif tar_frame.Wname=='LHBracket': self.LHBracket(tar_frame, part_idx)
-            elif tar_frame.Wname=='SwitchMount': self.SwitchMount(tar_frame)
+            elif tar_frame.Wname=='SwitchMount': self.SwitchMount(tar_frame, part_idx)
 
             else:
                 print(f'no function call for "{tar_frame.Name()}" (aka: {tar_frame.Wname})')
 
+        if part_idx in (2, 3):
+            robot.nos_MoveJ(FAST, self.Tar001.Joints(), blend=5)
+            robot.nos_MoveJ(FASTAF, self.Tar000.Joints())
 
 
 #^=========================
